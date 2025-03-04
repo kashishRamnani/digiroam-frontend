@@ -1,0 +1,518 @@
+{
+  "login": {
+    "title": "Iniciar sesión",
+    "email": "Correo electrónico",
+    "password": "Contraseña",
+    "submit": "Iniciar sesión",
+    "error": "Error al iniciar sesión. Por favor, inténtelo de nuevo."
+  },
+  "notFound": {
+    "title": "Página No Encontrada",
+    "description": "La página que estás buscando no existe.",
+    "heading": "404 - Página No Encontrada",
+    "message": "¡Ups! Es posible que la página que estás buscando haya sido eliminada o no esté disponible temporalmente.",
+    "backHome": "Volver al Inicio"
+  },
+  "signup": {
+    "title": "Registreeru - Liitu DigiRoamiga",
+    "description": "Loo oma DigiRoami konto, et avastada globaalset eSIM teenust.",
+    "firstName": "Eesnimi",
+    "lastName": "Perekonnanimi",
+    "userName": "Kasutajanimi",
+    "email": "E-posti aadress",
+    "password": "Parool",
+    "confirmPassword": "Kinnita parool",
+    "phoneNumber": "Telefoninumber",
+    "selectGender": "Vali sugu",
+    "male": "Mees",
+    "female": "Naine",
+    "other": "Muu",
+    "submit": "Registreeru",
+    "success": "Registreerimine õnnestus! Tere tulemast DigiRoami!",
+    "error": "Registreerimine ebaõnnestus. Palun kontrollige oma andmed ja proovige uuesti.",
+    "required": "See väli on kohustuslik",
+    "invalidEmail": "Palun sisestage kehtiv e-posti aadress",
+    "passwordMismatch": "Paroolid ei klapi",
+    "alreadyHaveAccount": "Kas teil on juba konto? Logige sisse siit"
+  },
+  "common": {
+    "loading": "Esitamine..."
+  },
+  "navbar": {
+    "logo": "DigiRoam",
+    "home": "Avaleht",
+    "dashboard": "Armatuurlaud",
+    "logout": "Logi välja",
+    "login": "Logi sisse",
+    "signup": "Registreeru",
+    "aboutus": "Sobre",
+    "faq": "P.F."
+  },
+  "footer": {
+    "company_info_title": "Proveedor de eSim",
+    "company_info_description": "Somos un proveedor líder de eSIM que ofrece soluciones de conectividad digital sin interrupciones para tus dispositivos móviles. Nuestra tecnología eSIM elimina la necesidad de tarjetas SIM físicas, permitiéndote activar planes móviles al instante y cambiar entre operadores con facilidad.",
+    "services_title": "Servicios",
+    "service_no_physical_sim": "Sin tarjeta SIM física",
+    "service_instant_activation": "Activación instantánea",
+    "service_multiple_profiles": "Perfiles múltiples",
+    "service_global_roaming": "Roaming global",
+    "service_secure_reliable": "Seguro y confiable",
+    "service_flexible_plans": "Planes flexibles",
+    "contact_us_title": "Contáctanos",
+    "contact_email_label": "Correo electrónico",
+    "contact_number_label": "Número",
+    "contact_social_label": "Redes sociales",
+    "contact_media_label": "Medios",
+    "contact_feedback_label": "Comentarios",
+    "contact_connects_label": "Conexiones",
+    "copyright": "©",
+    "all_rights_reserved": "Todos los derechos reservados",
+    "terms_conditions": "Términos y Condiciones",
+    "privacy_policy": "Política de Privacidad"
+  },
+  "home": {
+    "heroSection": {
+      "heading": "Viaje inteligente, mantente conectado",
+      "highlight": "eSIM Global",
+      "subheading": "con precios amigables para el usuario",
+      "description": "Disfruta de conexión a internet en cada aventura y olvídate de las costosas tarifas de roaming a tu regreso.",
+      "searchPlaceholder": "Busca tu eSIM por ubicación",
+      "travelSmart": "Viaja inteligente, mantente conectado",
+      "noBorders": "Sin fronteras, precios amigables para el cliente"
+    },
+    "appdemo": {
+      "title": "Aplicación móvil eSim",
+      "subtitle": "Demostración"
+    },
+    "esimTypes": [
+      { "id": "local", "label": "eSIM Local" },
+      { "id": "regional", "label": "eSIM Regional" },
+      { "id": "global", "label": "eSIM Global" }
+    ],
+    "esimplan": {
+      "title": "Países Populares",
+      "btnText": "Ver Todos los Países"
+    },
+
+    "countryData": {
+      "local": [
+        { "id": "pk", "name": "Pakistán", "flag": "pk", "plans": [] },
+        { "id": "sa", "name": "Arabia Saudita", "flag": "sa", "plans": [] },
+        { "id": "us", "name": "Estados Unidos", "flag": "us", "plans": [] },
+        {
+          "id": "ae",
+          "name": "Emiratos Árabes Unidos",
+          "flag": "ae",
+          "plans": []
+        },
+        { "id": "gb", "name": "Reino Unido", "flag": "gb", "plans": [] },
+        { "id": "tr", "name": "Turquía", "flag": "tr", "plans": [] },
+        { "id": "th", "name": "Tailandia", "flag": "th", "plans": [] },
+        { "id": "gr", "name": "Grecia", "flag": "gr", "plans": [] },
+        { "id": "es", "name": "España", "flag": "es", "plans": [] },
+        { "id": "qa", "name": "Qatar", "flag": "qa", "plans": [] },
+        { "id": "cn", "name": "China", "flag": "cn", "plans": [] },
+        { "id": "np", "name": "Nepal", "flag": "np", "plans": [] },
+        { "id": "iq", "name": "Irak", "flag": "iq", "plans": [] },
+        { "id": "nl", "name": "Países Bajos", "flag": "nl", "plans": [] },
+        { "id": "my", "name": "Malasia", "flag": "my", "plans": [] }
+      ],
+      "regional": [
+        { "id": "eu", "name": "Unión Europea", "flag": "eu", "plans": [] },
+        { "id": "asia", "name": "Asia-Pacífico", "flag": "as", "plans": [] }
+      ],
+      "global": [
+        { "id": "world", "name": "Mundial", "flag": "un", "plans": [] }
+      ]
+    },
+    "featuresheading": "Disfruta de internet confiable y asequible en tus viajes.",
+    "featuresheading1": "Te tenemos cubierto.",
+    "features": [
+      {
+        "title": "Datos ilimitados",
+        "description": "Disfruta de datos ilimitados mientras viajas a numerosos destinos sin preocupaciones."
+      },
+      {
+        "title": "Sigue usando tus aplicaciones favoritas",
+        "description": "Llega seguro a casa, encuentra ese gran restaurante y guarda los puntos de interés locales, todo mientras te mantienes conectado con tus seres queridos."
+      },
+      {
+        "title": "Número de WhatsApp",
+        "description": "Puedes llamar y enviar mensajes a todos tus contactos en WhatsApp, como si estuvieras en el mismo país. No pierdas el contacto con familia y amigos."
+      },
+      {
+        "title": "Soporte al cliente 24/7",
+        "description": "¿Necesitas ayuda? Nuestro soporte por chat 24/7 está a solo un mensaje de distancia para mantenerte conectado y ayudarte con lo que necesites."
+      },
+      {
+        "title": "Conexión rápida y estable",
+        "description": "Conéctate a las mejores redes en tu destino y disfruta de internet confiable y rápido."
+      },
+      {
+        "title": "Disfruta de tu eSim",
+        "description": "Disfruta de la flexibilidad de nuestra eSIM digital, manteniendo la opción de usar tu SIM original cuando lo necesites."
+      }
+    ],
+    "testimonials": [
+      {
+        "id": 1,
+        "name": "Rizwan Ali",
+        "image": "/images/home/hero-person.png",
+        "text": "Recientemente visité y me gustó mucho. El diseño es fácil de usar y el contenido es informativo y actualizado. En general, excelente."
+      },
+      {
+        "id": 2,
+        "name": "Saqlain",
+        "image": "/images/home/hero-person.png",
+        "text": "Recientemente visité y me gustó mucho. El diseño es fácil de usar y el contenido es informativo y actualizado. En general, excelente."
+      },
+      {
+        "id": 3,
+        "name": "Fatima Zehra",
+        "image": "/images/home/hero-person.png",
+        "text": "Recientemente visité y me gustó mucho. El diseño es fácil de usar y el contenido es informativo y actualizado. En general, excelente."
+      }
+    ],
+    "mainTestimonial": {
+      "heading": "Lo Que Nuestros Clientes Dijeron",
+      "btnText": "Ver Más",
+      "text": "Recientemente visité el sitio y quedé realmente impresionado. El sitio web tiene un diseño limpio y fácil de usar, lo que facilita la navegación. El contenido es informativo, bien organizado y actualizado, lo cual encontré muy útil. En general, es un sitio web confiable y profesional que brinda información valiosa. ¡Lo recomiendo mucho!"
+    },
+    "faqs": [
+      {
+        "question": "¿Qué productos ofrecen?",
+        "answer": "Ofrecemos servicios eSIM, que proporcionan una forma cómoda y flexible de conectarse a redes móviles sin necesidad de una tarjeta SIM física. Nuestra eSIM le permite activar datos móviles, hacer llamadas y enviar mensajes en dispositivos compatibles, todo con un simple proceso de activación digital."
+      },
+      {
+        "question": "¿Cómo creo una cuenta?",
+        "answer": "Para crear una cuenta, simplemente haga clic en el botón 'Registrarse' en nuestro sitio web o aplicación móvil. Siga las instrucciones para ingresar su información y configurar su cuenta. ¡Es rápido y fácil!"
+      },
+      {
+        "question": "¿Ofrecen envíos internacionales?",
+        "answer": "Sí, ofrecemos envíos internacionales a muchos países. Las tarifas de envío y los tiempos de entrega pueden variar según el destino. Puede verificar las opciones de envío disponibles durante el proceso de pago."
+      },
+      {
+        "question": "¿Tienen una aplicación móvil?",
+        "answer": "Sí, tenemos una aplicación móvil disponible para dispositivos iOS y Android. Puede descargarla desde la App Store o Google Play Store. Nuestra aplicación ofrece todas las funciones de nuestro sitio web, además de algunos beneficios exclusivos para dispositivos móviles."
+      },
+      {
+        "question": "¿Cómo puedo contactar al soporte al cliente?",
+        "answer": "Puede comunicarse con nuestro equipo de soporte al cliente a través de varios canales. Ofrecemos soporte 24/7 a través del chat en vivo en nuestro sitio web y aplicación móvil. También puede enviarnos un correo electrónico a support@roamdigi.com o llamar a nuestro número gratuito al 1-800-ROAMDIGI."
+      },
+      {
+        "question": "¿Qué métodos de pago aceptan?",
+        "answer": "Aceptamos una amplia gama de métodos de pago, incluidas tarjetas de crédito principales (Visa, MasterCard, American Express), PayPal, Apple Pay y Google Pay. Para algunas regiones, también ofrecemos opciones de pago locales. Puede ver todos los métodos de pago disponibles durante el proceso de pago."
+      }
+    ],
+    "faqAbout": {
+      "download": {
+        "title": "Descarga nuestra aplicación móvil desde ",
+        "app": "AppStore / Playstore",
+        "buttonText": "Descargar Ahora"
+      },
+      "general": {
+        "title": "¿Tienes preguntas?\nNosotros te ayudamos.",
+        "description": "En Roamdigi, estamos dedicados a responder todas tus preguntas. Ya sea que necesites información, asistencia o consejo, nuestro equipo está aquí para ayudarte. Nos aseguramos de que recibas el soporte que necesitas con soluciones rápidas, precisas y confiables. ¡No dudes en contactarnos, estamos a solo un clic de distancia!",
+        "buttonText": "Más Preguntas Frecuentes"
+      },
+      "mobileApp": {
+        "title": "Descarga nuestra aplicación móvil desde\nAppStore / Playstore",
+        "buttonText": "Descargar Ahora"
+      }
+    }
+  },
+  "appdemo": {
+    "title": "Aplicación móvil eSim",
+    "subtitle": "Demostración"
+  },
+  "api": {
+    "loading": "Laadimine...",
+    "success": "Tehing õnnestus",
+    "error": "Tekkis viga. Palun proovige uuesti."
+  },
+  "aboutUs": {
+    "title": "Sobre Nosotros",
+    "description": "Aprende más sobre nuestra empresa",
+    "heading": "Sobre Nosotros",
+    "heroText": "¿Alguna vez has hecho un viaje increíble al extranjero solo para sorprenderte con una factura de roaming enorme? ¿O has perdido la conectividad telefónica y has buscado frenéticamente una conexión Wi-Fi gratuita? Tal vez hayas perdido tu valioso tiempo buscando un proveedor de SIM en el aeropuerto. RoamDigi tiene todas las respuestas y soluciones si has tenido problemas con estas situaciones.",
+    "seamlessConnectionHeading": "Tu Conexión de Viaje Sin Problemas",
+    "seamlessConnectionText1": "RoamDigi es una de las mejores tiendas de eSIM que sabe cómo mantenerse conectado mientras viajas. Desde alternativas digitales hasta tarjetas SIM tradicionales, ofrecemos soluciones innovadoras y sin estrés a nuestros clientes. RoamDigi te permite descargar y activar paquetes de datos al instante en más de 200 países y regiones.",
+    "seamlessConnectionText2": "Así que, RoamDigi está aquí para decir adiós a las tarifas de roaming y los problemas de conectividad con datos globales sin interrupciones desde el momento en que aterrizas.",
+    "countriesRegions": "Países y Regiones",
+    "countriesWithLocalTeams": "Países con Equipos Locales",
+    "continentsCovered": "Continentes Cubiertos",
+    "missionHeading": "Nuestra Misión",
+    "missionText1": "RoamDigi empodera a los viajeros con conectividad global sin problemas. Facilitamos a nuestros clientes eliminando las barreras del roaming tradicional y ofreciendo una forma más inteligente y sencilla de mantenerse conectados.",
+    "missionText2": "Nuestro diverso equipo profesional tiene como objetivo conectar y expandirse a más de 44 países y seis continentes. Creemos que la inclusión, la diversidad y la equidad pueden revolucionar la forma en que las personas experimentan los viajes y la tecnología.",
+    "missionText3": "RoamDigi está contigo dondequiera que te lleve tu viaje y te promete que siempre estarás a un toque de mantenerte conectado."
+  },
+  "faq": {
+    "faq_title": "Preguntas Frecuentes (FAQs)",
+    "what_is_esim": {
+      "question": "¿Qué es una eSIM?",
+      "answer": "Una eSIM es una SIM integrada que te permite descargar y activar planes de datos móviles sin necesidad de una tarjeta SIM física, brindando flexibilidad y comodidad."
+    },
+    "how_does_roamdigi_work": {
+      "question": "¿Cómo funciona la eSIM de RoamDigi?",
+      "answer": "RoamDigi facilita la conectividad al ofrecer planes eSIM para viajes globales sin complicaciones. Simplemente selecciona tu destino y región en nuestro sitio web, elige un plan de datos y adquiere tu eSIM. Una vez que recibas tu código QR, activa tu eSIM fácilmente y disfruta de conectividad instantánea."
+    },
+    "benefits_of_esim": {
+      "question": "¿Cuáles son los beneficios de usar una eSIM de RoamDigi?",
+      "several": "WUsar una eSIM de RoamDigi ofrece numerosas ventajas para mantenerte conectado durante tus viajes",
+      "few": "Aquí tienes algunos beneficios clave a considerar:",
+      "answer": [
+        "Accede a eSIMs para más de 200 países y regiones.",
+        "Conéctate con planes locales, regionales y globales.",
+        "Activa una red instantáneamente en tu destino.",
+        "Evita costosos cargos por roaming.",
+        "Almacena múltiples eSIMs en tu dispositivo.",
+        "Recarga fácilmente a través de la app de RoamDigi."
+      ]
+    },
+    "device_support": {
+      "question": "¿Cómo sé si mi dispositivo admite eSIM?",
+      "answer": "Consulta las especificaciones de tu dispositivo o verifica con el fabricante. La mayoría de los teléfonos inteligentes, tabletas y wearables modernos son compatibles con eSIM."
+    },
+    "how_to_buy": {
+      "question": "¿Cómo puedo comprar una eSIM de RoamDigi?",
+      "answer": "Visita el sitio web o la app de RoamDigi para adquirir tu eSIM para viajar."
+    },
+    "how_to_activate": {
+      "question": "¿Cómo activo mi eSIM de RoamDigi?",
+      "answer": [
+        "Compra un plan de datos de RoamDigi.",
+        "Escanea el código QR enviado por correo electrónico o en tu panel.",
+        "Sigue las instrucciones de tu dispositivo para instalar la eSIM.",
+        "Comienza a usar tu plan de datos."
+      ]
+    },
+    "specificFaqs": [
+      {
+        "id": 1,
+        "title": "¿Puedo mantener mi número de teléfono actual?",
+        "description": "Sí, puedes mantener tu número de teléfono actual activo en tu SIM principal. Las eSIM de RoamDigi generalmente se utilizan para planes solo de datos, por lo que tu número sigue disponible para llamadas y mensajes."
+      },
+      {
+        "id": 2,
+        "title": "¿Qué soporte al cliente está disponible?",
+        "description": "RoamDigi ofrece soporte al cliente 24/7 a través de chat en vivo, correo electrónico y la sección de soporte de nuestro sitio web. Estamos aquí para ayudarte con cualquier pregunta o problema que puedas encontrar."
+      },
+      {
+        "id": 3,
+        "title": "¿Cómo puedo gestionar mi cuenta eSIM?",
+        "description": "Puedes gestionar tu eSIM a través de la app o el sitio web de RoamDigi. Primero, revisa tu uso de datos, luego extiende tu plan o compra paquetes de datos adicionales, todo desde una plataforma fácil de usar."
+      },
+      {
+        "id": 4,
+        "title": "¿Qué pasa si cambio de dispositivo?",
+        "description": "Si cambias a un nuevo dispositivo compatible con eSIM, es posible que necesites transferir o reactivar tu eSIM. Contacta a nuestro equipo de soporte para obtener ayuda. Algunos planes pueden requerir la compra de un nuevo perfil eSIM."
+      },
+      {
+        "id": 5,
+        "title": "¿Qué tan seguro es el proceso de activación de eSIM?",
+        "description": "RoamDigi utiliza encriptación de vanguardia y se adhiere a estrictos estándares de seguridad global para garantizar la seguridad de tus datos y el proceso de activación de eSIM. Tu información siempre está protegida contra accesos no autorizados."
+      }
+    ]
+  },
+  "GeneralTermsandConditions": {
+    "title": "Términos y Condiciones",
+    "description": "Por favor, lea estos términos y condiciones cuidadosamente antes de utilizar nuestros servicios.",
+    "ValidityofTheseTerms": "1. Validez de Estos Términos",
+    "DescriptionofServices": "2. Descripción de los Servicios",
+    "StartDurationandTerminationofService": "3. Inicio, Duración y Terminación del Servicio",
+    "ChargesandPayment": "4. Cargos y Pago",
+    "DeliveryofServices": "5. Entrega de Servicios",
+    "RefundCancellationandModificationPolicy": "6. Política de Reembolso, Cancelación y Modificación",
+    "UseofDigitalCurrencies": "7. Uso de Monedas Digitales",
+    "eSIMRecyclingandActivationPolicy": "8. Política de Reciclaje y Activación de eSIM",
+    "PricingandPromotions": "9. Precios y Promociones",
+    "LocationTracking": "10. Seguimiento de Ubicación",
+    "LocalRegulatoryCompliance": "11. Cumplimiento Regulatorio Local",
+    "RepresentationsandWarranties": "12. Representaciones y Garantías",
+    "EndingorSuspendingYourAccount": "13. Terminación o Suspensión de su Cuenta",
+    "LinkstoOtherWebsites": "14. Enlaces a Otros Sitios Web",
+    "IntellectualPropertyRights": "15. Derechos de Propiedad Intelectual",
+    "CopyrightComplaints": "16. Quejas por Infracción de Derechos de Autor",
+    "ConfidentialInformation": "17. Información Confidencial",
+    "DisclaimersofWarranties": "18. Exención de Garantías",
+    "Indemnification": "19. Indemnización",
+    "DisputeResolution": "20. Resolución de Disputas – Arbitraje y Renuncia a Acciones Colectivas",
+    "GoverningLaw": "21. Ley Aplicable",
+    "NoAgencyorEmployment": "22. No Agencia ni Empleo",
+    "GeneralProvisions": "23. Disposiciones Generales",
+    "ChangestoTermsandServices": "24. Cambios en los Términos y Servicios",
+    "NoThirdPartyRights": "25. No Derechos para Terceros",
+    "NoticesandCommunication": "26. Notificaciones y Comunicaciones",
+    "ContactInformation": "27. Información de Contacto",
+    "terms": {
+      "validity": {
+        "title": "Validez de Estos Términos",
+        "content": "**Estos Términos y Condiciones (\"Términos\")** son un acuerdo vinculante entre usted (\"Cliente\" o \"usted\") y (¿podemos usar AirSim u otra palabra?) AirGSM Holdings, Inc. y sus entidades relacionadas (\"RoamDigi\"). Regulan su uso de nuestros productos, servicios, aplicación móvil (la \"App\") y sitio web (el \"Sitio\"), colectivamente denominados los \"Servicios.\" Cualquier excepción a estos Términos debe ser acordada explícitamente por escrito.\n\n**Estos Términos definen diferentes tipos de usuarios y sus interacciones con RoamDigi:**\n\n1. **Usuarios Finales**: Individuos que utilizan los servicios de RoamDigi para fines personales.\n\n2. **Usuarios Empresariales**: Organizaciones que utilizan los servicios de RoamDigi para proporcionar conectividad a sus clientes o empleados.\n\n3. **Clientes Finales**: Individuos que reciben servicios organizados por Usuarios Empresariales (por ejemplo, viajeros que compran servicios de una agencia de viajes).\n\n4. **Solicitantes de Empleo**: Individuos que solicitan empleo con RoamDigi.\n\nEl término \"Cliente\" se refiere a todos estos grupos, asegurando que estos Términos se apliquen a todos los que interactúan con nuestros Servicios. Al usar o registrarse en los Servicios, confirma que ha leído, entendido y acepta estar sujeto a estos Términos. Si no está de acuerdo, no tiene permiso para utilizar los Servicios.\n\nSi acepta estos Términos en nombre de una empresa u organización, confirma que tiene la autoridad para hacerlo y que la organización está sujeta a estos Términos.\n\nAl utilizar los Servicios, también acepta nuestra Política de Privacidad (disponible en [insertar enlace]), que forma parte de este acuerdo.\n\n**IMPORTANTE**: Estos Términos incluyen una cláusula de arbitraje vinculante y una renuncia a acciones colectivas (ver Sección 20), que afectan sus derechos legales. Por favor, lea detenidamente."
+      },
+      "description": {
+        "title": "Descripción de los Servicios",
+        "content": "**2.1 USO DE LOS SERVICIOS**\n\nRoamDigi ofrece soluciones de eSIM para conectividad internacional, proporcionando paquetes de datos, voz y texto para viajeros. Estos paquetes se pueden usar en cualquier dispositivo compatible con eSIM, lo que facilita mantenerse conectado sin necesidad de tarjetas SIM físicas.\n\nPara acceder a los servicios, debe crear una cuenta de RoamDigi proporcionando información precisa y actualizada, incluido su nombre, dirección, número de teléfono y correo electrónico. Usted es responsable de mantener segura la información de su cuenta y de todas las actividades que ocurran bajo su cuenta. Si sospecha de un acceso no autorizado, debe notificar a RoamDigi de inmediato.\n\nLa persona que se registra para los servicios es el \"Propietario de la Cuenta\" y es responsable de cumplir con estos Términos. Las cuentas no son transferibles.\n\n**2.2 REQUISITOS DE REGISTRO**\n\nTodos los usuarios (Usuarios Finales, Usuarios Empresariales, Clientes Finales y Solicitantes de Empleo) deben aceptar estos Términos antes de usar los servicios de RoamDigi.\n\n1. **Usuarios Finales**: Deben proporcionar información personal, como nombre y correo electrónico, durante el registro.\n\n2. **Usuarios Empresariales**: Deben proporcionar detalles adicionales relacionados con la empresa, como el nombre de la empresa, dirección e información de contacto.\n\n3. **Clientes Finales**: Cuando los servicios son organizados por un Usuario Empresarial, ese Usuario Empresarial es responsable de garantizar que la información personal del Cliente Final cumpla con las leyes de protección de datos.\n\nRoamDigi puede solicitar información adicional para mejorar sus servicios. Cualquier recopilación cumplirá con las regulaciones de privacidad de datos y los usuarios serán notificados con antelación.\n\n**2.3 RESPONSABILIDADES DE RoamDigi**\n\nRoamDigi se esfuerza por proporcionar un servicio confiable y de alta calidad. Sin embargo, no se puede garantizar un servicio ininterrumpido o sin fallos.\n\n**2.4 RESPONSABILIDADES DEL CLIENTE**\n\nUsted acepta no participar en ninguna actividad que sea ilegal, fraudulenta o perjudicial para la red o los servicios de RoamDigi. Las violaciones pueden resultar en la suspensión de su cuenta, pero seguirá siendo responsable de pagar cualquier cargo pendiente.\n\n**2.5 COMPATIBILIDAD DEL DISPOSITIVO**\n\nEs su responsabilidad asegurarse de que su dispositivo sea compatible con eSIM y esté desbloqueado para redes. RoamDigi proporciona una lista de dispositivos compatibles al momento de la compra. Al confirmar la compatibilidad de su dispositivo, acepta la responsabilidad de verificar esta información."
+      },
+      "duration": {
+        "title": "Inicio, Duración y Terminación del Servicio",
+        "content": "**Activación del Acuerdo:**\nSu acuerdo con RoamDigi comienza cuando complete un pedido a través del sitio web, la aplicación o la plataforma asociada. La activación del eSIM y el reconocimiento de la política de activación son su responsabilidad.\n\n**1. Usuarios Finales:**\nEl contrato termina si ya no tiene un plan de datos activo o elimina el eSIM de su dispositivo.\n\n**2. Usuarios Empresariales:**\nLos términos del contrato dependen de los acuerdos que tenga con RoamDigi o su estado activo en una plataforma asociada."
+      },
+      "charges": {
+        "title": "Cargos y Pago",
+        "content": "**Pagos:**\nLos pagos deben realizarse a través de un procesador de pagos de terceros (el \"PSP\"). Es posible que deba crear una cuenta con el PSP y aceptar sus términos. RoamDigi no se responsabiliza por ningún problema relacionado con el PSP.\nTodos los precios listados no incluyen impuestos, a menos que se indique lo contrario. Los impuestos se calcularán según su dirección de facturación en el momento de la compra.\n\n**4.1 Métodos de Pago**\nRoamDigi ofrece una variedad de opciones de pago, como tarjetas de crédito/débito, PayPal, Google Pay, Apple Pay y Alipay. Los pagos se procesan en Dólares Estadounidenses (USD) u otras monedas admitidas, según se determine durante el proceso de compra.\nTodas las transacciones con tarjeta de crédito se gestionan de manera segura por procesadores de pagos aprobados por RoamDigi, incluidos, entre otros, PayPal (https://paypal.com) y Stripe (https://stripe.com). RoamDigi también puede utilizar proveedores de servicios de pago adicionales para gestionar las transacciones.\n\n**4.2 Renovaciones Automáticas para Usuarios Finales**\nRoamDigi ofrece una función de renovación automática para un servicio ininterrumpido, diseñada para usuarios finales que desean conectividad continua.\n1. Cómo Funciona: Las tarifas de renovación se cargan automáticamente al método de pago seleccionado del usuario cuando su uso de datos se acerca a su agotamiento o al inicio de cada nuevo ciclo de facturación.\n2. Política de Cancelación: Los usuarios finales pueden optar por no utilizar la función de renovación automática en cualquier momento. La cancelación tendrá efecto al final del ciclo de facturación actual, permitiendo que el servicio continúe hasta que finalice ese periodo. Los cambios se pueden realizar en la configuración de su cuenta RoamDigi o con la ayuda del soporte al cliente.\n\n**4.3 Facturación y Facturas para Usuarios Empresariales**\nPara los usuarios empresariales, RoamDigi emplea un sistema de facturación sencillo para gestionar el uso de créditos RoamDigi. Estos créditos se utilizan para comprar eSIMs, recargas y otros servicios en la Plataforma de Socios.\n1. Detalles de la Factura: Cada factura detalla los créditos utilizados durante el período de facturación, ofreciendo información clara sobre los cargos para ayudar a las empresas a controlar sus gastos.\n2. Fechas de Vencimiento: Se espera que los usuarios empresariales paguen las facturas en la fecha de vencimiento mencionada. El pago puntual garantiza el acceso ininterrumpido a los servicios.\n3. Consecuencias del Pago Tardío:\n1. Los servicios pueden suspenderse temporalmente si las facturas no se pagan después de la fecha de vencimiento.\n2. Se pueden cobrar intereses sobre los montos vencidos, y RoamDigi se reserva el derecho de recuperar los costos adicionales incurridos debido a pagos tardíos, como tarifas legales o administrativas.\nLas facturas generalmente se emiten en USD, pero también se pueden presentar en otras monedas según los acuerdos con el usuario empresarial.\n\n**4.4 Transacciones Prepagas para Usuarios Empresariales**\nLos usuarios empresariales pueden comprar créditos RoamDigi por adelantado para comprar eSIMs, recargas y otros servicios.\n1. Compra de Créditos: Los pagos se pueden realizar mediante tarjetas de crédito/débito, transferencias bancarias u otros métodos de pago digitales, según la preferencia del usuario.\n2. Uso de Créditos: Una vez comprados, estos créditos se pueden utilizar según sea necesario para obtener servicios, ofreciendo a las empresas flexibilidad para planificar su gasto en línea con sus operaciones.\nPara obtener más detalles, los usuarios empresariales pueden visitar la Plataforma de Socios de RoamDigi o contactar con el soporte.\n\n**4.5 Transacciones Postpago para Usuarios Empresariales**\nPara mayor comodidad, RoamDigi también ofrece un modelo de pago postpago que permite a los usuarios empresariales acceder a los servicios primero y pagar después.\n1. Cómo Funciona: Los usuarios empresariales pueden obtener eSIMs, recargas u otros servicios con la obligación de pago diferida a una fecha posterior, según lo indicado en la factura emitida.\n2. Límites de Crédito:\n1. Puede aplicarse un límite de crédito predefinido, lo que permite a las empresas realizar compras hasta un monto determinado.\n2. Los límites de crédito pueden ser establecidos por RoamDigi o negociados según los términos del acuerdo.\n3. Elegibilidad:\n1. No todos los usuarios empresariales califican para opciones postpago. La elegibilidad depende de factores como el historial de transacciones, la solvencia crediticia y la duración de la asociación con RoamDigi.\nEste sistema postpago ofrece a las empresas la flexibilidad de centrarse en las operaciones sin necesidad de un ajuste financiero inmediato."
+      },
+      "delivery": {
+        "title": "Entrega de Servicios",
+        "content": "**1. Para Usuarios Finales:** Una vez que se compra una eSIM, aparecerá en la sección \"Mis eSIMs\" del sitio web o la aplicación móvil de RoamDigi. También se enviará un correo electrónico de confirmación después de la compra. Todas las instrucciones necesarias para instalar la eSIM solo se pueden acceder a través de la cuenta de RoamDigi del usuario.\n\n**2. Para Usuarios Empresariales:** Las eSIMs compradas se mostrarán en la Plataforma de Socios, donde las empresas podrán gestionar y asignar eficientemente las eSIMs o paquetes de recarga según sus requisitos específicos.\n\n**3.** RoamDigi ofrece sus productos y servicios a través de varios métodos de entrega, dependiendo de la integración elegida y el tipo de producto o servicio comprado."
+      },
+      "refund": {
+        "title": "Política de Reembolso, Cancelación y Modificación",
+        "content": "RoamDigi permite reembolsos o reemplazos de eSIM solo en casos en los que un problema de servicio sea causado por un error de RoamDigi. A continuación se detallan las condiciones clave para reembolsos y modificaciones:\n\n**Elegibilidad para reembolsos o reemplazos**\n1. **Errores de servicio:** Si el cliente no puede utilizar el servicio debido a un error de RoamDigi, puede solicitar un reembolso o reemplazo dentro de los 30 días posteriores a la compra. Sin embargo, si RoamDigi resuelve el problema dentro de los 10 días posteriores a la recepción de la notificación, no se proporcionará reembolso. Se requiere que los clientes cooperen con RoamDigi durante la resolución del problema.\n2. **Períodos de validez:** Cada paquete de datos tiene su propio período de validez. No se otorgarán reembolsos por datos no utilizados una vez que este período haya expirado.\n\n**Directrices adicionales para reembolsos**\n1. **No se compensan otros cargos:** RoamDigi no compensará costos relacionados con SIMs alternativas, servicios telefónicos ni cargos de terceros no relacionados con la cuenta de RoamDigi.\n2. **Actividad fraudulenta:** Se denegarán reembolsos si se encuentra evidencia de actividad fraudulenta, abuso o violación de los Términos y Condiciones de RoamDigi.\n3. **Compras no autorizadas:** Los clientes deben informar de las compras no autorizadas de inmediato. Los reembolsos en tales casos solo se procesarán después de una investigación y aprobación. Las cuentas involucradas en actividad fraudulenta pueden ser suspendidas.\n4. **Compras accidentales:** Una vez que se instala una eSIM, se considera utilizada, y no se emitirán reembolsos, excepto como se establece en esta política.\n5. **Cargos disputados:** Los clientes que disputen un cargo deben notificar a RoamDigi dentro de los 12 días posteriores al cargo, proporcionando detalles sobre la discrepancia y su monto estimado correcto.\n6. **Reemplazos para compras con Airmoney:** Las eSIM compradas con Airmoney pueden ser reemplazadas dentro de los 30 días posteriores a la compra.\n\n**Otras solicitudes de reembolso**\nSi una solicitud de reembolso no se ajusta a las condiciones especificadas, RoamDigi revisará la solicitud caso por caso. Los reembolsos aprobados pueden estar sujetos a una tarifa de procesamiento y no excederán el monto original de pago.\n\n**Cómo solicitar un reembolso**\n1. Las solicitudes de reembolso se pueden realizar a través del chat en la aplicación o el soporte web. Los clientes pueden necesitar proporcionar información adicional, como capturas de pantalla o explicaciones detalladas, para respaldar su reclamo.\n2. Los reembolsos aprobados se procesarán de regreso al método de pago original o como crédito de Airmoney en la cuenta del cliente. Los reembolsos pueden tardar hasta 30 días hábiles en aparecer, dependiendo del banco.\n\n**Transacciones de revendedores**\nLos clientes que compren servicios a través de un revendedor no son elegibles para reembolsos directos de RoamDigi y deben ponerse en contacto con el revendedor para obtener asistencia. Los reembolsos de usuarios empresariales por transacciones directas con RoamDigi pueden emitirse como créditos RoamDigi o notas de crédito para compras futuras."
+      },
+      "currencies": {
+        "title": "Uso de Monedas Digitales",
+        "content": "**7.1 Airmoney**\n1. **Airmoney** es un sistema de recompensas en efectivo exclusivo para usuarios finales, que les permite ganar y canjear créditos por compras.\n2. **Niveles de recompensa:** Los montos de cashback varían según los niveles de compra y están sujetos a cambios a discreción de RoamDigi.\n3. **Limitaciones:**\n1. No se puede ganar Airmoney en compras que involucren descuentos o recompensas por referidos.\n2. Airmoney no es transferible y no se puede convertir en otras formas de crédito.\n3. Los pagos combinados (Airmoney + otros métodos de pago) ganan cashback proporcional al monto pagado mediante métodos de pago tradicionales.\n4. Airmoney puede tener una validez limitada, según lo determine RoamDigi.\n4. **Impuestos y obligaciones legales:** Los clientes son responsables de cualquier impuesto o tarifa asociada con la participación en el programa Airmoney.\n5. RoamDigi se reserva el derecho de modificar, suspender o cancelar las recompensas de Airmoney por cualquier motivo, incluyendo el uso indebido o fraude sospechoso.\n\n**7.2 Créditos RoamDigi**\n1. **Créditos RoamDigi** son un sistema de pago para usuarios comerciales para comprar eSIMs, recargas y otros servicios a través de la plataforma de socios.\n2. **No reembolsables:** Los créditos RoamDigi no se pueden convertir nuevamente en reembolsos monetarios.\n3. **Créditos no utilizados:** Si un acuerdo termina, los créditos no utilizados siguen siendo propiedad de RoamDigi, a menos que se acuerde lo contrario.\n4. **Límites de crédito:** Los usuarios comerciales tienen límites de gasto para transacciones postpago. Superar estos límites sin realizar el pago resultará en el acceso restringido a futuras compras."
+      },
+      "esim": {
+        "title": "Política de Reciclaje y Activación de eSIM",
+        "content": "Para mantener un servicio eficiente, RoamDigi aplica un proceso de reciclaje de eSIM:\n\n**1. Período de Activación:** Los clientes deben activar las eSIM compradas dentro del período especificado durante la compra. No activarlas dentro de este período las hará expirar e inutilizables.\n\n**2. eSIM Expiradas:** Las eSIM expiradas no se pueden reactivar. Los clientes deben comprar una nueva eSIM si la necesitan.\n\nSe recomienda a los clientes seguir las instrucciones de activación proporcionadas para evitar interrupciones."
+      },
+      "pricing": {
+        "title": "Precios y Promociones",
+        "content": "RoamDigi ofrece sus paquetes y servicios de eSIM a precios listados, que pueden variar para clientes individuales (Usuarios Finales) y clientes empresariales (Usuarios Empresariales). Ocasionalmente, se ofrecen precios promocionales por tiempo limitado y están sujetos a reglas específicas. Los detalles como elegibilidad, duración y condiciones se compartirán durante el período de promoción. Posteriormente, se aplicarán los precios estándar, salvo que se indique lo contrario.\n\n**1. RoamDigi se reserva el derecho** de cambiar o cancelar promociones, términos o precios en cualquier momento sin previo aviso.\n**2. Los Usuarios Finales** deben consultar regularmente el sitio web de RoamDigi para obtener precios y promociones actualizados.\n**3. Los Usuarios Empresariales** pueden encontrar precios personalizados y detalles promocionales en las plataformas empresariales dedicadas de RoamDigi o contactando al soporte.\n**4. Factores** como las condiciones del mercado, los costos operativos o las tasas de cambio pueden influir en los cambios de precios, y RoamDigi intentará informar a los clientes puntualmente cuando ocurran ajustes importantes.\n\nRoamDigi también ejecuta programas como el Free Welcome eSIM, donde los usuarios elegibles por primera vez pueden recibir una eSIM gratuita. Este programa tiene las siguientes reglas:\n\n**1. Solo una eSIM gratuita** está permitida por usuario elegible. Se prohíbe usar múltiples cuentas en el mismo dispositivo para reclamar eSIM adicionales.\n**2. Las eSIM gratuitas** no pueden ser reembolsadas, intercambiadas por efectivo ni combinadas con descuentos por referidos.\n**3. Las actividades fraudulentas** (por ejemplo, cuentas falsas) resultarán en la suspensión de cuentas y la cancelación de las eSIM gratuitas.\n\nRoamDigi puede modificar o finalizar el programa Free Welcome eSIM en cualquier momento, sin la obligación de proporcionar previo aviso."
+      },
+      "location": {
+        "title": "Seguimiento de Ubicación",
+        "content": "RoamDigi recopila datos de ubicación (por ejemplo, GPS, dirección IP, puntos de acceso Wi-Fi) para proporcionar servicios basados en la ubicación y mejorar las experiencias de los usuarios. Al utilizar los servicios de RoamDigi, usted acepta esta recopilación de datos, que también puede compartirse con proveedores externos de acuerdo con las leyes de privacidad.\n\n**1. Los usuarios** pueden desactivar el seguimiento de ubicación en la configuración del dispositivo, pero podrían perder acceso a ciertas funciones.\n**2. RoamDigi** conserva los datos de ubicación solo por períodos necesarios y sigue estrictas medidas de seguridad para protegerlos.\n\nPara obtener más detalles o inquietudes, los usuarios pueden contactar al equipo de soporte de RoamDigi."
+      },
+      "compliance": {
+        "title": "Cumplimiento Regulatorio Local",
+        "content": "Al utilizar los servicios de RoamDigi, usted acepta cumplir con todas las leyes locales del país donde esté utilizando el servicio. RoamDigi puede tomar medidas en su nombre para cumplir con los requisitos reglamentarios.\n\n**Para usuarios en Colombia:**\n\nLos clientes colombianos deben registrar el número IMEI de su teléfono móvil ante la CRC (Comisión de Regulación de Comunicaciones) según la Resolución 5050 de 2016. Los clientes afirman que sus dispositivos son de propiedad legal y no han sido alterados.\n\n**1. RoamDigi** está autorizado para ayudar con el proceso de registro de IMEI en su nombre, incluyendo la presentación de las declaraciones requeridas.\n**2. Los clientes** también consienten que RoamDigi utilice sus datos personales para este propósito, de acuerdo con las leyes de protección de datos de Colombia (Decreto 1377 de 2013)."
+      },
+      "warranties": {
+        "title": "Representaciones y Garantías",
+        "content": "Al utilizar los servicios de RoamDigi, usted confirma lo siguiente:\n\n**1.** Tiene al menos 18 años (o la edad legal en su región) y es capaz de celebrar un contrato vinculante.\n**2.** Si actúa en nombre de una empresa, tiene la autoridad para obligar a la empresa a aceptar este acuerdo.\n**3.** Cumplirá con todas las leyes locales, estatales y federales mientras utiliza los servicios de RoamDigi.\n\nUsted acepta no participar en actividades prohibidas, tales como:\n\n**1.** Copiar o hacer un uso indebido de los servicios o contenidos de RoamDigi.\n**2.** Usar herramientas automatizadas (por ejemplo, bots, spiders) para acceder a la plataforma.\n**3.** Hackear, realizar phishing o propagar software malicioso.\n**4.** Violar derechos de propiedad intelectual.\n**5.** Acosar, amenazar o abusar de otros usuarios o del personal de RoamDigi.\n**6.** Interferir con el rendimiento de la plataforma o intentar eludir sus medidas de seguridad.\n\nCualquier motivación engañosa o ilegal detrás de su uso de los servicios de RoamDigi debe ser divulgada a la empresa por escrito.\n\nAl instalar la aplicación de RoamDigi, usted consiente su instalación, actualizaciones y recopilación de datos según la Política de Privacidad de RoamDigi. Puede desinstalar la aplicación en cualquier momento si decide descontinuar su uso."
+      },
+      "account": {
+        "title": "Terminación o Suspensión de su Cuenta",
+        "content": "Tanto usted como RoamDigi pueden finalizar este acuerdo en cualquier momento y por cualquier motivo, a menos que tenga un acuerdo escrito que indique lo contrario. Puede cancelar y eliminar su cuenta a través de la configuración de la cuenta (si está disponible) o contactando a nuestro equipo de soporte por escrito. Una vez cancelada, ya no tendrá acceso a su cuenta, perfil o cualquier información guardada en nuestra plataforma. Algunas partes de estos términos, como las exenciones de responsabilidad, los límites de responsabilidad y la indemnización, seguirán aplicándose incluso después de la finalización.\n\nNos reservamos el derecho de negar el servicio a cualquier persona por cualquier motivo en cualquier momento. Si sospechamos o descubrimos que ha violado estos términos, podemos suspender o finalizar su acceso notificándole por correo electrónico o por escrito. Esto tendrá efecto inmediato. Si su acceso es terminado, no se le permite crear una nueva cuenta bajo su nombre, un nombre falso o el nombre de otra persona.\n\nIncluso si se revoca su acceso, estos términos siguen siendo aplicables. RoamDigi tiene el derecho de tomar acciones legales, incluido el arbitraje, para abordar las violaciones. También podemos cambiar o dejar de ofrecer partes de nuestros servicios en cualquier momento y no seremos responsables por hacerlo. Además, podemos rechazar el registro a cualquier persona si creemos que es necesario para proteger la plataforma o abordar otras preocupaciones comerciales.\n\nCuando su cuenta sea terminada o cancelada, podemos eliminar todos sus datos como parte de nuestras operaciones regulares. Estos datos no se pueden restaurar después de que su cuenta haya sido eliminada."
+      },
+      "links": {
+        "title": "Enlaces a Otros Sitios Web",
+        "content": "Nuestra plataforma puede incluir enlaces a sitios web de terceros para su conveniencia o referencia. Estos enlaces no significan que respaldemos o estemos afiliados con esos sitios o su contenido. No controlamos estos sitios web y no somos responsables de su disponibilidad, precisión ni de ningún contenido, anuncios, productos o servicios que ofrezcan. Usted es responsable de revisar la utilidad y confiabilidad de estos sitios web.\n\nRoamDigi no participa en la creación o gestión de sitios web de terceros y no puede ser responsable de los problemas que surjan de su uso. Tampoco estamos obligados a monitorear o eliminar enlaces a sitios de terceros, pero nos reservamos el derecho de hacerlo si es necesario.\n\nCuando visite sitios web de terceros, se aplicarán sus términos y políticas de privacidad, no los nuestros. Los utiliza bajo su propio riesgo, y no somos responsables de ningún problema que surja de usar estos enlaces. Al usar nuestra plataforma, usted acepta no responsabilizar a RoamDigi por problemas causados por enlaces de terceros.\n\nSi vincula su cuenta de RoamDigi a cuentas en otras plataformas (como Facebook o Instagram), nos autoriza a acceder al contenido de esas cuentas (según lo permitan sus términos). Esto incluye compartir información entre sus cuentas y nuestra plataforma. Puede desconectar estas cuentas en cualquier momento, pero recuerde que su relación con esos servicios de terceros está regida por sus términos, no los nuestros. RoamDigi no revisa ni verifica el contenido de las cuentas vinculadas y no es responsable de ello."
+      },
+      "ip": {
+        "title": "Derechos de Propiedad Intelectual",
+        "content": "Todo lo que vea o lea en nuestra plataforma: texto, imágenes, logotipos, videos y más, es propiedad de RoamDigi o de nuestros licenciantes y está protegido por derechos de autor y otras leyes. No está permitido copiar, descargar, distribuir, modificar ni reutilizar ninguno de estos contenidos sin nuestro permiso por escrito.\n\nEl nombre y el logotipo de RoamDigi son nuestras marcas registradas. Otras marcas registradas o logotipos que vea en la plataforma pertenecen a sus respectivos propietarios. No puede usarlos sin la aprobación del propietario.\n\nSi nos proporciona comentarios o sugerencias sobre nuestra plataforma, acepta que podemos usarlos libremente sin ninguna obligación de compensarlo. Esto incluye compartirlos públicamente o usarlos para mejorar nuestros servicios. Al enviar comentarios, acepta que se proporcionan de manera voluntaria y que RoamDigi tiene los derechos para usarlos.\n\nSe le concede una licencia limitada para acceder y utilizar nuestra plataforma, la cual podemos revocar en cualquier momento. No puede vender, licenciar, modificar ni distribuir ninguno de nuestros contenidos, a menos que se permita explícitamente en estos términos."
+      },
+      "copyright": {
+        "title": "Quejas por Infracción de Derechos de Autor",
+        "content": "Respetamos los derechos de propiedad intelectual de los demás y esperamos que nuestros usuarios hagan lo mismo. Si cree que algún contenido en nuestra plataforma infringe su copyright, por favor proporcione la siguiente información a nuestro Agente de Derechos de Autor (incluyendo detalles de contacto):\n\n1. Una descripción de la obra con derechos de autor que cree que ha sido infringida.\n2. La ubicación (por ejemplo, URL) del material en nuestra plataforma que cree que está infringiendo.\n3. Su información de contacto, incluyendo dirección, número de teléfono y correo electrónico.\n4. Una declaración explicando por qué cree que el uso no está autorizado.\n5. Una declaración, bajo pena de perjurio, de que la información proporcionada es precisa y que usted es el propietario de los derechos de autor o está autorizado para actuar en su nombre.\n6. Su firma electrónica o física."
+      },
+      "confidential": {
+        "title": "Información Confidencial",
+        "content": "Usted entiende que la información confidencial de RoamDigi es valiosa y única. Acepta no compartir, usar ni alentar a otros a compartir o usar esta información, excepto cuando sea necesario para utilizar los servicios de RoamDigi. Si es necesario, puede compartir esta información con empleados o agentes autorizados, quienes también están obligados a mantenerla confidencial. Debe informar a RoamDigi de inmediato si se comparte o usa alguna información confidencial sin permiso. Al finalizar su acuerdo con RoamDigi, debe devolver todos los materiales que contengan dicha información.\n\n'Información Confidencial' se refiere a los secretos comerciales de RoamDigi y cualquier detalle no público sobre su negocio, tecnología, clientes y operaciones, compartido verbalmente, por escrito o observado."
+      },
+      "disclaimer": {
+        "title": "Exención de Garantías",
+        "content": "RoamDigi proporciona sus servicios 'tal como están', sin garantías. Esto incluye, pero no se limita a, garantías sobre que el servicio es adecuado para un propósito particular, libre de errores o completamente preciso. RoamDigi no es responsable de:\n\n1. Errores o inexactitudes en el contenido.\n2. Cualquier daño a personas o propiedades causado por su uso de los servicios.\n3. Acceso no autorizado a sus datos almacenados en los servidores de RoamDigi.\n4. Problemas fuera del control de RoamDigi.\n\nRoamDigi y sus socios no son responsables de daños como pérdidas de ganancias, pérdida de datos u otros costos indirectos derivados de su uso de los servicios. Algunas jurisdicciones no permiten ciertas limitaciones, por lo que estos términos pueden no aplicarse a usted. Si se encuentra que RoamDigi es responsable, los daños totales se limitan a $100 o a las tarifas que haya pagado en los últimos seis meses, lo que sea menor."
+      },
+      "indemnification": {
+        "title": "Indemnización",
+        "content": "Acepta proteger y compensar a RoamDigi y su equipo contra reclamaciones o daños relacionados con:\n\n1. Su uso o la imposibilidad de usar los servicios.\n2. Su violación de este acuerdo, leyes o derechos de terceros.\n3. El contenido que comparta que infrinja los derechos de otra persona o sea ilegal.\n\nTambién acepta cubrir cualquier problema causado por el uso de herramientas automatizadas que sobrecarguen los sistemas de RoamDigi. RoamDigi puede optar por manejar cualquier reclamación directamente, y no podrá resolver ninguna reclamación sin el permiso por escrito de RoamDigi."
+      },
+      "dispute": {
+        "title": "Resolución de Disputas – Arbitraje y Renuncia a Acciones Colectivas",
+        "content": "Esta sección describe cómo se manejarán las disputas entre usted y RoamDigi.\n\n**1. Proceso de Resolución**: Si surge una disputa, contacte primero a RoamDigi. Ambas partes intentarán resolver el problema directamente durante 30 días. Si no se resuelve, se considerará una 'disputa' formal.\n**2. Arbitraje**: Las disputas se resolverán generalmente a través de arbitraje vinculante en lugar de en los tribunales. Tanto usted como RoamDigi renuncian al derecho a un juicio con jurado. El arbitraje no se aplica si presenta reclamaciones en el tribunal de pequeñas reclamaciones según sus reglas.\n**3. Renuncia a la Acción Colectiva**: Las disputas deben resolverse de manera individual. Usted y RoamDigi no pueden participar en acciones colectivas ni en procedimientos grupales similares.\n**4. Reglas de Arbitraje**: El arbitraje seguirá las reglas de la Asociación Americana de Arbitraje (AAA) y se llevará a cabo en San Francisco, California. Las disputas inferiores a $10,000 pueden resolverse solo mediante documentos, a menos que sea necesario una audiencia.\n**5. Decisión del Árbitro**: El árbitro aplicará la ley de California y emitirá una decisión vinculante. Los premios deben seguir los límites de responsabilidad establecidos anteriormente."
+      },
+      "law": {
+        "title": "Ley Aplicable",
+        "content": "El acuerdo está regido por las leyes del estado de Delaware, EE. UU."
+      },
+      "agency": {
+        "title": "No Agencia ni Empleo",
+        "content": "Este acuerdo no crea una relación de sociedad, empleador-empleado, ni de agencia entre usted y RoamDigi."
+      },
+      "general": {
+        "title": "Disposiciones Generales",
+        "content": "Si alguna parte de estos términos se considera inválida o inaplicable, los términos restantes seguirán aplicándose. Las traducciones de estos términos son solo para referencia; la versión en inglés es la versión oficial utilizada en disputas.\n\nNo puede transferir este acuerdo sin la aprobación de RoamDigi. RoamDigi puede transferir este acuerdo a una empresa matriz, filial o nuevo propietario."
+      },
+      "changes": {
+        "title": "Cambios en los Términos y Servicios",
+        "content": "RoamDigi puede modificar estos términos o sus servicios en cualquier momento sin previo aviso. Los cambios significativos serán comunicados, pero es su responsabilidad revisar los términos actualizados. El uso continuo de los servicios significa que acepta los cambios."
+      },
+      "thirdparty": {
+        "title": "No Derechos para Terceros",
+        "content": "Estos términos no otorgan derechos a nadie más que a usted y a RoamDigi."
+      },
+      "notices": {
+        "title": "Notificaciones y Comunicaciones",
+        "content": "Usted acepta recibir notificaciones electrónicamente, ya sea por correo electrónico o publicadas en el sitio web de RoamDigi. Las notificaciones se consideran entregadas cuando se envían por correo certificado, correo electrónico o entrega urgente."
+      },
+      "contact": {
+        "title": "Información de Contacto",
+        "content": "Para consultas, los usuarios pueden contactar a RoamDigi a través del correo electrónico o la dirección postal proporcionada."
+      }
+    }
+  },
+  "privacypolicy": {
+    "title": "Política de privacidad",
+    "description": "En RoamDigi eSIM, estamos dedicados a proteger su privacidad y garantizar la seguridad de su información personal. Esta Política de Privacidad explica cómo recopilamos, usamos y compartimos sus datos cuando utiliza nuestro sitio web o aplicación móvil (en adelante, 'la Aplicación'). Al acceder o utilizar la Aplicación RoamDigi eSIM, usted acepta los términos establecidos en esta Política de Privacidad.",
+    "ValidityofTheseTerms": "1.Información que recopilamos.",
+    "DescriptionofServices": "2. Cómo usamos su información",
+    "StartDurationandTerminationofService": "3. Cómo compartimos su información",
+    "ChargesandPayment": "4.  Seguridad de los datos",
+    "DeliveryofServices": "5. Sus derechos",
+    "RefundCancellationandModificationPolicy": "6. Privacidad infantil",
+    "UseofDigitalCurrencies": "7. Transferencias internacionales de datos",
+    "eSIMRecyclingandActivationPolicy": "8. Enlaces de terceros",
+    "PricingandPromotions": "9. Cambios a esta política de privacidad",
+    "LocationTracking": "10.Contáctanos",
+    "terms": {
+      "validity": {
+        "title": "Información que recopilamos",
+        "content": "**Información personal**: Cuando crea una cuenta, realiza una compra o usa la Aplicación, recopilamos detalles personales como su nombre, dirección de correo electrónico, número de teléfono, información de facturación y detalles de pago.\n\n**Información del dispositivo**: Recopilamos información sobre el dispositivo que usa para acceder a la Aplicación, incluyendo su tipo, sistema operativo, configuraciones e identificadores únicos del dispositivo.\n\n**Información de uso**: También recopilamos detalles sobre sus interacciones con la Aplicación, como los tiempos de acceso, páginas visitadas, enlaces clicados y características utilizadas.\n\n**Información de ubicación**: Con su consentimiento, podemos recopilar y usar sus datos de ubicación para proporcionar servicios basados en la ubicación."
+      },
+      "description": {
+        "title": "Cómo usamos su información ",
+        "content": "**Proporcionar servicios**: Para procesar sus compras, gestionar su cuenta y ofrecer los servicios disponibles a través de la Aplicación.\n\n**Mejorar la Aplicación**: Para analizar las interacciones de los usuarios y mejorar la funcionalidad y experiencia del usuario de la Aplicación.\n\n**Comunicación**: Para enviar actualizaciones relacionadas con el servicio, notificaciones y materiales promocionales.\n\n**Seguridad y prevención de fraude**: Para proteger su cuenta y evitar accesos no autorizados o actividades fraudulentas.\n\n**Cumplimiento legal**: Para cumplir con los requisitos legales y responder a solicitudes legales de autoridades públicas."
+      },
+      "duration": {
+        "title": "Cómo compartimos su información",
+        "content": "**Proveedores de servicios**: Su información puede ser compartida con proveedores de servicios de terceros que nos asisten con el procesamiento de pagos, análisis de datos, soporte al cliente y otros servicios.\n\n**Transferencias comerciales**: En caso de una fusión, adquisición o venta de nuestros activos, su información puede ser transferida como parte de la transacción.\n\n**Requisitos legales**: Podemos divulgar su información para cumplir con obligaciones legales, hacer cumplir nuestros términos o proteger los derechos, propiedades o seguridad de RoamDigi eSIM, sus usuarios o terceros.\n\n**Datos agregados**: Podemos compartir datos anonimados o agregados, que no se pueden utilizar para identificarlo, con fines de investigación, marketing u otros propósitos."
+      },
+      "charges": {
+        "title": "Seguridad de los datos",
+        "content": "**Medidas de protección**: Empleamos medidas técnicas y organizativas para salvaguardar su información personal contra el acceso no autorizado, el uso indebido o la divulgación.\n\n**Retención de datos**: Sus datos se retienen solo durante el tiempo necesario para cumplir con los fines para los que fueron recopilados o según lo exija la ley."
+      },
+      "delivery": {
+        "title": "Sus derechos",
+        "content": "**Acceso y corrección**: Puede acceder y actualizar su información personal. Esto se puede hacer directamente en la aplicación o contactándonos a la dirección de correo electrónico proporcionada.\n\n**Eliminación**: Puede solicitar la eliminación de su información personal. Tenga en cuenta, sin embargo, que cierta información puede ser retenida según lo exija la ley o para fines comerciales legítimos.\n\n**Exclusión**: Puede optar por no recibir comunicaciones promocionales siguiendo las instrucciones de cancelación de suscripción incluidas en la comunicación o contactándonos a la dirección de correo electrónico proporcionada."
+      },
+      "refund": {
+        "title": "Privacidad infantil",
+        "content": "**Restricción de edad**: La aplicación no está destinada a personas menores de 18 años. No recopilamos conscientemente información personal de usuarios menores de 18 años. Si llegamos a saber que se ha recopilado dicha información de manera inadvertida, la eliminaremos de inmediato."
+      },
+      "currencies": {
+        "title": "Transferencias internacionales de datos",
+        "content": "**Operaciones globales**: Su información puede ser transferida y procesada en países fuera de su propio país, donde las leyes de protección de datos pueden ser diferentes. \n **Medidas de protección**: Nos aseguramos de que su información personal sea tratada de manera segura y de acuerdo con esta Política de Privacidad y las leyes de protección de datos aplicables."
+      },
+      "esim": {
+        "title": "Enlaces de terceros",
+        "content": "**Sitios externos**: La aplicación puede contener enlaces a sitios web o servicios de terceros. No somos responsables de las prácticas de privacidad de estas entidades externas.\n\n**Políticas de terceros**: Recomendamos revisar las políticas de privacidad de cualquier sitio web o servicio de terceros antes de proporcionarles su información personal."
+      },
+      "pricing": {
+        "title": "Cambios a esta política de privacidad",
+        "content": "**Actualizaciones**: Esta política de privacidad puede actualizarse periódicamente. Los cambios serán efectivos inmediatamente después de publicar la política revisada en la aplicación.\n\n**Notificación**: Las actualizaciones significativas de esta política se comunicarán a través de la aplicación u otros medios apropiados."
+      },
+      "location": {
+        "title": "Contáctanos",
+        "content": "Si tiene alguna pregunta, inquietud o solicitud con respecto a esta Política de Privacidad o nuestras prácticas de datos, comuníquese con nosotros en **RoamDigiexample@gmail.com**.\n\nAl usar RoamDigi eSIM, reconoce que ha leído, entendido y aceptado los términos establecidos en esta Política de Privacidad."
+      }
+    }
+  },
+  "profileSettings": {
+    "title": "Profiili Seaded",
+    "description": "Halda oma profiili"
+  }
+}
