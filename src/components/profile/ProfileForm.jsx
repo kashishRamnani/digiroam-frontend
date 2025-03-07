@@ -57,10 +57,10 @@ const ProfileForm = ({ profile, onSubmit }) => {
   };
 
   const onSubmitWrapper = (data) => {
+    console.log("Form data submitted:", data);
     onSubmit(data);
     setIsEditing(false);
   };
-
   const renderViewMode = () => (
     <div className="space-y-6">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -103,10 +103,10 @@ const ProfileForm = ({ profile, onSubmit }) => {
       </button>
     </div>
   );
-
   const renderEditMode = () => (
     <form onSubmit={handleSubmit(onSubmitWrapper)} className="space-y-6">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        {/* Name Field */}
         <div className="space-y-2">
           <label className="text-sm font-medium text-gray-700">Name *</label>
           <div className="relative">
@@ -115,14 +115,17 @@ const ProfileForm = ({ profile, onSubmit }) => {
             </div>
             <input
               {...register("name")}
-              className="pl-10 w-full rounded-md border border-gray-300 bg-white py-2 text-sm outline-none focus:border-primary focus:ring-1 focus:ring-primary"
+              className={`pl-10 w-full rounded-md border py-2 text-sm outline-none focus:ring-1 focus:ring-primary ${
+                errors.name ? 'border-red-500' : 'border-gray-300'
+              }`}
             />
           </div>
           {errors.name && (
             <p className="text-red-500 text-xs mt-1">{errors.name.message}</p>
           )}
         </div>
-
+  
+        {/* Email Field */}
         <div className="space-y-2">
           <label className="text-sm font-medium text-gray-700">Email *</label>
           <div className="relative">
@@ -131,44 +134,55 @@ const ProfileForm = ({ profile, onSubmit }) => {
             </div>
             <input
               {...register("email")}
-              className="pl-10 w-full rounded-md border border-gray-300 bg-white py-2 text-sm outline-none focus:border-primary focus:ring-1 focus:ring-primary"
+              className={`pl-10 w-full rounded-md border py-2 text-sm outline-none focus:ring-1 focus:ring-primary ${
+                errors.email ? 'border-red-500' : 'border-gray-300'
+              }`}
             />
           </div>
           {errors.email && (
             <p className="text-red-500 text-xs mt-1">{errors.email.message}</p>
           )}
         </div>
-
+  
+        {/* Phone Number Field */}
         <div className="space-y-2">
-          <label className="text-sm font-medium text-gray-700">
-            Phone Number
-          </label>
+          <label className="text-sm font-medium text-gray-700">Phone Number</label>
           <div className="relative">
             <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
               <FontAwesomeIcon icon={faPhone} className="text-gray-400" />
             </div>
             <input
               {...register("phoneNumber")}
-              className="pl-10 w-full rounded-md border border-gray-300 bg-white py-2 text-sm outline-none focus:border-primary focus:ring-1 focus:ring-primary"
+              className={`pl-10 w-full rounded-md border py-2 text-sm outline-none focus:ring-1 focus:ring-primary ${
+                errors.phoneNumber ? 'border-red-500' : 'border-gray-300'
+              }`}
             />
           </div>
+          {errors.phoneNumber && (
+            <p className="text-red-500 text-xs mt-1">{errors.phoneNumber.message}</p>
+          )}
         </div>
-
+  
+        {/* Address Field */}
         <div className="space-y-2">
           <label className="text-sm font-medium text-gray-700">Address</label>
           <div className="relative">
             <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-              <FontAwesomeIcon
-                icon={faMapMarkerAlt}
-                className="text-gray-400"
-              />
+              <FontAwesomeIcon icon={faMapMarkerAlt} className="text-gray-400" />
             </div>
             <input
               {...register("address")}
-              className="pl-10 w-full rounded-md border border-gray-300 bg-white py-2 text-sm outline-none focus:border-primary focus:ring-1 focus:ring-primary"
+              className={`pl-10 w-full rounded-md border py-2 text-sm outline-none focus:ring-1 focus:ring-primary ${
+                errors.address ? 'border-red-500' : 'border-gray-300'
+              }`}
             />
           </div>
+          {errors.address && (
+            <p className="text-red-500 text-xs mt-1">{errors.address.message}</p>
+          )}
         </div>
+  
+        {/* Country Selection */}
         <div className="space-y-2">
           <label className="text-sm font-medium text-gray-700">Country</label>
           <div className="relative">
@@ -177,7 +191,9 @@ const ProfileForm = ({ profile, onSubmit }) => {
             </div>
             <select
               {...register("countryID")}
-              className="pl-10 w-full rounded-md border border-gray-300 bg-white py-2 text-sm outline-none focus:border-primary focus:ring-1 focus:ring-primary"
+              className={`pl-10 w-full rounded-md border py-2 text-sm outline-none focus:ring-1 focus:ring-primary ${
+                errors.countryID ? 'border-red-500' : 'border-gray-300'
+              }`}
             >
               <option value="">Select a country</option>
               {countries.map((country) => (
@@ -187,9 +203,12 @@ const ProfileForm = ({ profile, onSubmit }) => {
               ))}
             </select>
           </div>
+          {errors.countryID && (
+            <p className="text-red-500 text-xs mt-1">{errors.countryID.message}</p>
+          )}
         </div>
       </div>
-
+  
       <div className="flex space-x-4">
         <button
           type="submit"
@@ -209,7 +228,7 @@ const ProfileForm = ({ profile, onSubmit }) => {
       </div>
     </form>
   );
-
+  
   return (
     <div className="bg-white rounded-lg shadow p-6">
       <h2 className="text-2xl font-bold text-gray-900 mb-6">

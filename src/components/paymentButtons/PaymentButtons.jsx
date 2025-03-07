@@ -55,11 +55,9 @@ const PaymentButtons = () => {
 
     try {
       const totalAmount = items.reduce(
-        (total, item) => total + item.productPrice * item.productQuantity,
+        (total, item) => total + (item.productPrice * item.productQuantity),
         0
       );
-
-   
 
       const response = await dispatch(
         createStripePaymentIntent({
@@ -97,18 +95,18 @@ const PaymentButtons = () => {
           })),
         })
       );
- 
-  
+
+
       if (result.error) {
         console.error("PayPal Order Generation Failed:", result.error);
         throw new Error(result.error.message || "Unknown error");
       }
-  
+
       if (!result.payload || !result.payload.orderId) {
         console.error("PayPal Order ID is missing:", result.payload);
         throw new Error("Failed to generate PayPal order ID");
       }
-  
+
       return result.payload.orderId;
     } catch (error) {
       console.error("Error in generatePayPalOrderIdHandler:", error);
@@ -116,7 +114,7 @@ const PaymentButtons = () => {
       throw error;
     }
   };
-  
+
   const onApprovePayPalHandler = async (data, actions) => {
     try {
       // Capture PayPal order
@@ -126,17 +124,17 @@ const PaymentButtons = () => {
           currency_code: "USD",
         })
       );
-  
+
       if (result.error) throw new Error(result.error);
-  
+
       dispatch(setPaymentStatus("success"));
-  
+
       let { transactionId, amount, currency_code, payer, packageInfoList } = result.payload;
-  
+
       // // Convert amount properly
       amount = String(amount);
-  
-    
+
+
       const esimOrderResult = await dispatch(
         orderEsimProfiles({
           transactionId,
@@ -145,12 +143,12 @@ const PaymentButtons = () => {
         })
       );
 
-  
+
       if (!esimOrderResult.payload?.success) {
         showErrorToast("eSim Order Failed: " + esimOrderResult.payload?.message);
         return;
       }
-  
+
       // 🔹 Step 4: Save Payment Data
       const saveResult = await dispatch(
         savePaymentData({
@@ -163,15 +161,15 @@ const PaymentButtons = () => {
         })
       );
 
-  
+
       if (saveResult.payload.success) {
         showSuccessToast("Payment & eSim Order Successful!");
-      
+
         setTimeout(() => {
           window.location.href = '/dashboard';
         }, 1000);
-        
-      
+
+
       } else {
         showErrorToast("Failed to save payment data.");
       }
@@ -180,8 +178,8 @@ const PaymentButtons = () => {
       showErrorToast("Error capturing PayPal payment");
     }
   };
-  
-  
+
+
 
   return (
     <>
@@ -224,7 +222,7 @@ const PaymentButtons = () => {
 
           {paymentMethod === "stripe" && stripeClientSecret && (
             <Elements stripe={stripePromise}>
-              <StripeCheckoutForm clientSecret={stripeClientSecret} />
+              <StripeCheckoutForm clientSecret={stripeClientSecret} items={items} />
             </Elements>
           )}
 
@@ -239,7 +237,7 @@ const PaymentButtons = () => {
   );
 };
 
-const StripeCheckoutForm = ({ clientSecret }) => {
+const StripeCheckoutForm = ({ clientSecret, items }) => {
   const stripe = useStripe();
   const elements = useElements();
   const [error, setError] = useState(null);
@@ -263,24 +261,83 @@ const StripeCheckoutForm = ({ clientSecret }) => {
       return;
     }
 
-    const result = await stripe.confirmCardPayment(clientSecret, {
-      payment_method: { card: cardElement },
-    });
+    try {
+      const result = await stripe.confirmCardPayment(clientSecret, {
+        payment_method: { card: cardElement },
+      });
 
-    if (result.error) {
-      setError(result.error.message);
-      showErrorToast(result.error.message);
-      setProcessing(false);
-    } else {
-      setProcessing(false);
+      if (result.error) {
+        setError(result.error.message);
+        showErrorToast(result.error.message);
+        setProcessing(false);
+        return;
+      }
+
       if (result.paymentIntent.status === "succeeded") {
+       
+        let { id: transactionId, amount, currency } = result.paymentIntent;
+
+        // Define missing data
+        const currency_code = currency;
+        const packageInfoList = items.map((item) => ({
+          packageCode: item.productId,
+          price: Number(item.productPrice * 10000).toFixed(0),
+          count: item.productQuantity,
+        }));
+
+        amount = items.reduce(
+          (total, item) => total + (Number(item.productPrice * 10000).toFixed(0) * item.productQuantity),
+          0
+        );
+
+        amount = String(amount);
+
+        // Step 1: Order eSim Profiles
+        const esimOrderResult = await dispatch(
+          orderEsimProfiles({ transactionId, amount, packageInfoList })
+        );
+
+        if (!esimOrderResult.payload?.success) {
+          showErrorToast("eSim Order Failed: " + esimOrderResult.payload?.message);
+          return;
+        }
+
+        console.log
+        // Step 2: Save Payment Data
+        const saveResult = await dispatch(
+          savePaymentData({
+            transactionId,
+            amount,
+            currency: currency_code,
+            packageInfoList,
+            orderNo: esimOrderResult.payload.data.orderNo,
+          })
+        );
+
+        if (saveResult.payload.success) {
+          showSuccessToast("Payment & eSim Order Successful!");
+
+          setTimeout(() => {
+            window.location.href = "/dashboard";
+          }, 1000);
+        } else {
+          showErrorToast("Failed to save payment data.");
+        }
+
+        // Step 3: Update UI
         dispatch(setPaymentStatus("success"));
         await dispatch(clearFromCart());
         dispatch(resetPaymentState());
         showSuccessToast("Payment Successful!");
       }
+    } catch (error) {
+      console.error("Error handling Stripe payment:", error);
+      showErrorToast("Error processing payment.");
+    } finally {
+      setProcessing(false);
     }
   };
+
 
   return (
     <form onSubmit={handleSubmit} className="mt-4">

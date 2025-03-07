@@ -69,6 +69,10 @@ export const savePaymentData = createAsyncThunk(
 export const orderEsimProfiles = createAsyncThunk(
   "payment/orderEsimProfiles",
   async ({ transactionId, amount, packageInfoList }, { rejectWithValue }) => {
+    if (!transactionId || !amount || !packageInfoList?.length) {
+      return rejectWithValue("Missing required parameters for eSim order");
+    }
+
     try {
       const response = await axiosInstance.post("/eSim/orderProfiles", {
         transactionId,
@@ -77,10 +81,17 @@ export const orderEsimProfiles = createAsyncThunk(
       });
       return response.data;
     } catch (error) {
-      return rejectWithValue(error.response?.data || "Failed to order eSim profiles");
+      console.error("eSim Order Error:", error);
+
+      return rejectWithValue(
+        error.response?.data?.message ||
+        error.response?.data ||
+        "Failed to order eSim profiles"
+      );
     }
   }
 );
+
 
 const paymentSlice = createSlice({
   name: "payment",
