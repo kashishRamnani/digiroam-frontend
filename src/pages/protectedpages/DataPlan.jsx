@@ -2,38 +2,55 @@ import { useState, useEffect } from "react";
 import axiosInstance from "../../utils/axiosConfig";
 
 const DataPlan = ({ selectedEsim }) => {
-  const [dataPlan, setDataPlan] = useState(null);
   const [totalDays, setTotalDays] = useState(0);
   const [daysLeft, setDaysLeft] = useState(0);
   const [usagePercentage, setUsagePercentage] = useState(100);
+  const [totalData, setTotalData] = useState(0);
+  const [dataLeft, setDataLeft] = useState(0);
+  const [dataUsagePercentage, setDataUsagePercentage] = useState(100);
 
   useEffect(() => {
-    if (!selectedEsim?.orderNo) return;
+    if (!selectedEsim?.iccid) return;
 
     const fetchDataPlan = async () => {
       try {
         const response = await axiosInstance.post("/esim/allocatedProfiles", {
-          orderNo: selectedEsim.orderNo,
+          iccid: selectedEsim.iccid,
           pager: { pageNum: 1, pageSize: 10 },
         });
-        console.log("API Response:", response.data);
+
         if (response.data?.success) {
           const esimData = response.data.data?.esimList?.[0] || null;
-          console.log('startTime:', esimData?.startTime, 'endTime:', esimData?.endTime);
-          setDataPlan(esimData);
 
-          
-          if (esimData?.startTime && esimData?.endTime) {
-            const startDate = new Date(esimData.startTime);
-            const endDate = new Date(esimData.endTime);
+          // Time calculation
+          if (esimData?.expiredTime) {
             const currentDate = new Date();
+            const expiredDate = new Date(esimData.expiredTime);
+            const activateDate = esimData?.activateTime ? new Date(esimData.activateTime) : null;
 
-            const total = Math.max(1, Math.ceil((endDate - startDate) / (1000 * 60 * 60 * 24))); 
-            const left = Math.max(0, Math.ceil((endDate - currentDate) / (1000 * 60 * 60 * 24))); 
+            let totalDays = esimData.totalDuration ?? 0;
+            let remainingDays = 0;
 
-            setTotalDays(total);
-            setDaysLeft(left);
-            setUsagePercentage((left / total) * 100);
+            if (activateDate) {
+              remainingDays = Math.max(0, totalDays - Math.ceil((currentDate - activateDate) / (1000 * 60 * 60 * 24)));
+            } else if (currentDate < expiredDate) {
+              remainingDays = Math.max(0, totalDays);
+            }
+
+            setTotalDays(totalDays);
+            setDaysLeft(remainingDays);
+            setUsagePercentage(remainingDays > 0 ? (remainingDays / (totalDays || 1)) * 100 : 0);
+          }
+
+          // Data calculation
+          if (esimData?.totalVolume) {
+            const totalVolume = esimData.totalVolume; // Total data in bytes
+            const usedVolume = esimData.orderUsage || 0; // Used data in bytes
+            const remainingVolume = totalVolume - usedVolume;
+
+            setTotalData(totalVolume / (1024 * 1024 * 1024)); // Convert to GB
+            setDataLeft(remainingVolume / (1024 * 1024 * 1024)); // Convert to GB
+            setDataUsagePercentage((remainingVolume / totalVolume) * 100);
           }
         }
       } catch (error) {
@@ -69,30 +86,20 @@ const DataPlan = ({ selectedEsim }) => {
         {/* Data Usage */}
         <div>
           <p className="font-medium">
-            Total data: <span className="font-normal">{dataPlan?.totalData || "N/A"}</span>
+            Total data: <span className="font-normal">{(totalData || 0).toFixed(2)} GB</span>
           </p>
           <div className="flex items-center gap-2">
             <p className="font-medium">
-              Data left: <span className="font-normal">{dataPlan?.dataLeft || "N/A"}</span>
+              Data left: <span className="font-normal">{(dataLeft || 0).toFixed(2)} GB</span>
             </p>
             <div className="w-32 h-3 bg-blue-200 rounded-full">
               <div
                 className="h-3 bg-blue-500 rounded-full"
-                style={{
-                  width: `${
-                    dataPlan?.totalData && dataPlan?.dataLeft
-                      ? (dataPlan.dataLeft / dataPlan.totalData) * 100
-                      : 100
-                  }%`,
-                }}
+                style={{ width: `${dataUsagePercentage}%` }}
               ></div>
             </div>
             <span className="text-xs text-blue-500">
-              {(
-                (dataPlan?.dataLeft / dataPlan?.totalData) *
-                100 || 100
-              ).toFixed(1)}
-              %
+              {dataUsagePercentage.toFixed(1)}%
             </span>
           </div>
         </div>
@@ -100,10 +107,10 @@ const DataPlan = ({ selectedEsim }) => {
 
       <hr className="my-4" />
 
-      {/* Other Details */}
+      {/* eSIM Details */}
       <div className="grid grid-cols-2 gap-4">
-        <p><strong>OrderNo:</strong>{selectedEsim.orderNo}</p>
-        <p><strong>ICCID:</strong> {selectedEsim.iccid}</p>
+        <p><strong>OrderNo:</strong> {selectedEsim?.orderNo || "N/A"}</p>
+        <p><strong>ICCID:</strong> {selectedEsim?.iccid || "N/A"}</p>
         <p>
           <span className="font-medium">Total amount:</span> {selectedEsim?.amount || "N/A"}
         </p>
@@ -111,23 +118,22 @@ const DataPlan = ({ selectedEsim }) => {
           <span className="font-medium">Billing starts:</span> First connection
         </p>
         <p>
-          <span className="font-medium">Region type:</span> {selectedEsim.regiontype}
+          <span className="font-medium">Region type:</span> {selectedEsim?.regiontype || "N/A"}
         </p>
         <p>
-          <span className="font-medium">Region:</span> {selectedEsim.region}
+          <span className="font-medium">Region:</span> {selectedEsim?.region || "N/A"}
         </p>
         <p>
           <span className="font-medium">Data type:</span> Fixed Data
         </p>
         <p>
-          <span className="font-medium">Top up type:</span> Data Reloadable for
-          same area within validity
+          <span className="font-medium">Top up type:</span> Data Reloadable for same area within validity
         </p>
         <p>
-          <span className="font-medium">Breakout IP:</span> HK
+          <span className="font-medium">Breakout IP:</span> UK/NO
         </p>
         <p>
-          <span className="font-medium">APN:</span> cmhk
+          <span className="font-medium">APN:</span> {selectedEsim?.apn || "N/A"}
         </p>
       </div>
 
