@@ -1,143 +1,78 @@
-import { useState, useEffect } from "react";
-import axiosInstance from "../../utils/axiosConfig";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchDataPlan } from "../../features/dataplan/dataPlanSlice";
 
 const DataPlan = ({ selectedEsim }) => {
-  const [totalDays, setTotalDays] = useState(0);
-  const [daysLeft, setDaysLeft] = useState(0);
-  const [usagePercentage, setUsagePercentage] = useState(100);
-  const [totalData, setTotalData] = useState(0);
-  const [dataLeft, setDataLeft] = useState(0);
-  const [dataUsagePercentage, setDataUsagePercentage] = useState(100);
+  const dispatch = useDispatch();
+  const {
+    totalDays,
+    daysLeft,
+    usagePercentage,
+    totalData,
+    dataLeft,
+    dataUsagePercentage,
+    esimDetails,
+    loading,
+    error,
+  } = useSelector((state) => state.dataPlan);
 
   useEffect(() => {
-    if (!selectedEsim?.iccid) return;
-
-    const fetchDataPlan = async () => {
-      try {
-        const response = await axiosInstance.post("/esim/allocatedProfiles", {
-          iccid: selectedEsim.iccid,
-          pager: { pageNum: 1, pageSize: 10 },
-        });
-
-        if (response.data?.success) {
-          const esimData = response.data.data?.esimList?.[0] || null;
-
-          // Time calculation
-          if (esimData?.expiredTime) {
-            const currentDate = new Date();
-            const expiredDate = new Date(esimData.expiredTime);
-            const activateDate = esimData?.activateTime ? new Date(esimData.activateTime) : null;
-
-            let totalDays = esimData.totalDuration ?? 0;
-            let remainingDays = 0;
-
-            if (activateDate) {
-              remainingDays = Math.max(0, totalDays - Math.ceil((currentDate - activateDate) / (1000 * 60 * 60 * 24)));
-            } else if (currentDate < expiredDate) {
-              remainingDays = Math.max(0, totalDays);
-            }
-
-            setTotalDays(totalDays);
-            setDaysLeft(remainingDays);
-            setUsagePercentage(remainingDays > 0 ? (remainingDays / (totalDays || 1)) * 100 : 0);
-          }
-
-          // Data calculation
-          if (esimData?.totalVolume) {
-            const totalVolume = esimData.totalVolume; // Total data in bytes
-            const usedVolume = esimData.orderUsage || 0; // Used data in bytes
-            const remainingVolume = totalVolume - usedVolume;
-
-            setTotalData(totalVolume / (1024 * 1024 * 1024)); // Convert to GB
-            setDataLeft(remainingVolume / (1024 * 1024 * 1024)); // Convert to GB
-            setDataUsagePercentage((remainingVolume / totalVolume) * 100);
-          }
-        }
-      } catch (error) {
-        console.error("Error fetching data plan:", error);
-      }
-    };
-
-    fetchDataPlan();
-  }, [selectedEsim]);
+    if (selectedEsim?.iccid) {
+      dispatch(fetchDataPlan(selectedEsim.iccid));
+    }
+  }, [selectedEsim, dispatch]);
 
   return (
     <div className="mt-4 text-gray-700">
-      <div className="grid grid-cols-2 gap-4">
-        {/* Time Usage */}
-        <div>
-          <p className="font-medium">
-            Total time: <span className="font-normal">{totalDays} Days</span>
-          </p>
-          <div className="flex items-center gap-2">
-            <p className="font-medium">
-              Time left: <span className="font-normal">{daysLeft} Days</span>
-            </p>
-            <div className="w-32 h-3 bg-blue-200 rounded-full">
-              <div
-                className="h-3 bg-blue-500 rounded-full"
-                style={{ width: `${usagePercentage}%` }}
-              ></div>
+     
+      {error && <p className="text-red-500">Error: {error}</p>}
+      {!loading && !error && (
+        <>
+          <div className="grid grid-cols-2 gap-4">
+            {/* Time Usage */}
+            <div>
+              <p className="font-medium">Total time: <span className="font-normal">{totalDays} Days</span></p>
+              <div className="flex items-center gap-2">
+                <p className="font-medium">Time left: <span className="font-normal">{daysLeft} Days</span></p>
+                <div className="w-32 h-3 bg-blue-200 rounded-full">
+                  <div className="h-3 bg-blue-500 rounded-full" style={{ width: `${usagePercentage}%` }}></div>
+                </div>
+                <span className="text-xs text-blue-500">{usagePercentage.toFixed(1)}%</span>
+              </div>
             </div>
-            <span className="text-xs text-blue-500">{usagePercentage.toFixed(1)}%</span>
-          </div>
-        </div>
 
-        {/* Data Usage */}
-        <div>
-          <p className="font-medium">
-            Total data: <span className="font-normal">{(totalData || 0).toFixed(2)} GB</span>
-          </p>
-          <div className="flex items-center gap-2">
-            <p className="font-medium">
-              Data left: <span className="font-normal">{(dataLeft || 0).toFixed(2)} GB</span>
-            </p>
-            <div className="w-32 h-3 bg-blue-200 rounded-full">
-              <div
-                className="h-3 bg-blue-500 rounded-full"
-                style={{ width: `${dataUsagePercentage}%` }}
-              ></div>
+            {/* Data Usage */}
+            <div>
+              <p className="font-medium">Total data: <span className="font-normal">{(totalData || 0).toFixed(2)} GB</span></p>
+              <div className="flex items-center gap-2">
+                <p className="font-medium">Data left: <span className="font-normal">{(dataLeft || 0).toFixed(2)} GB</span></p>
+                <div className="w-32 h-3 bg-blue-200 rounded-full">
+                  <div className="h-3 bg-blue-500 rounded-full" style={{ width: `${dataUsagePercentage}%` }}></div>
+                </div>
+                <span className="text-xs text-blue-500">{dataUsagePercentage.toFixed(1)}%</span>
+              </div>
             </div>
-            <span className="text-xs text-blue-500">
-              {dataUsagePercentage.toFixed(1)}%
-            </span>
           </div>
-        </div>
-      </div>
 
-      <hr className="my-4" />
+          <hr className="my-4" />
 
-      {/* eSIM Details */}
-      <div className="grid grid-cols-2 gap-4">
-        <p><strong>OrderNo:</strong> {selectedEsim?.orderNo || "N/A"}</p>
-        <p><strong>ICCID:</strong> {selectedEsim?.iccid || "N/A"}</p>
-        <p>
-          <span className="font-medium">Total amount:</span> {selectedEsim?.amount || "N/A"}
-        </p>
-        <p>
-          <span className="font-medium">Billing starts:</span> First connection
-        </p>
-        <p>
-          <span className="font-medium">Region type:</span> {selectedEsim?.regiontype || "N/A"}
-        </p>
-        <p>
-          <span className="font-medium">Region:</span> {selectedEsim?.region || "N/A"}
-        </p>
-        <p>
-          <span className="font-medium">Data type:</span> Fixed Data
-        </p>
-        <p>
-          <span className="font-medium">Top up type:</span> Data Reloadable for same area within validity
-        </p>
-        <p>
-          <span className="font-medium">Breakout IP:</span> UK/NO
-        </p>
-        <p>
-          <span className="font-medium">APN:</span> {selectedEsim?.apn || "N/A"}
-        </p>
-      </div>
+          {/* eSIM Details */}
+          <div className="grid grid-cols-2 gap-4">
+            <p><strong>OrderNo:</strong> {esimDetails?.orderNo || "N/A"}</p>
+            <p><strong>ICCID:</strong> {esimDetails?.iccid || "N/A"}</p>
+            <p><strong>Total amount:</strong> {esimDetails?.amount || "N/A"}</p>
+            <p><strong>Billing starts:</strong> First connection</p>
+            <p><strong>Region type:</strong> {esimDetails?.regiontype || "N/A"}</p>
+            <p><strong>Region:</strong> {esimDetails?.region || "N/A"}</p>
+            <p><strong>Data type:</strong> Fixed Data</p>
+            <p><strong>Top up type:</strong> Data Reloadable for same area within validity</p>
+            <p><strong>Breakout IP:</strong> UK/NO</p>
+            <p><strong>APN:</strong> {esimDetails?.apn || "N/A"}</p>
+          </div>
 
-      <h3 className="mt-6 font-semibold text-lg text-gray-800">Basic Plan</h3>
+          <h3 className="mt-6 font-semibold text-lg text-gray-800">Basic Plan</h3>
+        </>
+      )}
     </div>
   );
 };

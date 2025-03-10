@@ -6,7 +6,7 @@ export { default as cartSlice } from "./carts/cartSlice";
 export { default as userSlice } from "./user/userSlice";
 export { default as countriesSlice } from "./countries/countriesSlice";
 export { default as paymentSlice } from "./payment/paymentSlice";
-
+export {default as dataPlanSlice} from "./dataplan/dataPlanSlice"
 // Export actions
 export { setTheme, setLanguage } from "./preferences/preferenceSlice";
 export { setLoading, setError, clearError } from "./ui/uiSlice";

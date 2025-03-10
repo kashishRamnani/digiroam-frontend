@@ -198,7 +198,7 @@ const Dashboard = () => {
                       <p><strong>Order No:</strong> {selectedEsim.orderNo}</p>
                       <p><strong>eSIM Status:</strong> {selectedEsim.esimStatus}</p>
                       <p><strong>Package Name:</strong> {selectedEsim.packageList?.[0]?.packageName || "N/A"}</p>
-                      <p><strong>Data Volume Left:</strong> {selectedEsim.totalVolume ? `${(selectedEsim.totalVolume / 1024 / 1024).toFixed(2)} MB` : "N/A"}</p>
+                      <p><strong>Data Volume Left:</strong> {selectedEsim.totalVolume ? `${(selectedEsim.totalVolume / 1024 / 1024).toFixed(2)}MB` : "N/A"}</p>
                     </div>
 
                     {/* QR Code & Short URL Section */}
