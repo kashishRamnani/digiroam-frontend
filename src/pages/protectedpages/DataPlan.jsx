@@ -5,7 +5,7 @@ import { convertMillisecondsToDHMS } from "../../utils/helpers/convertMillisecon
 
 const DataPlan = ({ selectedEsim }) => {
   const [totalDays, setTotalDays] = useState(0);
-  const [timeLeft, setTimeLeft] = useState(0);
+  const [timeLeft, setTimeLeft] = useState(null);
   const [daysLeft, setDaysLeft] = useState(0);
   const [hoursLeft, setHoursLeft] = useState(0);
   const [minutesLeft, setMinutesLeft] = useState(0);
@@ -42,13 +42,11 @@ const DataPlan = ({ selectedEsim }) => {
               const planExpiryDate = new Date(activateDate.getTime() + totalPlanTimeMs);
               remainingTime = Math.max(0, planExpiryDate - currentDate);
               setUsagePercentage((remainingTime / totalPlanTimeMs) * 100);
-            } else if (currentDate < expiredDate) {
-              // If not activated, use the expiredTime value directly
-              remainingTime = Math.max(0, expiredDate - currentDate);
-              setUsagePercentage(100);
             } else {
-              remainingTime = 0;
-              setUsagePercentage(0);
+              // If not activated
+              remainingTime = esimData.totalDuration;
+              setTimeLeft(esimData.totalDuration);
+              setUsagePercentage(100);
             }
 
             const { days, hours, minutes } = convertMillisecondsToDHMS(remainingTime);
@@ -88,7 +86,8 @@ const DataPlan = ({ selectedEsim }) => {
             <p className="font-medium">
               Time left:{" "}
               <span className="font-normal">
-                {daysLeft} Days {hoursLeft} Hours {minutesLeft} Minutes
+                {timeLeft ? `${timeLeft} Days` :
+                  `${daysLeft} Days ${hoursLeft} Hours ${minutesLeft} Minutes`}
               </span>
             </p>
             <div className="w-32 h-3 bg-blue-200 rounded-full">
