@@ -74,6 +74,7 @@ export const countryData = {
 };
 
 export const locationCodes = [
+  { id: "PK", name: "Pakistan" },
   { id: "SA", name: "Saudi" },
   { id: "US", name: "US" },
   { id: "AE", name: "UAE" },

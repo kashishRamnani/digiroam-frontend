@@ -10,11 +10,27 @@ import {
   faTimes,
   faCreditCard,
   faUser,
+  faPlusCircle,
 } from "@fortawesome/free-solid-svg-icons";
 import axiosInstance from "../../utils/axiosConfig";
 
-const Dashboard = () => {
+// Helper to map eSIM status to an icon, color, and label
+const getEsimStatusIcon = (status) => {
+  switch (status) {
+    case "canceled":
+      return { icon: faTimes, color: "red", label: "Canceled" };
+    case "got_resource":
+      return { icon: faShoppingCart, color: "blue", label: "Resource Received" };
+    case "new":
+      return { icon: faPlusCircle, color: "green", label: "New" };
+    case "in_use":
+      return { icon: faSimCard, color: "green", label: "In Use" };
+    default:
+      return { icon: faChartBar, color: "gray", label: status || "Unknown" };
+  }
+};
 
+const Dashboard = () => {
   const [paymentInfo, setPaymentInfo] = useState(null);
   const [selectedEsim, setSelectedEsim] = useState(null);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -58,23 +74,25 @@ const Dashboard = () => {
     setIsSidebarOpen(false);
   };
 
-
   const simOwner = paymentInfo?.myPayments?.[0]?.payer?.name?.surname || "N/A";
   const totalOrder = paymentInfo?.myPayments?.length || 0;
-  const totalPackages = paymentInfo?.myPayments?.reduce((sum, payment) => {
-    return sum + payment.packageInfoList?.reduce((pkgSum, pkg) => pkgSum + pkg.count, 0);
-  }, 0) || 0;
-  const totalPayment = paymentInfo?.myPayments?.reduce((sum, payment) => sum + (payment.amount || 0), 0) || 0;
-
+  const totalPackages =
+    paymentInfo?.myPayments?.reduce((sum, payment) => {
+      return (
+        sum +
+        payment.packageInfoList?.reduce((pkgSum, pkg) => pkgSum + pkg.count, 0)
+      );
+    }, 0) || 0;
+  const totalPayment =
+    paymentInfo?.myPayments?.reduce((sum, payment) => sum + (payment.amount || 0), 0) ||
+    0;
 
   const cards = [
     { icon: faUser, title: "Sim Owner", value: simOwner },
     { icon: faSimCard, title: "Total Esim", value: totalOrder },
     { icon: faCreditCard, title: "Total Packages", value: totalPackages },
     { icon: faCreditCard, title: "Total Payment", value: `$${(totalPayment / 1000).toFixed(2)}` },
-    ,
   ];
-
 
   return (
     <DashboardLayout title="Dashboard" description="Your personal dashboard">
@@ -83,8 +101,6 @@ const Dashboard = () => {
           Welcome to Roam Digi!
         </h3>
         <div className="mt-8">
-
-
           <div className="grid gap-6 mb-8 md:grid-cols-2 xl:grid-cols-4">
             {cards.map((card, index) => (
               <div
@@ -112,8 +128,6 @@ const Dashboard = () => {
             ))}
           </div>
 
-
-
           {/* Table */}
           <table className="w-full whitespace-no-wrap">
             <thead>
@@ -135,7 +149,9 @@ const Dashboard = () => {
                     onClick={() => openSidebar(payment.orderNo)}
                   >
                     <td className="px-4 py-3">{payment.orderNo}</td>
-                    <td className="px-4 py-3">${(payment.amount / 1000).toFixed(2)}</td>
+                    <td className="px-4 py-3">
+                      ${(payment.amount / 1000).toFixed(2)}
+                    </td>
                     <td className="px-4 py-3">{payment.currency}</td>
                     <td className="px-4 py-3">{payment.transactionId}</td>
                     <td className="px-4 py-3">{payment.status}</td>
@@ -157,7 +173,6 @@ const Dashboard = () => {
       </div>
 
       {/* Sidebar Popup */}
-
       {isSidebarOpen && selectedEsim && (
         <div className="fixed inset-0 flex items-center justify-end z-50">
           {/* Overlay - Click to close */}
@@ -170,11 +185,34 @@ const Dashboard = () => {
           <div className="relative w-[52rem] bg-white shadow-2xl h-full p-6 rounded-l-2xl transform transition-transform duration-300 ease-in-out animate-slide-in">
             {/* Header */}
             <div className="flex justify-between items-center border-b pb-4">
-              <h2 className="text-2xl font-bold text-gray-800">eSIM Details</h2>
-              <button onClick={closeSidebar} className="text-gray-600 hover:text-red-500 transition duration-300">
+              {selectedEsim && (
+                <div className="flex items-center">
+                  {(() => {
+                    const statusDetails = getEsimStatusIcon(selectedEsim.esimStatus);
+                    return (
+                      <>
+                        <FontAwesomeIcon
+                          icon={statusDetails.icon}
+                          style={{ color: statusDetails.color }}
+                          className="mr-2"
+                        />
+                        <span>{statusDetails.label}</span>
+                      </>
+                    );
+                  })()}
+                </div>
+              )}
+              <h2 className="text-2xl font-bold text-gray-800">
+                eSIM Details
+              </h2>
+              <button
+                onClick={closeSidebar}
+                className="text-gray-600 hover:text-red-500 transition duration-300"
+              >
                 <FontAwesomeIcon icon={faTimes} />
               </button>
             </div>
+
             <div>
               {/* Tabs Navigation */}
               <div className="flex space-x-4 mt-4 border-b">
@@ -182,7 +220,9 @@ const Dashboard = () => {
                   <button
                     key={tab}
                     onClick={() => setActiveTab(tab)}
-                    className={`pb-2 text-sm font-medium transition duration-300 ${activeTab === tab ? "text-blue-500 border-b-2 border-blue-500" : "text-gray-500 hover:text-gray-700"
+                    className={`pb-2 text-sm font-medium transition duration-300 ${activeTab === tab
+                        ? "text-blue-500 border-b-2 border-blue-500"
+                        : "text-gray-500 hover:text-gray-700"
                       }`}
                   >
                     {tab.charAt(0).toUpperCase() + tab.slice(1)}
@@ -195,17 +235,32 @@ const Dashboard = () => {
                 {activeTab === "profile" && (
                   <>
                     <div className="grid grid-cols-2 gap-4">
-                      <p><strong>Order No:</strong> {selectedEsim.orderNo}</p>
-                      <p><strong>eSIM Status:</strong> {selectedEsim.esimStatus}</p>
-                      <p><strong>Package Name:</strong> {selectedEsim.packageList?.[0]?.packageName || "N/A"}</p>
-                      <p><strong>Data Volume Left:</strong> {selectedEsim.totalVolume ? `${(selectedEsim.totalVolume / 1024 / 1024).toFixed(2)} MB` : "N/A"}</p>
+                      <p>
+                        <strong>Order No:</strong> {selectedEsim.orderNo}
+                      </p>
+                      <p>
+                        <strong>eSIM Status:</strong>{" "}
+                        {selectedEsim.esimStatus}
+                      </p>
+                      <p>
+                        <strong>Package Name:</strong>{" "}
+                        {selectedEsim.packageList?.[0]?.packageName || "N/A"}
+                      </p>
+                      <p>
+                        <strong>Data Volume Left:</strong>{" "}
+                        {selectedEsim.totalVolume
+                          ? `${(selectedEsim.totalVolume / 1024 / 1024).toFixed(2)} MB`
+                          : "N/A"}
+                      </p>
                     </div>
 
                     {/* QR Code & Short URL Section */}
                     <div className="mt-4">
                       <p className="mb-4">
                         <strong>Expired Time:</strong>{" "}
-                        {selectedEsim.expiredTime ? new Date(selectedEsim.expiredTime).toLocaleString() : "N/A"}
+                        {selectedEsim.expiredTime
+                          ? new Date(selectedEsim.expiredTime).toLocaleString()
+                          : "N/A"}
                       </p>
                       <p className="mb-2">
                         <strong>QR Code URL:</strong>{" "}
@@ -248,15 +303,10 @@ const Dashboard = () => {
                 {activeTab === "Data Plan" && <DataPlan selectedEsim={selectedEsim} />}
               </div>
             </div>
-
-
-
           </div>
         </div>
       )}
-
     </DashboardLayout>
-
   );
 };
 
