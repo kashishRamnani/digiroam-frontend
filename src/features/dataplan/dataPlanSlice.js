@@ -1,19 +1,72 @@
-// src/redux/slices/dataPlanSlice.js
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axiosInstance from "../../utils/axiosConfig";
+import { formatBytesDetailed } from "../../utils/helpers/formatBytesDetailed";
+import { convertMillisecondsToDHMS } from "../../utils/helpers/convertMillisecondsToDHMS";
 
+// Async Thunk to fetch eSIM data
 export const fetchDataPlan = createAsyncThunk(
-  "dataPlan/fetchDataPlan",
+  "dataPlan/fetchData",
   async (iccid, { rejectWithValue }) => {
     try {
       const response = await axiosInstance.post("/esim/allocatedProfiles", {
         iccid,
         pager: { pageNum: 1, pageSize: 10 },
       });
+
       if (response.data?.success) {
-        return response.data.data?.esimList?.[0] || null;
+        const esimData = response.data.data?.esimList?.[0] || null;
+        if (!esimData) return rejectWithValue("No eSIM data found");
+
+        // Time calculations
+        let remainingTime = 0;
+        let totalDays = esimData.totalDuration ?? 0;
+        let usagePercentage = 100;
+
+        if (esimData?.expiredTime) {
+          const currentDate = new Date();
+          const activateDate = esimData?.activateTime ? new Date(esimData.activateTime) : null;
+          const totalPlanTimeMs = totalDays * 24 * 60 * 60 * 1000;
+
+          if (activateDate) {
+            const planExpiryDate = new Date(activateDate.getTime() + totalPlanTimeMs);
+            remainingTime = Math.max(0, planExpiryDate - currentDate);
+            usagePercentage = (remainingTime / totalPlanTimeMs) * 100;
+          } else {
+            remainingTime = esimData.totalDuration;
+          }
+        }
+
+        const { days, hours, minutes } = convertMillisecondsToDHMS(remainingTime);
+
+        // Data calculations
+        let totalData = "0B",
+          dataLeft = "0B",
+          dataUsagePercentage = 100;
+
+        if (esimData?.totalVolume) {
+          const totalVolume = esimData.totalVolume;
+          const usedVolume = esimData.orderUsage || 0;
+          const remainingVolume = totalVolume - usedVolume;
+
+          totalData = formatBytesDetailed(totalVolume);
+          dataLeft = formatBytesDetailed(remainingVolume, !usedVolume > 0);
+          dataUsagePercentage = (remainingVolume / totalVolume) * 100;
+        }
+
+        return {
+          totalDays,
+          daysLeft: days,
+          hoursLeft: hours,
+          minutesLeft: minutes,
+          usagePercentage,
+          totalData,
+          dataLeft,
+          dataUsagePercentage,
+          esimDetails: esimData,
+        };
+      } else {
+        return rejectWithValue("Failed to fetch data");
       }
-      return rejectWithValue("Failed to fetch data");
     } catch (error) {
       return rejectWithValue(error.message);
     }
@@ -25,9 +78,11 @@ const dataPlanSlice = createSlice({
   initialState: {
     totalDays: 0,
     daysLeft: 0,
+    hoursLeft: 0,
+    minutesLeft: 0,
     usagePercentage: 100,
-    totalData: 0,
-    dataLeft: 0,
+    totalData: "0B",
+    dataLeft: "0B",
     dataUsagePercentage: 100,
     esimDetails: {},
     loading: false,
@@ -41,36 +96,7 @@ const dataPlanSlice = createSlice({
         state.error = null;
       })
       .addCase(fetchDataPlan.fulfilled, (state, action) => {
-        state.loading = false;
-        const esimData = action.payload;
-        if (!esimData) return;
-
-        // Time Calculation
-        const currentDate = new Date();
-        const expiredDate = new Date(esimData.expiredTime);
-        const activateDate = esimData?.activateTime ? new Date(esimData.activateTime) : null;
-        let totalDays = esimData.totalDuration ?? 0;
-        let remainingDays = 0;
-
-        if (activateDate) {
-          remainingDays = Math.max(0, totalDays - Math.ceil((currentDate - activateDate) / (1000 * 60 * 60 * 24)));
-        } else if (currentDate < expiredDate) {
-          remainingDays = Math.max(0, totalDays);
-        }
-
-        state.totalDays = totalDays;
-        state.daysLeft = remainingDays;
-        state.usagePercentage = remainingDays > 0 ? (remainingDays / (totalDays || 1)) * 100 : 0;
-
-        // Data Calculation
-        const totalVolume = esimData.totalVolume || 0;
-        const usedVolume = esimData.orderUsage || 0;
-        const remainingVolume = totalVolume - usedVolume;
-
-        state.totalData = totalVolume / (1024 * 1024 * 1024); 
-        state.dataLeft = remainingVolume / (1024 * 1024 * 1024);
-        state.dataUsagePercentage = (remainingVolume / (totalVolume || 1)) * 100;
-        state.esimDetails = esimData;
+        return { ...state, ...action.payload, loading: false };
       })
       .addCase(fetchDataPlan.rejected, (state, action) => {
         state.loading = false;

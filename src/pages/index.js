@@ -11,6 +11,7 @@ import ProfileSettings from "./protectedpages/ProfileSettings";
 import OTPVerification from "./auth/OTPVerification";
 import ESimPlans from "./protectedpages/ESimPlans";
 import ESimManagement from "./protectedpages/ESimManagement";
+
 export {
   Home,
   FAQs,

@@ -1,78 +1,121 @@
 import { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+
 import { fetchDataPlan } from "../../features/dataplan/dataPlanSlice";
+
 
 const DataPlan = ({ selectedEsim }) => {
   const dispatch = useDispatch();
   const {
     totalDays,
+    timeLeft,
     daysLeft,
+    hoursLeft,
+    minutesLeft,
     usagePercentage,
     totalData,
     dataLeft,
     dataUsagePercentage,
-    esimDetails,
-    loading,
     error,
   } = useSelector((state) => state.dataPlan);
 
   useEffect(() => {
     if (selectedEsim?.iccid) {
-      dispatch(fetchDataPlan(selectedEsim.iccid));
+      dispatch(fetchDataPlan("8910300000023372752"));
     }
   }, [selectedEsim, dispatch]);
 
+  if (error)
+    return <p className="text-red-500 text-center font-medium">Error: {error}</p>;
+
   return (
-    <div className="mt-4 text-gray-700">
+    <div className="p-4 bg-white shadow-md rounded-md">
+      
+ 
+  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+    {/* Time Usage */}
+    <div className="p-3 border rounded-md shadow-sm text-sm">
+      <p className="text-base font-semibold text-gray-700">Time Usage</p>
+      <p className="text-gray-600">
+        <span className="font-medium">Total:</span> {totalDays} Days
+      </p>
+      <p className="text-gray-600">
+        <span className="font-medium">Left:</span>{" "}
+        {timeLeft ? `${timeLeft} Days` : `${daysLeft}D ${hoursLeft}H ${minutesLeft}M`}
+      </p>
+
+      {/* Progress Bar */}
+      <div className="relative w-full bg-gray-200 h-2 rounded-full mt-1">
+        <div
+          className="absolute top-0 left-0 h-2 bg-blue-500 rounded-full transition-all duration-500"
+          style={{ width: `${usagePercentage}%` }}
+        ></div>
+      </div>
+      <p className="text-xs text-gray-500 mt-1 text-right">
+        {usagePercentage.toFixed(1)}%
+      </p>
+    </div>
+
+    {/* Data Usage */}
+    <div className="p-3 border rounded-md shadow-sm text-sm">
+      <p className="text-base font-semibold text-gray-700">Data Usage</p>
+      <p className="text-gray-600">
+        <span className="font-medium">Total:</span> {totalData}
+      </p>
+      <p className="text-gray-600">
+        <span className="font-medium">Left:</span> {dataLeft}
+      </p>
+
+      {/* Progress Bar */}
+      <div className="relative w-full bg-gray-200 h-2 rounded-full mt-1">
+        <div
+          className="absolute top-0 left-0 h-2 bg-green-500 rounded-full transition-all duration-500"
+          style={{ width: `${dataUsagePercentage.toFixed(1)}%` }}
+        ></div>
+      </div>
+      <p className="text-xs text-gray-500 mt-1 text-right">
+        {dataUsagePercentage.toFixed(1)}%
+      </p>
+    </div>
+  </div>
+      {/* eSIM Details */}
      
-      {error && <p className="text-red-500">Error: {error}</p>}
-      {!loading && !error && (
-        <>
-          <div className="grid grid-cols-2 gap-4">
-            {/* Time Usage */}
-            <div>
-              <p className="font-medium">Total time: <span className="font-normal">{totalDays} Days</span></p>
-              <div className="flex items-center gap-2">
-                <p className="font-medium">Time left: <span className="font-normal">{daysLeft} Days</span></p>
-                <div className="w-32 h-3 bg-blue-200 rounded-full">
-                  <div className="h-3 bg-blue-500 rounded-full" style={{ width: `${usagePercentage}%` }}></div>
-                </div>
-                <span className="text-xs text-blue-500">{usagePercentage.toFixed(1)}%</span>
-              </div>
-            </div>
+      <div className="grid grid-cols-2 gap-4">
+        <p>
+          <strong>OrderNo:</strong> {selectedEsim?.orderNo || "N/A"}
+        </p>
+        <p>
+          <strong>ICCID:</strong> {selectedEsim?.iccid || "N/A"}
+        </p>
+        <p>
+          <span className="font-medium">Total amount:</span>{" "}
+          {selectedEsim?.amount || "N/A"}
+        </p>
+        <p>
+          <span className="font-medium">Billing starts:</span> First connection
+        </p>
+        <p>
+          <span className="font-medium">Region type:</span>{" "}
+          {selectedEsim?.regiontype || "N/A"}
+        </p>
+        <p>
+          <span className="font-medium">Region:</span> {selectedEsim?.region || "N/A"}
+        </p>
+        <p>
+          <span className="font-medium">Data type:</span> Fixed Data
+        </p>
+        <p>
+          <span className="font-medium">Top up type:</span> Data Reloadable for same area within validity
+        </p>
+        <p>
+          <span className="font-medium">Breakout IP:</span> UK/NO
+        </p>
+        <p>
+          <span className="font-medium">APN:</span> {selectedEsim?.apn || "N/A"}
+        </p>
+      </div>
 
-            {/* Data Usage */}
-            <div>
-              <p className="font-medium">Total data: <span className="font-normal">{(totalData || 0).toFixed(2)} GB</span></p>
-              <div className="flex items-center gap-2">
-                <p className="font-medium">Data left: <span className="font-normal">{(dataLeft || 0).toFixed(2)} GB</span></p>
-                <div className="w-32 h-3 bg-blue-200 rounded-full">
-                  <div className="h-3 bg-blue-500 rounded-full" style={{ width: `${dataUsagePercentage}%` }}></div>
-                </div>
-                <span className="text-xs text-blue-500">{dataUsagePercentage.toFixed(1)}%</span>
-              </div>
-            </div>
-          </div>
-
-          <hr className="my-4" />
-
-          {/* eSIM Details */}
-          <div className="grid grid-cols-2 gap-4">
-            <p><strong>OrderNo:</strong> {esimDetails?.orderNo || "N/A"}</p>
-            <p><strong>ICCID:</strong> {esimDetails?.iccid || "N/A"}</p>
-            <p><strong>Total amount:</strong> {esimDetails?.amount || "N/A"}</p>
-            <p><strong>Billing starts:</strong> First connection</p>
-            <p><strong>Region type:</strong> {esimDetails?.regiontype || "N/A"}</p>
-            <p><strong>Region:</strong> {esimDetails?.region || "N/A"}</p>
-            <p><strong>Data type:</strong> Fixed Data</p>
-            <p><strong>Top up type:</strong> Data Reloadable for same area within validity</p>
-            <p><strong>Breakout IP:</strong> UK/NO</p>
-            <p><strong>APN:</strong> {esimDetails?.apn || "N/A"}</p>
-          </div>
-
-          <h3 className="mt-6 font-semibold text-lg text-gray-800">Basic Plan</h3>
-        </>
-      )}
+      <h3 className="mt-6 font-semibold text-lg text-gray-800">Basic Plan</h3>
     </div>
   );
 };

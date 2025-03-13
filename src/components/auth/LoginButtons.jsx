@@ -1,6 +1,7 @@
 import React from "react";
 import { API_URL } from "../../utils/env";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+
 import {
   faGoogle,
   faFacebook,
@@ -19,6 +20,8 @@ const LoginButtons = () => {
   const handleAppleLogin = () => {
     window.location.href = `${API_URL}auth/apple`;
   };
+  
+
 
   return (
     <>

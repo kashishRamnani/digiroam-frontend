@@ -8,7 +8,9 @@ import {
   uiSlice,
   userSlice,
   paymentSlice,
-  dataPlanSlice
+  dataPlanSlice,
+  emailSlice,
+  
 } from "../features";
 
 export const store = configureStore({
@@ -21,7 +23,8 @@ export const store = configureStore({
     userProfile: userSlice,
     countries: countriesSlice,
     payment: paymentSlice,
-    dataPlan:dataPlanSlice
+    dataPlan:dataPlanSlice,
+    email:emailSlice
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

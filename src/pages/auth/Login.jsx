@@ -26,14 +26,20 @@ const Login = () => {
   } = useForm({
     resolver: zodResolver(mode === "login" ? loginSchema : forgotSchema),
   });
-
+  
   const onSubmit = async (data) => {
-    if (mode === "login") {
-      dispatch(loginUser({ email: data.email, password: data.password }));
-    } else if (mode === "forgotPassword") {
-      await dispatch(requestPasswordReset(data.email));
+    try {
+        const { userRole, accountType } = await dispatch(loginUser(data)).unwrap();
+
+        if (userRole == 2 && accountType == 2) {
+            navigate("/admin-dashboard");
+        } else {
+            navigate("/dashboard");
+        }
+    } catch (error) {
+        console.log(error.message);
     }
-  };
+};
 
   return (
     <MainLayout title={t("login.title")} description={t("login.title")}>

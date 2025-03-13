@@ -1,4 +1,6 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { EmailTemplateForm, EmailTemplateList, SendEmailForm } from "../components";
+import AdminDashboard from "../pages/protectedpages/AdminDashboard/EmailModule";
 import { ProtectedRoute } from "../components";
 import {
   Home,
@@ -39,6 +41,34 @@ const Routes = () => {
       path: "/privacy-policy",
       element: <PrivacyPolicy />,
     },
+    // {path:"/admin/email-template",
+    // element:<EmailTemplateForm/>},
+    // {
+    //   path:"/email-list",
+    //   element:<EmailTemplateList/>
+    // },
+    // {
+    //   path:"/admin-dashboard",
+    //   element:
+    //     <AdminDashboard/>,
+        
+      
+    // },
+      // ✅ Nest Admin Routes Correctly
+      {
+        path: "/admin-dashboard",
+        element: (
+          <ProtectedRoute>
+            <AdminDashboard />
+          </ProtectedRoute>
+        ),
+        children: [
+          { path: "email-template", element: <EmailTemplateForm /> },
+          { path: "email-list", element: <EmailTemplateList /> },
+          {path:"send-email",element:<SendEmailForm/>}
+        ],
+      },
+   
     {
       path: "/verify-otp",
       element: isAuthenticated ? (
