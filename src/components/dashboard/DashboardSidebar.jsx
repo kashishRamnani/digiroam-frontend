@@ -12,23 +12,66 @@ import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 import { signoutUser } from "../../features/auth/authSlice";
 import { resetCart } from "../../features";
+import { useAuth } from "../../hooks/useAuth";
 
 const DashboardSidebar = ({ isOpen, toggleSidebar }) => {
   const dispatch = useDispatch();
-  const menuItems = [
-    { icon: faHome, text: "Dashboard", href: "/dashboard" },
-    {
-      icon: faSimCard,
-      text: "eSim Plans",
-      href: "/eSim-plans",
-    },
-    {
-      icon: faListCheck,
-      text: "Manage User's eSim",
-      href: "/manage-user-profiles",
-    },
-    { icon: faCog, text: "Profile Settings", href: "/profile" },
-  ];
+  const { user } = useAuth();
+  let menuItems;
+
+  if (user.accountType == 2) {
+    menuItems = [
+      {
+        icon: faHome,
+        text: "Dashboard",
+        href: "/dashboard"
+      },
+      {
+        icon: faSimCard,
+        text: "Email Templates",
+        href: "/email-templates",
+      },
+      {
+        icon: faSimCard,
+        text: "Email List",
+        href: "/email-list",
+      },
+      {
+        icon: faSimCard,
+        text: "Send Email",
+        href: "/send-email",
+      },
+      {
+        icon: faCog,
+        text: "Profile Settings",
+        href: "/profile"
+      },
+    ];
+  } else {
+    menuItems = [
+      {
+        icon: faHome,
+        text: "Dashboard",
+        href: "/dashboard"
+      },
+      {
+        icon: faSimCard,
+        text: "eSim Plans",
+        href: "/eSim-plans",
+      },
+      {
+        icon: faListCheck,
+        text: "Manage User's eSim",
+        href: "/manage-user-profiles",
+      },
+      {
+        icon: faCog,
+        text: "Profile Settings",
+        href: "/profile"
+      },
+    ];
+  }
+
   const logout = () => {
     dispatch(resetCart());
     dispatch(signoutUser());
@@ -36,9 +79,8 @@ const DashboardSidebar = ({ isOpen, toggleSidebar }) => {
 
   return (
     <div
-      className={`text-white w-64 space-y-6 py-7 px-2 absolute inset-y-0 left-0 transform ${
-        isOpen ? "translate-x-0" : "-translate-x-full"
-      } md:relative md:translate-x-0 transition duration-200 ease-in-out z-20`}
+      className={`text-white w-64 space-y-6 py-7 px-2 absolute inset-y-0 left-0 transform ${isOpen ? "translate-x-0" : "-translate-x-full"
+        } md:relative md:translate-x-0 transition duration-200 ease-in-out z-20`}
       style={{ backgroundColor: "var(--secondary-color)" }}
     >
       <div className="flex items-center justify-between px-4">

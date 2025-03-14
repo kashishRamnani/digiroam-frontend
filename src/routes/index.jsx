@@ -1,25 +1,37 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import { EmailTemplateForm, EmailTemplateList, SendEmailForm } from "../components";
-import AdminDashboard from "../pages/protectedpages/AdminDashboard/EmailModule";
 import { ProtectedRoute } from "../components";
 import {
+  // public pages
   Home,
+
+  // auth pages
   Login,
   Signup,
+
+  // static pages
   PrivacyPolicy,
   TermsAndConditions,
   NotFound,
   Dashboard,
   AboutUs,
   FAQs,
+
+  // regular user pages
   ProfileSettings,
   OTPVerification,
   ESimPlans,
   ESimManagement,
+
+  // admin pages
+  EmailTemplateForm,
+  EmailTemplateList,
+  SendEmailForm
 } from "../pages";
+
 import { SocialCallback } from "../callBacks";
 import { useAuth } from "../hooks";
 import { Navigate } from "react-router-dom";
+import RoleGuard from "../components/routes/RoleGuard";
 
 const Routes = () => {
   const { isAuthenticated, otpRequired, forgotPasswordStep } = useAuth();
@@ -41,34 +53,6 @@ const Routes = () => {
       path: "/privacy-policy",
       element: <PrivacyPolicy />,
     },
-    // {path:"/admin/email-template",
-    // element:<EmailTemplateForm/>},
-    // {
-    //   path:"/email-list",
-    //   element:<EmailTemplateList/>
-    // },
-    // {
-    //   path:"/admin-dashboard",
-    //   element:
-    //     <AdminDashboard/>,
-        
-      
-    // },
-      // ✅ Nest Admin Routes Correctly
-      {
-        path: "/admin-dashboard",
-        element: (
-          <ProtectedRoute>
-            <AdminDashboard />
-          </ProtectedRoute>
-        ),
-        children: [
-          { path: "email-template", element: <EmailTemplateForm /> },
-          { path: "email-list", element: <EmailTemplateList /> },
-          {path:"send-email",element:<SendEmailForm/>}
-        ],
-      },
-   
     {
       path: "/verify-otp",
       element: isAuthenticated ? (
@@ -107,43 +91,66 @@ const Routes = () => {
       path: "/auth/callback",
       element: <SocialCallback />,
     },
+
+    // protect routes for both user type
     {
-      path: "/dashboard",
-      element: (
-        <ProtectedRoute>
-          <Dashboard />
-        </ProtectedRoute>
-      ),
+      path: '/',
+      element: <ProtectedRoute />,
+      children: [
+        {
+          path: "/dashboard",
+          element: <Dashboard />,
+        },
+        {
+          path: "/profile",
+          element: <ProfileSettings />,
+        },
+      ]
     },
+
+    // regualar user routes
     {
-      path: "/profile",
-      element: (
-        <ProtectedRoute>
-          <ProfileSettings />
-        </ProtectedRoute>
-      ),
+      path: '/',
+      element: <RoleGuard userRole={1} />,
+      children: [
+        {
+          path: "/eSim-plans",
+          element: <ESimPlans />,
+        },
+        {
+          path: "/manage-user-profiles",
+          element: <ESimManagement />,
+        },
+      ]
     },
+
+    // admin routes
     {
-      path: "/eSim-plans",
-      element: (
-        <ProtectedRoute>
-          <ESimPlans />
-        </ProtectedRoute>
-      ),
+      path: "/",
+      element: <RoleGuard userRole={2} />,
+      children: [
+        {
+          path: "/email-templates",
+          element: <EmailTemplateForm />,
+        },
+        {
+          path: "/email-list",
+          element: <EmailTemplateList />,
+        },
+        {
+          path: "/send-email",
+          element: <SendEmailForm />,
+        },
+      ]
     },
-    {
-      path: "/manage-user-profiles",
-      element: (
-        <ProtectedRoute>
-          <ESimManagement />
-        </ProtectedRoute>
-      ),
-    },
+
+    // unknown routes
     {
       path: "*",
       element: <NotFound />,
     },
   ]);
+
 
   return <RouterProvider router={router} />;
 };

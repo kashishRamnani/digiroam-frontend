@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import axiosInstance from '../../utils/axiosConfig'; // Using custom axios instance
+import axiosInstance from '../../utils/axiosConfig';
 import { showErrorToast, showSuccessToast } from '../../utils/toast';
 
 // Fetch email templates
@@ -8,8 +8,12 @@ export const fetchTemplates = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     try {
       const response = await axiosInstance.get('/email-templates');
+<<<<<<< HEAD
       console.log('Fetched templates:', response.data); // Log the response data
       return response.data.emailTemplates || []; // Return the emailTemplates array explicitly
+=======
+      return Array.isArray(response.data) ? response.data : [];
+>>>>>>> 12e06a2ceba6cc4cd1aef5299e4bba4c94f465b6
     } catch (error) {
       return rejectWithValue(error.response?.data?.message || 'Failed to fetch templates');
     }
@@ -27,6 +31,7 @@ export const createTemplate = createAsyncThunk(
       formData.append("subject", subject);
       formData.append("body", body);
 
+<<<<<<< HEAD
       if (attachments?.length > 0) {
         const uploadedFileUrls = [];
 
@@ -52,6 +57,13 @@ export const createTemplate = createAsyncThunk(
         // Append the uploaded file URLs to the form data
         uploadedFileUrls.forEach((fileUrl) => {
           formData.append("attachments[]", fileUrl);
+=======
+      if (attachments?.length === 1) {
+        formData.append("attachments", attachments[0]);
+      } else if (attachments?.length > 1) {
+        attachments.forEach((file) => {
+          formData.append("attachments[]", file);
+>>>>>>> 12e06a2ceba6cc4cd1aef5299e4bba4c94f465b6
         });
       }
 

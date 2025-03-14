@@ -1,6 +1,6 @@
 import Home from "./static/Home";
 import FAQs from "./static/FAQs";
-import Dashboard from "./protectedpages/Dashboard";
+import Dashboard from "./protectedpages/Dashboard.jsx";
 import AboutUs from "./static/AboutUs";
 import Login from "./auth/Login";
 import Signup from "./auth/Signup";
@@ -11,6 +11,11 @@ import ProfileSettings from "./protectedpages/ProfileSettings";
 import OTPVerification from "./auth/OTPVerification";
 import ESimPlans from "./protectedpages/ESimPlans";
 import ESimManagement from "./protectedpages/ESimManagement";
+
+// admin pages
+import EmailTemplateForm from "./protectedpages/EmailTemplateForm.jsx";
+import EmailTemplateList from "./protectedpages/EmailList.jsx";
+import SendEmailForm from "./protectedpages/SendingEmail.jsx";
 
 export {
   Home,
@@ -26,4 +31,7 @@ export {
   OTPVerification,
   ESimPlans,
   ESimManagement,
+  EmailTemplateForm,
+  EmailTemplateList,
+  SendEmailForm
 };

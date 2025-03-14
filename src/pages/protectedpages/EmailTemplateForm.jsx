@@ -6,8 +6,12 @@ import { emailTemplateSchema } from "../../schemas/allSchema";
 import { createTemplate, updateTemplate } from "../../features/email/emailSlice";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPaperPlane, faTimes } from "@fortawesome/free-solid-svg-icons";
+<<<<<<< HEAD:src/components/email/EmailTemplateForm.jsx
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
+=======
+import DashboardLayout from "../../layouts/DashboardLayout";
+>>>>>>> 12e06a2ceba6cc4cd1aef5299e4bba4c94f465b6:src/pages/protectedpages/EmailTemplateForm.jsx
 
 const EmailTemplateForm = ({ initialData, onClose }) => {
   const dispatch = useDispatch();
@@ -41,8 +45,8 @@ const EmailTemplateForm = ({ initialData, onClose }) => {
 
   const handleAttachmentChange = (event) => {
     const files = Array.from(event.target.files);
-    const allowedTypes = ["application/pdf"];
-    const maxFileSize = 5 * 1024 * 1024; // 5MB
+    const allowedTypes = ["application/pdf", "application/docx", "application/pptx", "application/txt"];
+    const maxFileSize = 25 * 1024 * 1024;
 
     const validFiles = files.filter(
       (file) => allowedTypes.includes(file.type) && file.size <= maxFileSize
@@ -50,22 +54,19 @@ const EmailTemplateForm = ({ initialData, onClose }) => {
 
     if (validFiles.length !== files.length) {
       alert("Some files were invalid or too large. Please upload files under 5MB.");
-      event.target.value = ""; // Reset the file input if files are invalid
+      event.target.value = "";
     }
 
     setValue("attachments", validFiles);
   };
 
   const onSubmit = async (data) => {
-    console.log("Form Data Submitted:", data); // Log the form data
     try {
       let response;
       if (initialData) {
-        console.log("Updating Template with ID:", initialData._id);
         response = await dispatch(updateTemplate({ id: initialData._id, updatedData: data }));
       } else {
-        console.log("Creating New Template");
-        response = await dispatch(createTemplate(data)); // Log the API call
+        response = await dispatch(createTemplate(data));
       }
 
       if (response.type === 'email/createTemplate/fulfilled' || response.type === 'email/updateTemplate/fulfilled') {
@@ -78,19 +79,23 @@ const EmailTemplateForm = ({ initialData, onClose }) => {
         onClose();
       }
     } catch (error) {
-      console.error("Error submitting template:", error);
       alert('Failed to save template. Please try again.');
     }
   };
 
   useEffect(() => {
     if (!initialData) {
-      reset(); // Clear form on close
+      reset();
     }
   }, [initialData, reset]);
 
   return (
+<<<<<<< HEAD:src/components/email/EmailTemplateForm.jsx
     <div className="flex items-center justify-center min-h-screen bg-gray-100 p-4">
+=======
+    <DashboardLayout title="Create Email Template" description="Form to create a new event specific email template">
+      <div className="flex items-center justify-center min-h-screen">
+>>>>>>> 12e06a2ceba6cc4cd1aef5299e4bba4c94f465b6:src/pages/protectedpages/EmailTemplateForm.jsx
       <form
         onSubmit={handleSubmit(onSubmit)}
         className="relative bg-white p-6 rounded-lg w-full max-w-lg space-y-5 shadow-lg"
@@ -166,6 +171,7 @@ const EmailTemplateForm = ({ initialData, onClose }) => {
         </button>
       </form>
     </div>
+    </DashboardLayout>
   );
 };
 

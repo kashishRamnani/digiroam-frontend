@@ -87,16 +87,14 @@ export const loginUser = createAsyncThunk(
         password,
       });
       const { user, accessToken } = response.data.data;
-      const { accountType, userRole } = user; 
 
-      
       localStorage.setItem("token", accessToken);
       localStorage.setItem("user", JSON.stringify(user));
 
       showSuccessToast("Login successful!");
 
-      
-      return { user, token: accessToken, accountType, userRole };
+
+      return { user, token: accessToken };
     } catch (error) {
       if (error?.response?.status === 403) {
         const { email, verified } = error.response?.data?.data || {};
