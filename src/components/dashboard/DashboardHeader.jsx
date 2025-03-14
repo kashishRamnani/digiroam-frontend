@@ -64,14 +64,14 @@ const DashboardHeader = ({ toggleSidebar }) => {
                 <div className="border-t border-gray-100"></div>
                 <Link
                   to="/profile"
-                  className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 flex items-center"
+                  className="px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 flex items-center"
                 >
                   <FontAwesomeIcon icon={faUser} className="mr-2" />
                   View Profile
                 </Link>
                 <button
                   onClick={logout}
-                  className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 flex items-center"
+                  className=" px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 flex items-center"
                 >
                   <FontAwesomeIcon icon={faSignOutAlt} className="mr-2" />
                   Logout

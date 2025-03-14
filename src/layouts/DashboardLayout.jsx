@@ -6,7 +6,9 @@ import { useTranslation } from "react-i18next";
 import { Helmet } from "react-helmet-async";
 import { useSelector } from "react-redux";
 
-const DashboardLayout = ({ children, title, description }) => {
+
+
+const DashboardLayout = ({ children, title, description, hideSidebar }) => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const location = useLocation();
   const { t } = useTranslation();
@@ -19,15 +21,22 @@ const DashboardLayout = ({ children, title, description }) => {
         <title>{t(title)}</title>
         <meta name="description" content={t(description)} />
       </Helmet>
-      <DashboardSidebar
-        isOpen={sidebarOpen}
-        toggleSidebar={() => setSidebarOpen(!sidebarOpen)}
-      />
+
+      {/* Conditionally render Sidebar */}
+      {!hideSidebar && (
+        <DashboardSidebar
+          isOpen={sidebarOpen}
+          toggleSidebar={() => setSidebarOpen(!sidebarOpen)}
+        />
+      )}
+
       <div className="flex flex-col flex-1 overflow-hidden">
-        <DashboardHeader toggleSidebar={() => setSidebarOpen(!sidebarOpen)} />
+        {/* Conditionally render Header */}
+        {!hideSidebar && <DashboardHeader toggleSidebar={() => setSidebarOpen(!sidebarOpen)} />}
+
         <main className="flex-1 overflow-x-hidden overflow-y-auto bg-gray-100">
           {children}
-          <Outlet/>
+          <Outlet />
         </main>
       </div>
     </div>

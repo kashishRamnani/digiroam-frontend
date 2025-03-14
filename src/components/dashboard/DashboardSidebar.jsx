@@ -7,6 +7,9 @@ import {
   faTimes,
   faListCheck,
   faSimCard,
+  faClipboardList ,
+  faEnvelopeOpenText,
+  faEnvelope
 } from "@fortawesome/free-solid-svg-icons";
 import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
@@ -27,17 +30,17 @@ const DashboardSidebar = ({ isOpen, toggleSidebar }) => {
         href: "/dashboard"
       },
       {
-        icon: faSimCard,
+        icon: faEnvelopeOpenText,
         text: "Email Templates",
         href: "/email-templates",
       },
       {
-        icon: faSimCard,
+        icon:  faClipboardList ,
         text: "Email List",
         href: "/email-list",
       },
       {
-        icon: faSimCard,
+        icon:faEnvelope,
         text: "Send Email",
         href: "/send-email",
       },

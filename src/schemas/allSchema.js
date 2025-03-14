@@ -42,8 +42,4 @@ export const emailTemplateSchema = z.object({
  
 });
 
-export const sendEmailSchema = z.object({
-  recipient: z.string().email("Invalid email format"), 
-  eventName: z.string().min(1, "Event name is required"),
-  params: z.record(z.string().min(1, "Value is required")),
-})
+

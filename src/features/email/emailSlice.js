@@ -8,34 +8,32 @@ export const fetchTemplates = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     try {
       const response = await axiosInstance.get('/email-templates');
-<<<<<<< HEAD
-      console.log('Fetched templates:', response.data); // Log the response data
-      return response.data.emailTemplates || []; // Return the emailTemplates array explicitly
-=======
-      return Array.isArray(response.data) ? response.data : [];
->>>>>>> 12e06a2ceba6cc4cd1aef5299e4bba4c94f465b6
+    
+      return response.data.emailTemplates || []; 
     } catch (error) {
       return rejectWithValue(error.response?.data?.message || 'Failed to fetch templates');
     }
   }
 );
-
 export const createTemplate = createAsyncThunk(
   "email/createTemplate",
   async (templateData, { rejectWithValue }) => {
     try {
-      const formData = new FormData();
       const { eventName, subject, body, attachments } = templateData;
 
+      // Validate required fields
+      if (!eventName || !subject || !body) {
+        return rejectWithValue("Event Name, Subject, and Body are required.");
+      }
+
+      const formData = new FormData();
       formData.append("eventName", eventName);
       formData.append("subject", subject);
       formData.append("body", body);
 
-<<<<<<< HEAD
       if (attachments?.length > 0) {
         const uploadedFileUrls = [];
 
-        // Upload each file using axiosInstance
         for (let file of attachments) {
           const fileFormData = new FormData();
           fileFormData.append("file", file);
@@ -46,7 +44,6 @@ export const createTemplate = createAsyncThunk(
             },
           });
 
-          // Assuming the server responds with the file URL
           if (fileUploadResponse?.data?.fileUrl) {
             uploadedFileUrls.push(fileUploadResponse.data.fileUrl);
           } else {
@@ -54,16 +51,8 @@ export const createTemplate = createAsyncThunk(
           }
         }
 
-        // Append the uploaded file URLs to the form data
         uploadedFileUrls.forEach((fileUrl) => {
           formData.append("attachments[]", fileUrl);
-=======
-      if (attachments?.length === 1) {
-        formData.append("attachments", attachments[0]);
-      } else if (attachments?.length > 1) {
-        attachments.forEach((file) => {
-          formData.append("attachments[]", file);
->>>>>>> 12e06a2ceba6cc4cd1aef5299e4bba4c94f465b6
         });
       }
 
@@ -81,6 +70,60 @@ export const createTemplate = createAsyncThunk(
     }
   }
 );
+
+// export const createTemplate = createAsyncThunk(
+//   "email/createTemplate",
+//   async (templateData, { rejectWithValue }) => {
+//     try {
+//       const formData = new FormData();
+//       const { eventName, subject, body, attachments } = templateData;
+
+//       formData.append("eventName", eventName);
+//       formData.append("subject", subject);
+//       formData.append("body", body);
+
+//       if (attachments?.length > 0) {
+//         const uploadedFileUrls = [];
+
+//         // Upload each file using axiosInstance
+//         for (let file of attachments) {
+//           const fileFormData = new FormData();
+//           fileFormData.append("file", file);
+
+//           const fileUploadResponse = await axiosInstance.post("uploads", fileFormData, {
+//             headers: {
+//               "Content-Type": "multipart/form-data",
+//             },
+//           });
+
+//           // Assuming the server responds with the file URL
+//           if (fileUploadResponse?.data?.fileUrl) {
+//             uploadedFileUrls.push(fileUploadResponse.data.fileUrl);
+//           } else {
+//             throw new Error("File upload failed");
+//           }
+//         }
+
+//         // Append the uploaded file URLs to the form data
+//         uploadedFileUrls.forEach((fileUrl) => {
+//           formData.append("attachments[]", fileUrl);
+//         });
+//       }
+
+//       const response = await axiosInstance.post("/email-templates", formData, {
+//         headers: {
+//           "Content-Type": "multipart/form-data",
+//           Accept: "application/json",
+//         },
+//       });
+
+//       return response.data;
+//     } catch (error) {
+//       console.error("Error during form submission:", error);
+//       return rejectWithValue(error.response?.data?.message || "An error occurred while creating the template");
+//     }
+//   }
+// );
 
 // Update an email template
 export const updateTemplate = createAsyncThunk(
