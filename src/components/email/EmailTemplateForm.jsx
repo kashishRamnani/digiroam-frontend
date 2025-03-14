@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import React, { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -6,6 +6,8 @@ import { emailTemplateSchema } from "../../schemas/allSchema";
 import { createTemplate, updateTemplate } from "../../features/email/emailSlice";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPaperPlane, faTimes } from "@fortawesome/free-solid-svg-icons";
+import ReactQuill from "react-quill";
+import "react-quill/dist/quill.snow.css";
 
 const EmailTemplateForm = ({ initialData, onClose }) => {
   const dispatch = useDispatch();
@@ -88,10 +90,10 @@ const EmailTemplateForm = ({ initialData, onClose }) => {
   }, [initialData, reset]);
 
   return (
-    <div className="flex items-center justify-center min-h-screen">
+    <div className="flex items-center justify-center min-h-screen bg-gray-100 p-4">
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="relative bg-white p-6 rounded-lg w-96 space-y-5 shadow-md"
+        className="relative bg-white p-6 rounded-lg w-full max-w-lg space-y-5 shadow-lg"
       >
         <button
           type="button"
@@ -103,35 +105,39 @@ const EmailTemplateForm = ({ initialData, onClose }) => {
 
         <div>
           <label className="text-sm font-medium text-gray-700">Event Name</label>
-          <select {...register("eventName")} className="border p-2 rounded-md w-full">
+          <select {...register("eventName")} className="border p-2 rounded-md w-full mt-1">
             <option value="">Select an event</option>
             <option value="ON_PURCHASE">On Purchase</option>
             <option value="ON_CANCEL">On Cancel</option>
           </select>
-          {errors.eventName && <p className="text-red-500">{errors.eventName.message}</p>}
+          {errors.eventName && <p className="text-red-500 text-xs mt-1">{errors.eventName.message}</p>}
         </div>
 
         <div>
           <label className="text-sm font-medium text-gray-700">Subject</label>
           <input
             {...register("subject")}
-            className="border p-2 rounded-md w-full"
+            className="border p-2 rounded-md w-full mt-1"
             placeholder="Enter Subject"
             aria-invalid={errors.subject ? "true" : "false"}
             aria-describedby={errors.subject ? "subject-error" : undefined}
           />
-          {errors.subject && <p id="subject-error" className="text-red-500" aria-live="assertive">{errors.subject.message}</p>}
+          {errors.subject && (
+            <p id="subject-error" className="text-red-500 text-xs mt-1" aria-live="assertive">
+              {errors.subject.message}
+            </p>
+          )}
         </div>
 
         <div>
           <label className="text-sm font-medium text-gray-700">Body</label>
-          <textarea
-            {...register("body")}
-            className="border p-2 rounded-md w-full"
-            rows="4"
+          <ReactQuill
+            value={watch("body")}
+            onChange={(value) => setValue("body", value)}
+            className="border p-2 rounded-md w-full mt-1"
             placeholder="Enter email body"
-          ></textarea>
-          {errors.body && <p className="text-red-500" aria-live="assertive">{errors.body.message}</p>}
+          />
+          {errors.body && <p className="text-red-500 text-xs mt-1" aria-live="assertive">{errors.body.message}</p>}
         </div>
 
         <div>
@@ -140,16 +146,17 @@ const EmailTemplateForm = ({ initialData, onClose }) => {
             type="file"
             multiple
             onChange={handleAttachmentChange}
-            className="border p-2 rounded-md w-full"
+            className="border p-2 rounded-md w-full mt-1"
           />
-          {errors.attachments && <p className="text-red-500" aria-live="assertive">{errors.attachments.message}</p>}
+          {errors.attachments && (
+            <p className="text-red-500 text-xs mt-1" aria-live="assertive">{errors.attachments.message}</p>
+          )}
         </div>
 
         <button
           type="submit"
-          className="w-full bg-primary text-white py-2 px-4 rounded-md hover:bg-secondary transition-colors flex items-center justify-center space-x-2"
+          className="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 transition-colors flex items-center justify-center space-x-2 mt-4"
           disabled={isSubmitting || Object.keys(errors).length > 0}
-
         >
           {isSubmitting && (
             <span className="loader mr-2" style={{ visibility: isSubmitting ? "visible" : "hidden" }} />
