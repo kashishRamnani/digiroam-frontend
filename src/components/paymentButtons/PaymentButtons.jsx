@@ -301,8 +301,7 @@ const StripeCheckoutForm = ({ clientSecret, items }) => {
           showErrorToast("eSim Order Failed: " + esimOrderResult.payload?.message);
           return;
         }
-
-        console.log
+        
         // Step 2: Save Payment Data
         const saveResult = await dispatch(
           savePaymentData({

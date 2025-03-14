@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import axiosInstance from '../../utils/axiosConfig'; // Using custom axios instance
+import axiosInstance from '../../utils/axiosConfig';
 import { showErrorToast, showSuccessToast } from '../../utils/toast';
 
 // Fetch email templates
@@ -8,13 +8,13 @@ export const fetchTemplates = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     try {
       const response = await axiosInstance.get('/email-templates');
-      console.log('Fetched templates:', response.data); // Log the response data
       return Array.isArray(response.data) ? response.data : [];
     } catch (error) {
       return rejectWithValue(error.response?.data?.message || 'Failed to fetch templates');
     }
   }
 );
+
 export const createTemplate = createAsyncThunk(
   "email/createTemplate",
   async (templateData, { rejectWithValue }) => {
@@ -27,10 +27,8 @@ export const createTemplate = createAsyncThunk(
       formData.append("body", body);
 
       if (attachments?.length === 1) {
-        // If only one file is attached, send it without brackets
         formData.append("attachments", attachments[0]);
       } else if (attachments?.length > 1) {
-        // If multiple files are attached, use an array format
         attachments.forEach((file) => {
           formData.append("attachments[]", file);
         });
@@ -49,16 +47,6 @@ export const createTemplate = createAsyncThunk(
     }
   }
 );
-
-
-
-
-
-
-
-
-
-
 
 // Update an email template
 export const updateTemplate = createAsyncThunk(

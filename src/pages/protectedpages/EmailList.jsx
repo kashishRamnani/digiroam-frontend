@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchTemplates, deleteTemplate } from "../../features/email/emailSlice";
 import EmailTemplateForm from "./EmailTemplateForm";
+import DashboardLayout from "../../layouts/DashboardLayout";
 
 const EmailTemplateList = () => {
   const dispatch = useDispatch();
@@ -33,7 +34,8 @@ const EmailTemplateList = () => {
   };
 
   return (
-    <div className="max-w-3xl mx-auto p-6 bg-white shadow-md rounded-md relative">
+   <DashboardLayout title="Email Templates" description="All email templates with attachments">
+     <div className="max-w-3xl mx-auto p-6 bg-white shadow-md rounded-md relative">
       {/* Header Section with "Add Template" Button */}
       <div className="flex justify-between items-center mb-4">
         <button
@@ -100,6 +102,7 @@ const EmailTemplateList = () => {
         </div>
       )}
     </div>
+   </DashboardLayout>
   );
 };
 

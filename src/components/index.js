@@ -27,9 +27,6 @@ import ProfileForm from "./profile/ProfileForm";
 import PasswordForm from "./profile/PasswordForm";
 import HomeProductListing from "./eSimPlans/HomeProductListing";
 import Loader from "./common/Loader";
-import EmailTemplateForm from "./email/EmailTemplateForm.jsx";
-import EmailTemplateList from "./email/EmailList.jsx";
-import SendEmailForm from "./email/SendingEmail.jsx";
 export {
   Footer,
   LoginButtons,
@@ -60,7 +57,4 @@ export {
   PasswordForm,
   HomeProductListing,
   Loader,
-  EmailTemplateForm,
-  EmailTemplateList,
-  SendEmailForm,
 };
