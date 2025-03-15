@@ -21,7 +21,8 @@ const DataPlan = ({ selectedEsim }) => {
 
   useEffect(() => {
     if (selectedEsim?.iccid) {
-      dispatch(fetchDataPlan("8910300000023372752"));
+      dispatch(fetchDataPlan(selectedEsim.iccid));
+      // dispatch(fetchDataPlan("8910300000023372752"));
     }
   }, [selectedEsim, dispatch]);
 

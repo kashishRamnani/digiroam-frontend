@@ -29,21 +29,21 @@ const DashboardSidebar = ({ isOpen, toggleSidebar }) => {
         text: "Dashboard",
         href: "/dashboard"
       },
-      {
-        icon: faEnvelopeOpenText,
-        text: "Email Templates",
-        href: "/email-templates",
-      },
+      // {
+      //   icon: faEnvelopeOpenText,
+      //   text: "Email Templates",
+      //   href: "/email-templates",
+      // },
       {
         icon:  faClipboardList ,
         text: "Email List",
         href: "/email-list",
       },
-      {
-        icon:faEnvelope,
-        text: "Send Email",
-        href: "/send-email",
-      },
+      // {
+      //   icon:faEnvelope,
+      //   text: "Send Email",
+      //   href: "/send-email",
+      // },
       {
         icon: faCog,
         text: "Profile Settings",

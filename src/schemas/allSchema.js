@@ -33,10 +33,8 @@ export const filterProductSchema = z.object({
   type: z.string().optional(),
 });
 export const emailTemplateSchema = z.object({
-  eventName: z.enum(["ON_PURCHASE", "ON_CANCEL"], {
-    errorMap: () => ({ message: "Invalid event. Choose 'ON_PURCHASE' or 'ON_CANCEL'." }),
-  }),
-  subject: z.string().min(1, "Subject is required"),
+  eventName: z.string().min(1, "Select any EventName."),
+ subject: z.string().min(1, "Subject is required"),
   body: z.string().min(1, "Body is required"),
   attachments: z.array(z.any()).optional(),
  
