@@ -1,5 +1,7 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { ProtectedRoute } from "../components";
+import SendEmailForm from '../protectedpages/SendingEmail'; // Or the correct relative path
+
 import {
   // public pages
   Home,
