@@ -1,7 +1,5 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { ProtectedRoute } from "../components";
-import SendEmailForm from '../protectedpages/SendingEmail'; // Or the correct relative path
-
 import {
   // public pages
   Home,
@@ -25,9 +23,9 @@ import {
   ESimManagement,
 
   // admin pages
-  EmailTemplateForm,
+  // EmailTemplateForm,
   EmailTemplateList,
-  SendEmailForm
+  // SendEmailForm
 } from "../pages";
 
 import { SocialCallback } from "../callBacks";
@@ -131,18 +129,18 @@ const Routes = () => {
       path: "/",
       element: <RoleGuard userRole={2} />,
       children: [
+        // {
+        //   path: "/email-templates",
+        //   element: <EmailTemplateForm />,
+        // },
         {
-          path: "/email-templates",
-          element: <EmailTemplateForm />,
+        path: "/email-list",
+        element: <EmailTemplateList />,
         },
-        {
-          path: "/email-list",
-          element: <EmailTemplateList />,
-        },
-        {
-          path: "/send-email",
-          element: <SendEmailForm />,
-        },
+        // // {
+        // //   path: "/send-email",
+        // //   element: <SendEmailForm />,
+        // // },
       ]
     },
 

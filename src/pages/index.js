@@ -13,9 +13,9 @@ import ESimPlans from "./protectedpages/ESimPlans";
 import ESimManagement from "./protectedpages/ESimManagement";
 
 // admin pages
-import EmailTemplateForm from "./protectedpages/EmailTemplateForm.jsx";
+
 import EmailTemplateList from "./protectedpages/EmailList.jsx";
-import SendEmailForm from "./protectedpages/SendingEmail.jsx";
+
 
 export {
   Home,
@@ -31,7 +31,7 @@ export {
   OTPVerification,
   ESimPlans,
   ESimManagement,
-  EmailTemplateForm,
+
   EmailTemplateList,
-  SendEmailForm
+  
 };
