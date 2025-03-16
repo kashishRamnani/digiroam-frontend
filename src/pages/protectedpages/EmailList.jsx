@@ -5,11 +5,12 @@ import DashboardLayout from "../../layouts/DashboardLayout";
 import Pagination from "../../components/common/Pagination";
 import EditEmailTemplate from "../../components/email/EditEmailTemplate";
 import SendEmailForm from "../../components/email/SendingEmail";
-import { FaPlus, FaTrash, FaEdit, FaPaperPlane } from "react-icons/fa";
-
+import { faPlus } from "@fortawesome/free-solid-svg-icons";
+import { FaTrash, FaEdit, FaPaperPlane } from "react-icons/fa";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 const EmailTemplateList = () => {
   const dispatch = useDispatch();
-  const { templates = [], currentPage, itemsPerPage } = useSelector((state) => state.email);
+  const { templates = [], currentPage, itemsPerPage, isLoading, error } = useSelector((state) => state.email);
   const [showTemplateForm, setShowTemplateForm] = useState(false);
   const [showSendEmailForm, setShowSendEmailForm] = useState(false);
   const [selectedTemplate, setSelectedTemplate] = useState(null);
@@ -49,37 +50,62 @@ const EmailTemplateList = () => {
 
   return (
     <DashboardLayout title="Email Templates" description="All email templates with attachments">
-      <div className="container mx-auto overflow-x-auto px-6 py-8">
-        <table className="min-w-full bg-white ">
+
+      <div className="px-4 py-4">
+        <div className="mb-6 flex justify-between items-center">
+          <div className="flex items-center space-x-4">
+            <button
+              onClick={() => {
+                setSelectedTemplate(null);
+                setShowTemplateForm(true);
+              }}
+              className="flex items-center space-x-2 text-white px-4 py-2 rounded-md"
+              style={{ backgroundColor: "var(--secondary-color)" }}
+            >
+              <FontAwesomeIcon icon={faPlus} />
+              <span>Add Template</span>
+            </button>
+          </div>
+        </div></div>
+      <div className="table-container "> 
+        <table className="min-w-full bg-white table-auto max-w-full">
           <thead>
             <tr>
               {["Event Name", "Subject", "Body", "Attachments", "Actions"].map((header) => (
-                <th key={header} className="px-6 py-6 text-center text-sm font-semibold text-gray-600 uppercase border-b">
+                <th key={header} className="px-2 py-4 text-center text-sm font-semibold text-gray-600 uppercase border-b">
                   {header}
                 </th>
               ))}
             </tr>
           </thead>
-          <tbody className="bg-white divide-y divide-gray-200 ">
-            {currentItems.map((template) => (
-              <tr key={template.id}>
-                <td className="px-6 py-6 whitespace-nowrap text-gray-900">{template.eventName}</td>
-                <td className="px-6 py-4 max-w-xs truncate text-gray-900">{template.subject}</td>
-                <td className="px-6 py-4 max-w-xs truncate text-gray-900">{template.body}</td>
-                <td className="px-6 py-4 text-gray-900">{template.attachments ? template.attachments.length : 0}</td>
-                <td className="px-6 py-4 flex gap-2">
-                  <button onClick={() => { setSelectedTemplate(template); setShowTemplateForm(true); }} className="px-3 py-1 text-white bg-blue-500 rounded-md hover:bg-blue-600">
-                    <FaEdit />
-                  </button>
-                  <button onClick={() => handleDelete(template._id)} className="px-3 py-1 text-white bg-red-500 rounded-md hover:bg-red-600">
-                    <FaTrash />
-                  </button>
-                  <button onClick={() => { setSelectedTemplate(template); setShowSendEmailForm(true); }} className="px-3 py-1 text-white bg-green-500 rounded-md hover:bg-green-600">
-                    <FaPaperPlane />
-                  </button>
+          <tbody className="bg-white divide-y divide-gray-200">
+            {templates.length === 0 ? (
+              <tr>
+                <td colSpan="5" className="px-6 py-6 text-center text-gray-500">
+                  No email templates available.
                 </td>
               </tr>
-            ))}
+            ) : (
+              currentItems.map((template) => (
+                <tr key={template.id}>
+                  <td className="px-6 py-4 whitespace-nowrap text-gray-900">{template.eventName}</td>
+                  <td className="px-6 py-4 max-w-xs truncate text-gray-900">{template.subject}</td>
+                  <td className="px-6 py-4 max-w-xs truncate text-gray-900">{template.body}</td>
+                  <td className="px-6 py-4 text-gray-900">{template.attachments ? template.attachments.length : 0}</td>
+                  <td className="px-6 py-4 flex gap-4 justify-center"> {/* Added more gap for buttons */}
+                    <button onClick={() => { setSelectedTemplate(template); setShowTemplateForm(true); }} className="text-blue-500 hover:text-blue-700">
+                      <FaEdit size={18} />
+                    </button>
+                    <button onClick={() => handleDelete(template._id)} className="text-red-500  hover:text-red-700">
+                      <FaTrash size={18} />
+                    </button>
+                    <button onClick={() => { setSelectedTemplate(template); setShowSendEmailForm(true); }} className="text-green-500 hover:text-green-700">
+                      <FaPaperPlane size={18} />
+                    </button>
+                  </td>
+                </tr>
+              ))
+            )}
           </tbody>
         </table>
       </div>
@@ -90,17 +116,6 @@ const EmailTemplateList = () => {
         </div>
       )}
 
-<div className="flex justify-end m-4">
-  <button
-    onClick={() => {
-      setSelectedTemplate(null);
-      setShowTemplateForm(true);
-    }}
-    className="w-12 h-12 bg-green-500 text-white rounded-full hover:bg-green-600 flex items-center justify-center"
-  >
-    <FaPlus />
-  </button>
-</div>
 
 
       {showTemplateForm && (

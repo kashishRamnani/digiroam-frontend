@@ -285,3 +285,52 @@ ol li {
 .custom-shadow {
   box-shadow: 0 8px 18px -4px rgba(128, 0, 128, 0.4);
 }
+/* Custom CSS to hide the horizontal scrollbar while still allowing scrolling */
+.table-container {
+  overflow-x: scroll; /* Enable horizontal scrolling */
+  -webkit-overflow-scrolling: touch; /* Smooth scrolling on mobile */
+}
+
+.table-container::-webkit-scrollbar {
+  display: none; /* Hide scrollbar in Webkit-based browsers (Chrome, Safari, Edge) */
+}
+
+.table-container {
+  -ms-overflow-style: none;  /* Hide scrollbar in IE and Edge */
+  scrollbar-width: none;     /* Hide scrollbar in Firefox */
+}
+
+.table {
+  width: 100%;
+  table-layout: fixed; /* Prevents table from stretching too much */
+}
+
+th, td {
+  word-wrap: break-word; /* Ensures long content does not overflow */
+  max-width: 200px; /* Optional: Add max-width for cells */
+  text-overflow: ellipsis; /* Optional: Truncate overflowed text */
+}
+.quill-wrapper {
+  height: 200px; /* Adjust height as needed */
+  overflow-y: auto; /* Enables scrolling for both toolbar & body */
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.quill-editor .ql-container {
+  height: auto !important;
+}
+
+.quill-editor {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+
+@media (max-width: 768px) {
+  /* For smaller screens, adjust table layout */
+  th, td {
+    font-size: 14px; /* Smaller text for readability */
+  }
+}

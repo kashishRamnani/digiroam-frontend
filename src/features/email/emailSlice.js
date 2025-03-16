@@ -117,7 +117,7 @@ const emailSlice = createSlice({
       .addCase(fetchTemplates.fulfilled, (state, action) => {
         state.loading = false;
         state.templates = action.payload;
-        showSuccessToast('Templates loaded successfully!');
+       
       })
       .addCase(fetchTemplates.rejected, (state, action) => {
         state.loading = false;
@@ -129,8 +129,8 @@ const emailSlice = createSlice({
       .addCase(createTemplate.fulfilled, (state, action) => {
         state.loading = false;
         state.templates.push(action.payload);
-        state.successMessage = 'Template created successfully!';
-        showSuccessToast(state.successMessage);
+       
+       
       })
       .addCase(createTemplate.rejected, (state, action) => {
         state.loading = false;

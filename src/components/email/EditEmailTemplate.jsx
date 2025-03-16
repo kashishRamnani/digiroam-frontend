@@ -15,7 +15,6 @@ const EditEmailTemplate = ({ initialData, onClose }) => {
   const dispatch = useDispatch();
   const quillRef = useRef(null);
 
-  // Get templates from Redux
   const templates = useSelector((state) => state.email.templates || []);
 
   const {
@@ -31,103 +30,122 @@ const EditEmailTemplate = ({ initialData, onClose }) => {
       _id: "",
       eventName: "",
       subject: "",
-      body: "",
+      body: "", 
       attachments: [],
     },
   });
-
-  const allEvents =  ["ON_LOGIN", "ON_PASSWORD_CHANGE", "ON_PURCHASE", "ON_CANCEL", "ON_USAGE_80", "ON_1D_VALIDITY", "ON_EXPIRED", "ON_DISCOUNT", "ON_ACTIVATION_REMINDER"]
+const allEvents = ["ON_LOGIN", "ON_PASSWORD_CHANGE", "ON_PURCHASE", "ON_CANCEL", "ON_USAGE_80", "ON_1D_VALIDITY", "ON_EXPIRED", "ON_DISCOUNT", "ON_ACTIVATION_REMINDER"];
 
   const existingEventNames = templates.map((template) => template.eventName);
   const availableEvents = allEvents.filter(
     (event) => !existingEventNames.includes(event) || event === initialData?.eventName
   );
-
-  useEffect(() => {
-    if (initialData?.body) {
-      setValue("body", initialData.body.trim());
-    }
-  }, [initialData?.body, setValue]);
- 
-  
   const handleQuillChange = (value) => {
     setValue("body", value);
     trigger("body");
   };
+
+  useEffect(() => {
+    if (initialData?.body) {
+      setValue("body", initialData.body); 
+    }
+  }, [initialData?.body, setValue]);
+
+
+
   const onSubmit = async (data) => {
-    data.body = quillRef.current?.getEditor()?.getText().trim() || data.body;
-  
+    // Ensure body remains in HTML format
+    data.body = quillRef.current?.getEditor()?.root.innerHTML || data.body;
+
     const action = initialData
       ? updateTemplate({ id: initialData._id, updatedData: data })
       : createTemplate(data);
-  
+
     await dispatch(action);
     dispatch(fetchTemplates());
     onClose?.();
     navigate("/email-list");
   };
-  
 
   return (
-    <div className="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50">
-      <div className="relative bg-white p-6 rounded-lg w-full max-w-lg space-y-6 shadow-xl border border-gray-200">
+    <div
+      className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
+      role="dialog"
+      aria-labelledby="edit-template-title"
+      aria-hidden={!initialData}
+    >
+      <div className="bg-white rounded-lg p-4 w-full max-w-md">
         {/* Close Button */}
-        <button
-          className="absolute top-3 right-3 text-gray-600 hover:text-gray-800"
-          onClick={onClose}
-        >
-          <FontAwesomeIcon icon={faTimes} className="text-xl" />
-        </button>
+        <div className="flex justify-between items-center mb-4">
+          <h2 id="edit-template-title" className="text-xl font-semibold">
+            {initialData ? "Edit Template" : "Create Template"}
+          </h2>
+          <button
+            onClick={onClose}
+            aria-label="Close modal"
+            className="text-gray-500 text-4xl hover:text-gray-700"
+          >
+            <FontAwesomeIcon icon={faTimes} />
+          </button>
+        </div>
 
-        <h2 className="text-2xl font-bold text-gray-700 text-center">
-          {initialData ? "Edit Template" : "Create Template"}
-        </h2>
 
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-          {/* Event Name */}
-          <div>
-            <label className="block text-sm font-medium text-gray-600">Event Name</label>
-            <select
-              {...register("eventName")}
 
-              className="border p-2 rounded-lg w-full mt-1 focus:ring-blue-500 focus:border-blue-500"
-            >
-              <option value="">Select an event</option>
-              {availableEvents.map((event) => (
-                <option key={event} value={event}>{event.replace(/_/g, " ")}</option>
-              ))}
-            </select>
-            {errors.eventName && (
-              <p className="text-red-500 text-xs mt-1">{errors.eventName.message}</p>
-            )}
-          </div>
-
-          {/* Subject */}
+          {!initialData ? (
+            <div>
+              <label className="block text-sm font-medium text-gray-600">Event Name</label>
+              <select
+                {...register("eventName")}
+                className="border p-1 rounded-lg w-full mt-1 focus:ring-blue-500 focus:border-blue-500"
+              >
+                <option value="">Select an event</option>
+                {availableEvents.map((event) => (
+                  <option key={event} value={event}>
+                    {event.replace(/_/g, " ")}
+                  </option>
+                ))}
+              </select>
+              {errors.eventName && (
+                <p className="text-red-500 text-xs mt-1">{errors.eventName.message}</p>
+              )}
+            </div>
+          ) : (
+            /* Show event name as plain text in Edit mode */
+            <div>
+              <label className="block text-sm font-medium text-gray-600">Event Name</label>
+              <p className="border p-1 rounded-lg w-full mt-1 bg-gray-100">
+                {initialData.eventName.replace(/_/g, " ")}
+              </p>
+            </div>
+          )}
           <div>
-            <label className="block text-sm font-medium text-gray-700">Subject</label>
+            <label className="block text-sm p-1 font-medium text-gray-700">Subject</label>
             <input
               {...register("subject")}
-              className="border p-2 rounded-md w-full"
+              className="border p-1 rounded-md w-full"
               placeholder="Enter Subject"
             />
-            {errors.subject && (
-              <p className="text-red-500 text-xs mt-1">{errors.subject.message}</p>
-            )}
+            {errors.subject && <p className="text-red-500 text-xs mt-1">{errors.subject.message}</p>}
           </div>
 
           {/* Body (ReactQuill) */}
-          <div>
+          
+          <div className="relative">
             <label className="block text-sm font-medium text-gray-700">Body</label>
-            <ReactQuill
-              ref={quillRef}
-              value={watch("body")}
-              onChange={handleQuillChange}
-               className=" h-40 overflow-y-auto"
-            />
-            {errors.body && (
-              <p className="text-red-500 text-xs mt-1">{errors.body.message}</p>
-            )}
+            <div className="quill-wrapper">
+              <ReactQuill
+                ref={quillRef}
+                value={watch("body")}
+                onChange={handleQuillChange}
+                className="quill-editor"
+              />
+            </div>
+            {errors.body && <p className="text-red-500 text-xs mt-1">{errors.body.message}</p>}
           </div>
+
+
+
 
           {/* Action Buttons */}
           <div className="flex justify-end space-x-4">
