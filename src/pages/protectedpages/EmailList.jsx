@@ -51,9 +51,9 @@ const EmailTemplateList = () => {
   return (
     <DashboardLayout title="Email Templates" description="All email templates with attachments">
 
-      <div className="px-4 py-4">
-        <div className="mb-6 flex justify-between items-center">
-          <div className="flex items-center space-x-4">
+      <div className="px-4 py-6">
+        <div className="mb-2 flex justify-between items-center">
+          <div className="flex items-center space-x-1">
             <button
               onClick={() => {
                 setSelectedTemplate(null);
@@ -67,7 +67,7 @@ const EmailTemplateList = () => {
             </button>
           </div>
         </div></div>
-      <div className="table-container "> 
+      <div className="table-container px-4" > 
         <table className="min-w-full bg-white table-auto max-w-full">
           <thead>
             <tr>

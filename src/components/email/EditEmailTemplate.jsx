@@ -51,7 +51,12 @@ const allEvents = ["ON_LOGIN", "ON_PASSWORD_CHANGE", "ON_PURCHASE", "ON_CANCEL",
     }
   }, [initialData?.body, setValue]);
 
-
+  const handleAttachmentChange = (event) => {
+    const files = Array.from(event.target.files);
+    setValue("attachments", files);
+    trigger("attachments");
+  };
+  
 
   const onSubmit = async (data) => {
     // Ensure body remains in HTML format
@@ -90,7 +95,7 @@ const allEvents = ["ON_LOGIN", "ON_PASSWORD_CHANGE", "ON_PURCHASE", "ON_CANCEL",
         </div>
 
 
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+        <form onSubmit={handleSubmit(onSubmit)} className="space-y-0">
 
           {!initialData ? (
             <div>
@@ -128,6 +133,11 @@ const allEvents = ["ON_LOGIN", "ON_PASSWORD_CHANGE", "ON_PURCHASE", "ON_CANCEL",
             />
             {errors.subject && <p className="text-red-500 text-xs mt-1">{errors.subject.message}</p>}
           </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700">Attachments </label>
+            <input type="file" multiple onChange={handleAttachmentChange}   max={5} className="border p-2 rounded-md w-full mt-1 focus:ring-blue-500 focus:border-blue-500" />
+            {errors.attachments && <p className="text-red-500 text-xs mt-1">{errors.attachments.message}</p>}
+          </div>
 
           {/* Body (ReactQuill) */}
           
@@ -148,10 +158,10 @@ const allEvents = ["ON_LOGIN", "ON_PASSWORD_CHANGE", "ON_PURCHASE", "ON_CANCEL",
 
 
           {/* Action Buttons */}
-          <div className="flex justify-end space-x-4">
+          <div className="flex py-2 justify-end space-x-4">
             <button
               type="button"
-              className="px-4 py-2 bg-gray-500 text-white rounded"
+              className="px-4  bg-gray-500 text-white rounded"
               onClick={onClose}
             >
               Cancel
@@ -160,7 +170,7 @@ const allEvents = ["ON_LOGIN", "ON_PASSWORD_CHANGE", "ON_PURCHASE", "ON_CANCEL",
               type="submit"
               className="flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-primary hover:bg-[#f67a55]/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#FF7F5C] transition duration-150 ease-in-out"
             >
-              <FontAwesomeIcon icon={faEnvelopeOpenText} className="mr-2" />
+              <FontAwesomeIcon icon={faEnvelopeOpenText} className="mr-2 " />
               {initialData ? "Update Template" : "Create Template"}
             </button>
           </div>

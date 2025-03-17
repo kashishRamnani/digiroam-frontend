@@ -30,7 +30,8 @@ export const createTemplate = createAsyncThunk(
       formData.append("body", body);
 
       if (attachments?.length > 0) {
-        for (let file of attachments) {
+        // Upload all files in parallel
+        const uploadPromises = attachments.map(async (file) => {
           const fileFormData = new FormData();
           fileFormData.append("file", file);
 
@@ -39,11 +40,19 @@ export const createTemplate = createAsyncThunk(
           });
 
           if (fileUploadResponse?.data?.fileUrl) {
-            formData.append("attachments[]", fileUploadResponse.data.fileUrl);
+            return fileUploadResponse.data.fileUrl;
           } else {
             throw new Error("File upload failed");
           }
-        }
+        });
+
+        // Wait for all uploads to finish
+        const uploadedFileUrls = await Promise.all(uploadPromises);
+
+        // Append all file URLs to the form data
+        uploadedFileUrls.forEach((url) => {
+          formData.append("attachments[]", url);
+        });
       }
 
       const response = await axiosInstance.post("/email-templates", formData, {
@@ -56,6 +65,7 @@ export const createTemplate = createAsyncThunk(
     }
   }
 );
+
 
 // Update an email template
 export const updateTemplate = createAsyncThunk(

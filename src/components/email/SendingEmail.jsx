@@ -45,38 +45,41 @@ const SendEmailForm = ({ template, onClose }) => {
     const selectedUser = users?.users.find((user) => user._id === selectedUserId);
   
     if (selectedUser) {
-      let updatedBody = form.body
-        .replace("{{Customer_Name}}", selectedUser.name || "Customer")
-        .replace("{{Order_No}}", selectedUser.orderNo || "")
-        .replace("{{ICCID}}", selectedUser.iccid || "");
-
       setForm((prev) => ({
         ...prev,
         user: selectedUserId,
         email: selectedUser.email,
-        body: updatedBody,
+        body: prev.body
+          .replace(/{{Customer_Name}}/g, selectedUser.name || "Customer")
+          .replace(/{{Order_No}}/g, selectedUser.orderNo || "")
+          .replace(/{{ICCID}}/g, selectedUser.iccid || ""),
         orderNo: selectedUser.orderNo || "",
         iccid: selectedUser.iccid || "",
       }));
     }
   };
+  
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (!form.email) return;
-
+  
     const emailData = {
       eventName: form.eventName,
       userEmail: form.email,
       orderNo: form.orderNo || null,
       iccid: form.iccid || null,
     };
-
-    dispatch(sendEmailAction(emailData));
-    onClose?.();
-    navigate("/email-list"); 
- 
+  
+    try {
+      await dispatch(sendEmailAction(emailData)).unwrap();
+      onClose?.();
+      navigate("/email-list");
+    } catch (error) {
+      
+    }
   };
+  
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
