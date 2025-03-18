@@ -54,13 +54,6 @@ export default function TestimonialsSection() {
               
               <div className="pl-6 flex-1">
                 <div className="flex items-center gap-4 mb-2">
-                  <div className="w-12 h-12 rounded-full overflow-hidden">
-                    <img 
-                      src={testimonial.image} 
-                      alt={testimonial.name}
-                      className="w-full h-full object-cover"
-                    />
-                  </div>
                   <h3 className="text-xl font-semibold text-gray-800">{testimonial.name}</h3>
                   <FontAwesomeIcon 
                     icon={faQuoteRight} 

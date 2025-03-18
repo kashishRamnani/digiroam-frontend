@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { addToCart } from "../../features";
+import { fetchProducts } from "../../features/products/productSlice";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faGlobe,
@@ -9,44 +9,52 @@ import {
   faDollarSign,
   faBolt,
   faBarcode,
-  faTag,
   faTimes,
 } from "@fortawesome/free-solid-svg-icons";
 
-export default function ProductCard({ productId }) {
+export default function ProductList() {
   const dispatch = useDispatch();
- 
   const { items } = useSelector((state) => state.plans);
-  const { user } = useSelector((state) => state.auth); 
-
-  const product = items.find((item) => item.id === productId);
+  const { user } = useSelector((state) => state.auth);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedPackage, setSelectedPackage] = useState(null);
 
-  if (!product) {
-    return <p className="text-red-600">Product not found</p>;
+  useEffect(() => {
+    dispatch(fetchProducts());
+  }, [dispatch]);
+  const getLowestPricePackages = (items) => {
+    if (!items || items.length === 0) return [];
+
+    const groupedByCategory = items.reduce((acc, product) => {
+      const category = product.name.split(/(\d+GB|\(.*\))/)[0].trim();
+      if (!acc[category] || product.price < acc[category].price) {
+        acc[category] = product;
+      }
+      return acc;
+    }, {});
+
+    return Object.values(groupedByCategory).slice(0, 6);
+  };
+
+  const lowestPricePackages = getLowestPricePackages(items);
+
+  if (lowestPricePackages.length === 0) {
+    return <p className="text-red-600">No products available</p>;
   }
 
-  const handleToPackageDetails = () => {
+  const handleToPackageDetails = (pkg) => {
+    setSelectedPackage(pkg);
     setIsModalOpen(true);
   };
 
-  const handleBuyNow = () => {
+  const handleBuyNow = (pkg) => {
     if (!user) {
-      window.location.href = "/login"; 
+      window.location.href = "/login";
     } else {
-      dispatch(addToCart({ product, quantity: 1 }));
-      window.location.href = "/eSim-plans"; 
+      dispatch(addToCart({ product: pkg, quantity: 1 }));
+      window.location.href = "/eSim-plans";
     }
   };
-  
-
-  useEffect(() => {
-    if (isModalOpen) {
-      document.body.classList.add("overflow-hidden");
-    } else {
-      document.body.classList.remove("overflow-hidden");
-    }
-  }, [isModalOpen]);
 
   return (
     <div className="relative bg-[url('/images/auth/auth-bg.png')] rounded-2xl p-4 text-white shadow-lg max-w-sm w-[350px]">
@@ -54,52 +62,45 @@ export default function ProductCard({ productId }) {
         <img src="/images/home/product-card.png" alt="Digital Globe" />
       </div>
 
-      <div className="pt-24 space-y-3">
-        <div className="flex items-center justify-between border-b border-white/20 pb-4">
-          <div className="flex items-center gap-2">
-            <FontAwesomeIcon icon={faGlobe} className="w-6 h-6" />
-            <span className="text-lg">COVERAGE</span>
-          </div>
-          <span className="text-lg font-semibold">
-            {product.name.split(/(\d+GB|\(.*\))/)[0].trim()}
-          </span>
-        </div>
+          <div className="pt-24 space-y-3">
 
-        <div className="flex items-center justify-between border-b border-white/20 pb-4">
-          <div className="flex items-center gap-2">
-            <FontAwesomeIcon icon={faDatabase} className="w-6 h-6" />
-            <span className="text-lg">DATA</span>
-          </div>
-          <span className="text-lg font-semibold">
-            {(product.volume / (1024 * 1024 * 1024)).toFixed(0)}GB
-          </span>
-        </div>
-
-        <div className="flex items-center justify-between border-b border-white/20 pb-4">
-          <div className="flex items-center gap-2">
-            <FontAwesomeIcon icon={faCalendarAlt} className="w-6 h-6" />
-            <span className="text-lg">VALIDITY</span>
-          </div>
-          <span className="text-lg font-semibold">
-            {product.duration} {product.durationUnit}
-          </span>
-        </div>
-
-        <div className="flex items-center justify-between border-b border-white/20 pb-4">
-          <div className="flex items-center gap-2">
-            <FontAwesomeIcon icon={faDollarSign} className="w-6 h-6" />
-            <span className="text-lg">PRICE</span>
-          </div>
-          <span className="text-lg font-semibold">$ {product.price} USD</span>
-        </div>
-
-        <button
-          className="w-full bg-white text-orange-600 rounded-full py-3 font-semibold hover:bg-orange-50 transition-colors"
-          onClick={handleToPackageDetails}
-        >
-          Details
-        </button>
+  {lowestPricePackages.map((product, index) => (
+    <div key={index} className="flex flex-col bg-gray-800 rounded-lg p-4 shadow-lg">
+   
+      <div className="flex items-center gap-2 pb-4">
+        <FontAwesomeIcon icon={faGlobe} className="w-6 h-6" />
+        <span className="text-lg font-semibold">{product.name.split(/(\d+GB|\(.*\))/)[0].trim()}</span>
       </div>
+
+      {/* Data */}
+      <div className="flex items-center justify-between pb-4 border-b border-white/20">
+        <FontAwesomeIcon icon={faDatabase} className="w-6 h-6" />
+        <span className="text-lg font-semibold">{(product.volume / (1024 * 1024 * 1024)).toFixed(0)}GB</span>
+      </div>
+
+      {/* Validity */}
+      <div className="flex items-center justify-between pb-4 border-b border-white/20">
+        <FontAwesomeIcon icon={faCalendarAlt} className="w-6 h-6" />
+        <span className="text-lg font-semibold">{product.duration} {product.durationUnit}</span>
+      </div>
+
+      {/* Price */}
+      <div className="flex items-center justify-between pb-4 border-b border-white/20">
+        <FontAwesomeIcon icon={faDollarSign} className="w-6 h-6" />
+        <span className="text-lg font-semibold">$ {product.price} USD</span>
+      </div>
+
+      {/* Details Button */}
+      <button
+        className="w-full bg-white text-orange-600 rounded-full py-3 font-semibold hover:bg-orange-50 transition-colors"
+        onClick={() => handleToPackageDetails(product)}
+      >
+        Details
+      </button>
+    </div>
+  ))}
+</div>
+
 
       {isModalOpen && (
         <div className="fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm flex items-center justify-center z-50">
@@ -110,36 +111,36 @@ export default function ProductCard({ productId }) {
             >
               <FontAwesomeIcon icon={faTimes} className="w-5 h-5" />
             </button>
-            <h2 className="text-xl font-bold mb-4">{product.name}</h2>
+            <h2 className="text-xl font-bold mb-4">{selectedPackage.name}</h2>
 
             <div className="space-y-2 mt-4">
               <p>
                 <FontAwesomeIcon icon={faBolt} className="mr-2" />
-                <strong>Speed:</strong> {product.speed}
+                <strong>Speed:</strong> {selectedPackage.speed}
               </p>
               <p>
                 <FontAwesomeIcon icon={faCalendarAlt} className="mr-2" />
-                <strong>Validity:</strong> {product.duration} {product.durationUnit}
+                <strong>Validity:</strong> {selectedPackage.duration} {selectedPackage.durationUnit}
               </p>
               <p>
                 <FontAwesomeIcon icon={faDatabase} className="mr-2" />
                 <strong>Data:</strong>{" "}
-                {(product.volume / (1024 * 1024 * 1024)).toFixed(0)}GB
+                {(selectedPackage.volume / (1024 * 1024 * 1024)).toFixed(0)}GB
               </p>
               <p>
                 <FontAwesomeIcon icon={faBarcode} className="mr-2" />
-                <strong>Package Code:</strong> {product.packageCode}
+                <strong>Package Code:</strong> {selectedPackage.packageCode}
               </p>
 
               <p>
                 <FontAwesomeIcon icon={faDollarSign} className="mr-2" />
-                <strong>Price:</strong> $ {product.price} USD
+                <strong>Price:</strong> $ {selectedPackage.price} USD
               </p>
             </div>
 
             <button
               className="mt-4 w-full bg-white text-orange-600 rounded-full py-3 font-semibold hover:bg-gray-200 transition-colors"
-              onClick={handleBuyNow}
+              onClick={() => handleBuyNow(selectedPackage)}
             >
               Buy Now
             </button>

@@ -10,7 +10,7 @@ import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import { useNavigate } from "react-router-dom";
 
-const EditEmailTemplate = ({ initialData, onClose }) => {
+const EmailTemplate = ({ initialData, onClose }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const quillRef = useRef(null);
@@ -180,4 +180,4 @@ const allEvents = ["ON_LOGIN", "ON_PASSWORD_CHANGE", "ON_PURCHASE", "ON_CANCEL",
   );
 };
 
-export default EditEmailTemplate;
+export default EmailTemplate;

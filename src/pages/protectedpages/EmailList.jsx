@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchTemplates, deleteTemplate, setCurrentPage } from "../../features/email/emailSlice";
 import DashboardLayout from "../../layouts/DashboardLayout";
 import Pagination from "../../components/common/Pagination";
-import EditEmailTemplate from "../../components/email/EditEmailTemplate";
+import EmailTemplate from "../../components/email/EmailTemplate";
 import SendEmailForm from "../../components/email/SendingEmail";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import { FaTrash, FaEdit, FaPaperPlane } from "react-icons/fa";
@@ -120,7 +120,7 @@ const EmailTemplateList = () => {
 
       {showTemplateForm && (
         <div className="fixed inset-0 bg-gray-800 bg-opacity-50 flex items-center justify-center">
-          <EditEmailTemplate initialData={selectedTemplate} onClose={() => setShowTemplateForm(false)} />
+          <EmailTemplate initialData={selectedTemplate} onClose={() => setShowTemplateForm(false)} />
         </div>
       )}
 

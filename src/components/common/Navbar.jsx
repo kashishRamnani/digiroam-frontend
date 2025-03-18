@@ -100,14 +100,14 @@ const Navbar = () => {
                 </Link>
               </>
             ) : null}
-            <select
+            {/* <select
               value={language}
               onChange={(e) => changeLanguage(e.target.value)}
               className="rounded px-2 py-1 bg-gray-700 text-white"
             >
               <option value="en">English</option>
               <option value="es">Español</option>
-            </select>
+            </select> */}
           </div>
 
           {/* Mobile menu button */}
