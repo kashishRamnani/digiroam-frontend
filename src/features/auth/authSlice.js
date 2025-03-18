@@ -85,11 +85,6 @@ export const loginUser = createAsyncThunk(
       const response = await axiosInstance.post("/user/login", {
         email,
         password,
-      }, {
-        headers: {
-          "Content-Type": "application/json",
-          "User-Agent": navigator.userAgent,
-        }
       });
       const { user, accessToken } = response.data.data;
 
