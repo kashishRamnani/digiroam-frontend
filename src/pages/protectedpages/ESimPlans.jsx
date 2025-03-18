@@ -1,45 +1,42 @@
-import React from "react";
+import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { setCartOpen } from "../../features";
-import {
-  ProductFilters,
-  ProductList,
-  CartModal,
-  AddToCartModal,
-  Loader,
-} from "../../components";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faShoppingCart, faDownload } from "@fortawesome/free-solid-svg-icons";
+import { retrieveSettings, setCartOpen } from "../../features";
+import { ProductList, CartModal, AddToCartModal, Loader } from "../../components";
 import DashboardLayout from "../../layouts/DashboardLayout";
+import FilterPlans from "../../components/eSimPlans/FilterPlans";
 
 const ESimPlans = () => {
   const dispatch = useDispatch();
   const cart = useSelector((state) => state.cart.items);
-  const { isLoading } = useSelector((state) => state.plans);
-  const total = cart.reduce(
-    (sum, item) => sum + (item.price / 10000) * item.quantity,
-    0
-  );
+  const { isLoading, items = [] } = useSelector((state) => state.plans);
+  const { pricePercentage } = useSelector((state) => state.settings);
+  const [filteredPlans, setFilteredPlans] = useState([]);
+
+  useEffect(() => {
+    dispatch(retrieveSettings());
+    setFilteredPlans(items);
+  }, [items]);
+
+  const handleFilter = (filteredItems) => {
+    setFilteredPlans(filteredItems);
+  };
 
   return (
     <DashboardLayout>
       {isLoading && <Loader />}
       <div className="p-6">
         <div className="mb-6 flex justify-between items-center">
-          <div className="flex items-center space-x-4">
-            <button
-              onClick={() => dispatch(setCartOpen(true))}
-              className="flex items-center space-x-2 text-white px-4 py-2 rounded-md"
-              style={{ backgroundColor: "var(--secondary-color)" }}
-            >
-              <FontAwesomeIcon icon={faShoppingCart} />
-              <span>Cart ({cart.length})</span>
-            </button>
-          </div>
+          <button
+            onClick={() => dispatch(setCartOpen(true))}
+            className="flex items-center space-x-2 text-white px-4 py-2 rounded-md"
+            style={{ backgroundColor: "var(--secondary-color)" }}
+          >
+            Cart ({cart.length})
+          </button>
         </div>
 
-        <ProductFilters />
-        <ProductList />
+        <FilterPlans plans={items} pricePercentage={pricePercentage} onFilter={handleFilter} />
+        <ProductList items={filteredPlans} />
         <AddToCartModal />
         <CartModal />
       </div>

@@ -4,22 +4,22 @@ import axiosInstance from "../../utils/axiosConfig";
 
 export const fetchProducts = createAsyncThunk(
   "products/fetchProducts",
-  async (params = {}, { rejectWithValue }) => {
+  async (data = {}, { rejectWithValue }) => {
     try {
-      const defaultBody = {
-        locationCode: "",
-        type: "",
-        slug: "",
-        packageCode: "",
-        iccid: "",
+      data = {
+        locationCode: data.locationCode ?? "",
+        type: data.type ?? "",
+        slug: data.slug ?? "",
+        packageCode: data.packageCode ?? "",
+        iccid: data.iccid ?? "",
       };
 
-      const body = { ...defaultBody, ...params };
+      // const body = { ...defaultBody, ...params };
 
       const response = await axiosInstance.post(
-        "/user/getDataPackagesList",
-        body
+        "/user/getDataPackagesList", data
       );
+
       return response.data.data.packageList;
     } catch (error) {
       const errorMessage =

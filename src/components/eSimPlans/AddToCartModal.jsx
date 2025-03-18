@@ -1,10 +1,13 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { addToCart, fetchCartFromServer, setAddToCartOpen } from "../../features";
+import { addToCart, fetchCartFromServer, retrieveSettings, setAddToCartOpen } from "../../features";
+import getPriceWithMarkup from "../../utils/helpers/get.price.with.markup";
+import getFormattedVolume from "../../utils/helpers/get.formatted.volume";
 
 const AddToCartModal = () => {
   const dispatch = useDispatch();
   const { isAddToCartOpen, selectedProduct } = useSelector((state) => state.cart);
+  const { pricePercentage } = useSelector((state) => state.settings);
   const [quantity, setQuantity] = useState(1);
 
   const handleClose = () => {
@@ -12,7 +15,7 @@ const AddToCartModal = () => {
     setQuantity(1);
   };
 
-  
+
   const handleAddToCart = async () => {
     try {
       const result = await dispatch(addToCart({ product: selectedProduct, quantity }));
@@ -27,9 +30,13 @@ const AddToCartModal = () => {
     }
   };
 
+  useEffect(() => {
+    dispatch(retrieveSettings());
+  }, []);
+
   if (!isAddToCartOpen || !selectedProduct) return null;
 
-  const total = (selectedProduct.price * quantity).toFixed(2);
+  const total = (getPriceWithMarkup(selectedProduct.price, pricePercentage) * quantity).toFixed(2);
 
   return (
     <div
@@ -60,7 +67,7 @@ const AddToCartModal = () => {
 
           <div className="flex justify-between">
             <span className="text-gray-500">Data</span>
-            <span>{(selectedProduct.volume / (1024 * 1024 * 1024)).toFixed(0)}GB</span>
+            <span>{getFormattedVolume(selectedProduct.volume)}</span>
           </div>
 
           <div className="flex justify-between">
@@ -72,7 +79,7 @@ const AddToCartModal = () => {
 
           <div className="flex justify-between">
             <span className="text-gray-500">Price</span>
-            <span>${selectedProduct.price.toFixed(2)}</span>
+            <span>${getPriceWithMarkup(selectedProduct.price, pricePercentage)}</span>
           </div>
 
           <div className="flex justify-between items-center">

@@ -13,9 +13,8 @@ import ESimPlans from "./protectedpages/ESimPlans";
 import ESimManagement from "./protectedpages/ESimManagement";
 
 // admin pages
-
 import EmailTemplateList from "./protectedpages/EmailList.jsx";
-
+import MarkupPrice from "./protectedpages/MarkupPrice.jsx";
 
 export {
   Home,
@@ -32,6 +31,7 @@ export {
   ESimPlans,
   ESimManagement,
 
+  // admin pages
   EmailTemplateList,
-  
+  MarkupPrice
 };

@@ -13,6 +13,8 @@ import {
   faPlusCircle,
 } from "@fortawesome/free-solid-svg-icons";
 import axiosInstance from "../../../utils/axiosConfig";
+import { useDispatch, useSelector } from "react-redux";
+import { retrieveSettings } from "../../../features";
 
 // Helper to map eSIM status to an icon, color, and label
 const getEsimStatusIcon = (status) => {
@@ -36,8 +38,13 @@ const UserDashboardHome = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [activeTab, setActiveTab] = useState("data");
 
+  const dispatch = useDispatch();
+  const { pricePercentage } = useSelector(state => state.settings);
+
   useEffect(() => {
-    const getmyInfo = async () => {
+    dispatch(retrieveSettings());
+
+    (async () => {
       try {
         const response = await axiosInstance.get("/paymentSave/getMyPaymentInfo");
 
@@ -47,9 +54,7 @@ const UserDashboardHome = () => {
       } catch (error) {
         console.error("API Error:", error);
       }
-    };
-
-    getmyInfo();
+    })();
   }, []);
 
   const openSidebar = async (orderNo) => {
@@ -91,7 +96,7 @@ const UserDashboardHome = () => {
     { icon: faUser, title: "Sim Owner", value: simOwner },
     { icon: faSimCard, title: "Total Esim", value: totalOrder },
     { icon: faCreditCard, title: "Total Packages", value: totalPackages },
-    { icon: faCreditCard, title: "Total Payment", value: `$${(totalPayment / 1000).toFixed(2)}` },
+    { icon: faCreditCard, title: "Total Payment", value: `$${(totalPayment / 10000).toFixed(2)}` },
   ];
 
   return (
@@ -150,7 +155,7 @@ const UserDashboardHome = () => {
                   >
                     <td className="px-4 py-3">{payment.orderNo}</td>
                     <td className="px-4 py-3">
-                      ${(payment.amount / 1000).toFixed(2)}
+                      ${(payment.amount / 10000).toFixed(2)}
                     </td>
                     <td className="px-4 py-3">{payment.currency}</td>
                     <td className="px-4 py-3">{payment.transactionId}</td>
@@ -221,8 +226,8 @@ const UserDashboardHome = () => {
                     key={tab}
                     onClick={() => setActiveTab(tab)}
                     className={`pb-2 text-sm font-medium transition duration-300 ${activeTab === tab
-                        ? "text-blue-500 border-b-2 border-blue-500"
-                        : "text-gray-500 hover:text-gray-700"
+                      ? "text-blue-500 border-b-2 border-blue-500"
+                      : "text-gray-500 hover:text-gray-700"
                       }`}
                   >
                     {tab.charAt(0).toUpperCase() + tab.slice(1)}

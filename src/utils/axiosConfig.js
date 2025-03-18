@@ -3,6 +3,9 @@ import { API_URL } from './env';
 
 const axiosInstance = axios.create({
   baseURL: API_URL,
+  headers: {
+    "Content-Type": "application/json"
+  }
 });
 
 // Add a request interceptor
@@ -20,4 +23,3 @@ axiosInstance.interceptors.request.use(
 );
 
 export default axiosInstance;
-

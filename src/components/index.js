@@ -27,6 +27,8 @@ import ProfileForm from "./profile/ProfileForm";
 import PasswordForm from "./profile/PasswordForm";
 import HomeProductListing from "./eSimPlans/HomeProductListing";
 import Loader from "./common/Loader";
+import MarkupPriceForm from "./markupPrice/MarkupForm";
+
 export {
   Footer,
   LoginButtons,
@@ -57,4 +59,5 @@ export {
   PasswordForm,
   HomeProductListing,
   Loader,
+  MarkupPriceForm
 };

@@ -25,6 +25,7 @@ import {
   // admin pages
   // EmailTemplateForm,
   EmailTemplateList,
+  MarkupPrice,
   // SendEmailForm
 } from "../pages";
 
@@ -129,18 +130,14 @@ const Routes = () => {
       path: "/",
       element: <RoleGuard userRole={2} />,
       children: [
-        // {
-        //   path: "/email-templates",
-        //   element: <EmailTemplateForm />,
-        // },
         {
-        path: "/email-list",
-        element: <EmailTemplateList />,
+          path: "/email-list",
+          element: <EmailTemplateList />,
         },
-        // // {
-        // //   path: "/send-email",
-        // //   element: <SendEmailForm />,
-        // // },
+        {
+          path: "/markup-price",
+          element: <MarkupPrice />,
+        },
       ]
     },
 

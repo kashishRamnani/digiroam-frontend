@@ -4,19 +4,21 @@ import {
   setCartOpen,
   removeFromCart,
   fetchCartFromServer,
+  retrieveSettings,
 } from "../../features";
 import PaymentButtons from "../paymentButtons/PaymentButtons";
+import getPriceWithMarkup from "../../utils/helpers/get.price.with.markup";
 
 const CartModal = () => {
   const dispatch = useDispatch();
   const { items, isCartOpen } = useSelector((state) => state.cart);
+  const { pricePercentage } = useSelector((state) => state.settings);
   const [email, setEmail] = useState("");
 
-  
   useEffect(() => {
     dispatch(fetchCartFromServer());
+    dispatch(retrieveSettings());
   }, [dispatch]);
-
 
   const handleRemoveFromCart = async (item) => {
     try {
@@ -30,9 +32,8 @@ const CartModal = () => {
   };
 
   if (!isCartOpen) return null;
-
   const total = items.reduce(
-    (sum, item) => sum + item.productPrice * item.productQuantity,
+    (sum, item) => sum + getPriceWithMarkup(item.productPrice, pricePercentage) * item.productQuantity,
     0
   );
 
@@ -77,10 +78,10 @@ const CartModal = () => {
                 {items.map((item) => (
                   <tr key={item.productId} className="border-b">
                     <td className="py-2">{item.productName}</td>
-                    <td className="py-2">${item.productPrice.toFixed(2)}</td>
+                    <td className="py-2">${getPriceWithMarkup(item.productPrice, pricePercentage)}</td>
                     <td className="py-2">{item.productQuantity}</td>
                     <td className="py-2">
-                      ${(item.productPrice * item.productQuantity).toFixed(2)}
+                      ${(getPriceWithMarkup(item.productPrice, pricePercentage) * item.productQuantity).toFixed(2)}
                     </td>
                     <td className="py-2">
                       <button

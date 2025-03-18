@@ -26,20 +26,15 @@ const Login = () => {
   } = useForm({
     resolver: zodResolver(mode === "login" ? loginSchema : forgotSchema),
   });
-  
+
   const onSubmit = async (data) => {
     try {
-        const { userRole, accountType } = await dispatch(loginUser(data)).unwrap();
-
-        if (userRole == 2 && accountType == 2) {
-            navigate("/admin-dashboard");
-        } else {
-            navigate("/dashboard");
-        }
+      await dispatch(loginUser(data)).unwrap();
+      navigate("/dashboard");
     } catch (error) {
-        console.log(error.message);
+      console.log(error.message);
     }
-};
+  };
 
   return (
     <MainLayout title={t("login.title")} description={t("login.title")}>
@@ -59,7 +54,7 @@ const Login = () => {
                 navigate("/");
               }}
             >
-               <FontAwesomeIcon icon={faCircleLeft} className="text-white mr-3"/>
+              <FontAwesomeIcon icon={faCircleLeft} className="text-white mr-3" />
               Home Page
             </button>
 
@@ -80,7 +75,7 @@ const Login = () => {
                 navigate("/");
               }}
             >
-              <FontAwesomeIcon icon={faCircleLeft} className="text-primary mr-3"/>
+              <FontAwesomeIcon icon={faCircleLeft} className="text-primary mr-3" />
               Home Page
             </button>
 
@@ -124,9 +119,8 @@ const Login = () => {
                   <input
                     type="text"
                     id="email"
-                    className={`mt-1 block w-full px-3 py-2 bg-white border rounded-md shadow-sm focus:outline-none focus:ring-[#FF7F5C] focus:border-[#FF7F5C] sm:text-sm ${
-                      errors.email ? "border-red-500" : "border-gray-300"
-                    }`}
+                    className={`mt-1 block w-full px-3 py-2 bg-white border rounded-md shadow-sm focus:outline-none focus:ring-[#FF7F5C] focus:border-[#FF7F5C] sm:text-sm ${errors.email ? "border-red-500" : "border-gray-300"
+                      }`}
                     {...register("email")}
                   />
                   {errors.email && (
@@ -147,9 +141,8 @@ const Login = () => {
                     <input
                       type="password"
                       id="password"
-                      className={`mt-1 block w-full px-3 py-2 bg-white border rounded-md shadow-sm focus:outline-none focus:ring-[#FF7F5C] focus:border-[#FF7F5C] sm:text-sm ${
-                        errors.password ? "border-red-500" : "border-gray-300"
-                      }`}
+                      className={`mt-1 block w-full px-3 py-2 bg-white border rounded-md shadow-sm focus:outline-none focus:ring-[#FF7F5C] focus:border-[#FF7F5C] sm:text-sm ${errors.password ? "border-red-500" : "border-gray-300"
+                        }`}
                       {...register("password")}
                     />
                     {errors.password && (
@@ -195,8 +188,8 @@ const Login = () => {
                         ? "Logging in..."
                         : "Sending..."
                       : mode === "login"
-                      ? "Login"
-                      : "Send Reset Link"}
+                        ? "Login"
+                        : "Send Reset Link"}
                   </button>
                 </div>
               </form>

@@ -5,7 +5,7 @@ import { showErrorToast, showSuccessToast } from "../../utils/toast";
 
 const handleError = (error) => {
   const message = error.response?.data?.message || "Something went wrong. Please try again.";
-  showErrorToast(message);
+  // showErrorToast(message);
   return message;
 };
 
@@ -15,10 +15,8 @@ export const fetchCartFromServer = createAsyncThunk(
   "cart/fetchCartFromServer",
   async (_, { rejectWithValue }) => {
     try {
-      const response = await axiosInstance.get(`cart/getCartDetails`);  
-      
+      const response = await axiosInstance.get(`cart/getCartDetails`);
       return response.data.cart.items;
-
     } catch (error) {
       return rejectWithValue(handleError(error));
     }
@@ -125,7 +123,7 @@ const cartSlice = createSlice({
       })
       .addCase(fetchCartFromServer.fulfilled, (state, action) => {
         state.loading = false;
-        state.items = action.payload || []; 
+        state.items = action.payload || [];
       })
       .addCase(fetchCartFromServer.rejected, (state, action) => {
         state.loading = false;

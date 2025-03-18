@@ -9,7 +9,8 @@ import {
   faSimCard,
   faClipboardList ,
   faEnvelopeOpenText,
-  faEnvelope
+  faEnvelope,
+  faMoneyBillWave
 } from "@fortawesome/free-solid-svg-icons";
 import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
@@ -29,21 +30,16 @@ const DashboardSidebar = ({ isOpen, toggleSidebar }) => {
         text: "Dashboard",
         href: "/dashboard"
       },
-      // {
-      //   icon: faEnvelopeOpenText,
-      //   text: "Email Templates",
-      //   href: "/email-templates",
-      // },
       {
         icon:  faClipboardList ,
         text: "Email List",
         href: "/email-list",
       },
-      // {
-      //   icon:faEnvelope,
-      //   text: "Send Email",
-      //   href: "/send-email",
-      // },
+      {
+        icon:  faMoneyBillWave,
+        text: "Markup Price",
+        href: "/markup-price",
+      },
       {
         icon: faCog,
         text: "Profile Settings",
