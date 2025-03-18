@@ -3,7 +3,7 @@ import axiosInstance from "../../utils/axiosConfig";
 import { showErrorToast, showSuccessToast } from "../../utils/toast";
 
 const initialState = {
-  user: localStorage.getItem("user") || null,
+  user: localStorage.getItem("user") ? JSON.parse(localStorage.getItem("user")) : null,
   token: localStorage.getItem("token") || null,
   loading: false,
   error: null,
@@ -92,7 +92,6 @@ export const loginUser = createAsyncThunk(
       localStorage.setItem("user", JSON.stringify(user));
 
       showSuccessToast("Login successful!");
-
 
       return { user, token: accessToken };
     } catch (error) {

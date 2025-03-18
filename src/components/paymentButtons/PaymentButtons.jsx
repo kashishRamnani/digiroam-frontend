@@ -8,7 +8,7 @@ import {
   useStripe,
   useElements,
 } from "@stripe/react-stripe-js";
-import { resetPaymentState, setPaymentStatus } from "../../features";
+import { resetPaymentState, retrieveSettings, setPaymentStatus } from "../../features";
 import {
   capturePayPalOrder,
   createStripePaymentIntent,
@@ -20,7 +20,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPaypal, faCcMastercard } from "@fortawesome/free-brands-svg-icons";
 import { clearFromCart } from "../../features/carts/cartSlice";
 import { showErrorToast, showSuccessToast } from "../../utils/toast";
-
+import getPriceWithMarkup from "../../utils/helpers/get.price.with.markup";
 
 const stripePromise = loadStripe("pk_test_51PtX1yP5I2dh2w2olaE2SXdVYWT056atlVJ3jVZKliMu6GQUa17xzEQHTrELjjJRWal7JwTySuFZLdeNJ7SGwrX700LCXKN0LP");
 
@@ -29,9 +29,11 @@ const PaymentButtons = () => {
   const { stripeClientSecret, loading, error, paymentStatus, paypalOrderId } =
     useSelector((state) => state.payment);
   const { items } = useSelector((state) => state.cart);
+  const { pricePercentage } = useSelector((state) => state.settings);
   const [paymentMethod, setPaymentMethod] = useState(null);
 
   useEffect(() => {
+    dispatch(retrieveSettings());
     return () => {
       dispatch(resetPaymentState());
     };
@@ -55,7 +57,7 @@ const PaymentButtons = () => {
 
     try {
       const totalAmount = items.reduce(
-        (total, item) => total + (item.productPrice * item.productQuantity),
+        (total, item) => total + (getPriceWithMarkup(item.productPrice, pricePercentage) * item.productQuantity),
         0
       );
 
@@ -84,13 +86,13 @@ const PaymentButtons = () => {
       const result = await dispatch(
         generatePayPalOrderId({
           amount: items.reduce(
-            (total, item) => total + item.productPrice * item.productQuantity,
+            (total, item) => total + getPriceWithMarkup(item.productPrice, pricePercentage) * item.productQuantity,
             0
           ),
           currency: "USD",
           items: items.map((item) => ({
             name: item.productName,
-            price: item.productPrice,
+            price: getPriceWithMarkup(item.productPrice, pricePercentage),
             quantity: item.productQuantity,
           })),
         })
@@ -99,7 +101,7 @@ const PaymentButtons = () => {
 
       if (result.error) {
         console.error("PayPal Order Generation Failed:", result.error);
-        throw new Error(result.error.message || "Unknown error");
+        throw new Error(result.error.message ?? "Unknown error");
       }
 
       if (!result.payload || !result.payload.orderId) {
@@ -109,8 +111,7 @@ const PaymentButtons = () => {
 
       return result.payload.orderId;
     } catch (error) {
-      console.error("Error in generatePayPalOrderIdHandler:", error);
-      showErrorToast(error.message || "Error generating PayPal order");
+      showErrorToast(error.message ?? "Error generating PayPal order");
       throw error;
     }
   };
@@ -131,9 +132,8 @@ const PaymentButtons = () => {
 
       let { transactionId, amount, currency_code, payer, packageInfoList } = result.payload;
 
-      // // Convert amount properly
+      // convert amount properly
       amount = String(amount);
-
 
       const esimOrderResult = await dispatch(
         orderEsimProfiles({
@@ -156,11 +156,10 @@ const PaymentButtons = () => {
           amount,
           currency: currency_code,
           payer,
-          packageInfoList,
+          packageInfoList: packageInfoList?.map((pkg) => ({ ...pkg, price: getPriceWithMarkup(pkg.price, pricePercentage) })),
           orderNo: esimOrderResult.payload.data.orderNo
         })
       );
-
 
       if (saveResult.payload.success) {
         showSuccessToast("Payment & eSim Order Successful!");
@@ -168,13 +167,11 @@ const PaymentButtons = () => {
         setTimeout(() => {
           window.location.href = '/dashboard';
         }, 1000);
-
-
       } else {
-        showErrorToast("Failed to save payment data.");
+        console.log("Failed to save payment", error);
+        showErrorToast("Failed to save payment data");
       }
     } catch (error) {
-      console.error("Error capturing PayPal payment:", error);
       showErrorToast("Error capturing PayPal payment");
     }
   };
@@ -222,7 +219,7 @@ const PaymentButtons = () => {
 
           {paymentMethod === "stripe" && stripeClientSecret && (
             <Elements stripe={stripePromise}>
-              <StripeCheckoutForm clientSecret={stripeClientSecret} items={items} />
+              <StripeCheckoutForm clientSecret={stripeClientSecret} items={items} pricePercentage={pricePercentage} />
             </Elements>
           )}
 
@@ -237,7 +234,7 @@ const PaymentButtons = () => {
   );
 };
 
-const StripeCheckoutForm = ({ clientSecret, items }) => {
+const StripeCheckoutForm = ({ clientSecret, items, pricePercentage }) => {
   const stripe = useStripe();
   const elements = useElements();
   const [error, setError] = useState(null);
@@ -274,7 +271,6 @@ const StripeCheckoutForm = ({ clientSecret, items }) => {
       }
 
       if (result.paymentIntent.status === "succeeded") {
-       
         let { id: transactionId, amount, currency } = result.paymentIntent;
 
         // Define missing data
@@ -301,14 +297,17 @@ const StripeCheckoutForm = ({ clientSecret, items }) => {
           showErrorToast("eSim Order Failed: " + esimOrderResult.payload?.message);
           return;
         }
-        
+
         // Step 2: Save Payment Data
         const saveResult = await dispatch(
           savePaymentData({
             transactionId,
-            amount,
+            amount: items.reduce(
+              (total, item) => total + (Number(getPriceWithMarkup(item.productPrice, pricePercentage) * 10000).toFixed(0) * item.productQuantity),
+              0
+            ),
             currency: currency_code,
-            packageInfoList,
+            packageInfoList: packageInfoList?.map((pkg) => ({ ...pkg, price: getPriceWithMarkup(pkg.price, pricePercentage) })),
             orderNo: esimOrderResult.payload.data.orderNo,
           })
         );

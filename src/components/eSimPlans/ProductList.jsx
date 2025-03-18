@@ -4,20 +4,23 @@ import {
   setAddToCartOpen,
   setSelectedProduct,
   setCurrentPage,
+  retrieveSettings,
 } from "../../features";
 import { fetchProducts } from "../../features/products/productSlice";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faShoppingCart, faHeart } from "@fortawesome/free-solid-svg-icons";
 import Pagination from "../common/Pagination";
+import getPriceWithMarkup from "../../utils/helpers/get.price.with.markup";
+import getFormattedVolume from "../../utils/helpers/get.formatted.volume";
 
-const ProductList = () => {
+const ProductList = ({ items }) => {
   const dispatch = useDispatch();
-  const { items, currentPage, itemsPerPage } = useSelector(
-    (state) => state.plans
-  );
+  const { currentPage, itemsPerPage } = useSelector((state) => state.plans);
+  const { pricePercentage } = useSelector((state) => state.settings);
 
   useEffect(() => {
     dispatch(fetchProducts({}));
+    dispatch(retrieveSettings());
   }, [dispatch]);
 
   const handlePageChange = ({ selected }) => {
@@ -53,9 +56,9 @@ const ProductList = () => {
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                 Duration
               </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              {/* <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                 Per GB
-              </th>
+              </th> */}
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                 Action
               </th>
@@ -72,21 +75,20 @@ const ProductList = () => {
                   </div>
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap">
-                  ${product.price}
+                  ${getPriceWithMarkup(product.price, pricePercentage)}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap">
-                  {(product.volume / (1024 * 1024 * 1024)).toFixed(0)}GB
+                  {getFormattedVolume(product.volume)}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap">
                   {product.duration} {product.durationUnit}
                 </td>
-                <td className="px-6 py-4 whitespace-nowrap">
-                  $
-                  {(
-                    product.price /
+                {/* <td className="px-6 py-4 whitespace-nowrap">
+                  ${(
+                    parseFloat(getPriceWithMarkup(product.price, pricePercentage)) /
                     (product.volume / (1024 * 1024 * 1024))
                   ).toFixed(2)}
-                </td>
+                </td> */}
                 <td className="px-6 py-4 whitespace-nowrap">
                   <div className="flex space-x-2">
                     <button
