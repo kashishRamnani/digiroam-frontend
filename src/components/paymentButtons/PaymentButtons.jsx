@@ -60,8 +60,7 @@ const PaymentButtons = () => {
         (total, item) => total + (getPriceWithMarkup(item.productPrice, pricePercentage) * item.productQuantity),
         0
       );
-
-      const response = await dispatch(
+ const response = await dispatch(
         createStripePaymentIntent({
           amount: totalAmount,
           currency: "USD",

@@ -23,6 +23,8 @@ const ProductList = ({ items }) => {
     dispatch(retrieveSettings());
   }, [dispatch]);
 
+  
+
   const handlePageChange = ({ selected }) => {
     dispatch(setCurrentPage(selected + 1));
     window.scrollTo({ top: 0, behavior: "smooth" });

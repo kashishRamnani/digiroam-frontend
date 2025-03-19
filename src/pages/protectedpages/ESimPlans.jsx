@@ -4,7 +4,8 @@ import { retrieveSettings, setCartOpen } from "../../features";
 import { ProductList, CartModal, AddToCartModal, Loader } from "../../components";
 import DashboardLayout from "../../layouts/DashboardLayout";
 import FilterPlans from "../../components/eSimPlans/FilterPlans";
-
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faShoppingCart, faDownload } from "@fortawesome/free-solid-svg-icons";
 const ESimPlans = () => {
   const dispatch = useDispatch();
   const cart = useSelector((state) => state.cart.items);
@@ -31,7 +32,9 @@ const ESimPlans = () => {
             className="flex items-center space-x-2 text-white px-4 py-2 rounded-md"
             style={{ backgroundColor: "var(--secondary-color)" }}
           >
-            Cart ({cart.length})
+             <FontAwesomeIcon icon={faShoppingCart} />
+             <span>Cart ({cart.length})</span>
+            
           </button>
         </div>
 

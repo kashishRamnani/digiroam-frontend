@@ -1,15 +1,12 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo, useCallback } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { fetchProducts } from "../../features/products/productSlice";
+import { addToCart } from "../../features";
+import { v4 as uuidv4 } from "uuid";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
-  faGlobe,
-  faDatabase,
-  faCalendarAlt,
-  faDollarSign,
-  faBolt,
-  faBarcode,
-  faTimes,
+  faGlobe, faDatabase, faCalendarAlt, faDollarSign,
+  faBolt, faBarcode, faTimes,
 } from "@fortawesome/free-solid-svg-icons";
 
 export default function ProductList() {
@@ -20,13 +17,25 @@ export default function ProductList() {
   const [selectedPackage, setSelectedPackage] = useState(null);
 
   useEffect(() => {
-    dispatch(fetchProducts());
-  }, [dispatch]);
-  const getLowestPricePackages = (items) => {
-    if (!items || items.length === 0) return [];
+    if (items.length === 0) {
+      dispatch(fetchProducts());
+    }
+  }, [dispatch, items]);
 
-    const groupedByCategory = items.reduce((acc, product) => {
-      const category = product.name.split(/(\d+GB|\(.*\))/)[0].trim();
+  const productsWithIds = useMemo(
+    () =>
+      items.map((product) => ({
+        ...product,
+        id: product.id || uuidv4(),
+      })),
+    [items]
+  );
+
+  const getLowestPricePackages = useCallback((products) => {
+    if (!products || products.length === 0) return [];
+
+    const groupedByCategory = products.reduce((acc, product) => {
+      const category = product.name.split(/(\d+GB|\(.*\))/)[0].trim().toLowerCase();
       if (!acc[category] || product.price < acc[category].price) {
         acc[category] = product;
       }
@@ -34,75 +43,95 @@ export default function ProductList() {
     }, {});
 
     return Object.values(groupedByCategory).slice(0, 6);
-  };
+  }, []);
 
-  const lowestPricePackages = getLowestPricePackages(items);
+  const lowestPricePackages = useMemo(() => getLowestPricePackages(productsWithIds), [productsWithIds, getLowestPricePackages]);
+
+  const handleBuyNow = useCallback(() => {
+    if (!user) {
+      window.location.href = "/login";
+      return;
+    }
+    if (selectedPackage) {
+      dispatch(addToCart({ product: selectedPackage, quantity: 1 }));
+      window.location.href = "/eSim-plans";
+    }
+  }, [user, selectedPackage, dispatch]);
+
+  useEffect(() => {
+    document.body.classList.toggle("overflow-hidden", isModalOpen);
+  }, [isModalOpen]);
 
   if (lowestPricePackages.length === 0) {
     return <p className="text-red-600">No products available</p>;
   }
 
-  const handleToPackageDetails = (pkg) => {
-    setSelectedPackage(pkg);
-    setIsModalOpen(true);
-  };
-
-  const handleBuyNow = (pkg) => {
-    if (!user) {
-      window.location.href = "/login";
-    } else {
-      dispatch(addToCart({ product: pkg, quantity: 1 }));
-      window.location.href = "/eSim-plans";
-    }
-  };
-
   return (
-    <div className="relative bg-[url('/images/auth/auth-bg.png')] rounded-2xl p-4 text-white shadow-lg max-w-sm w-[350px]">
-      <div className="absolute -top-12 left-1/2 -translate-x-1/2 w-64 h-36 rounded-xl overflow-hidden">
-        <img src="/images/home/product-card.png" alt="Digital Globe" />
-      </div>
-
+    <div className="flex flex-wrap gap-x-6 gap-y-24  ">
+      {lowestPricePackages.map((product) => (
+        <div key={product.id} className="relative bg-[url('/images/auth/auth-bg.png')] rounded-2xl p-4 text-white shadow-lg max-w-sm w-[350px]">
+          <div className="absolute -top-12  left-1/2 -translate-x-1/2 w-64 h-36 rounded-xl overflow-hidden">
+            <img src="/images/home/product-card.png" alt="Digital Globe" />
+          </div>
           <div className="pt-24 space-y-3">
+        <div className="flex items-center justify-between border-b border-white/20 pb-4">
+          <div className="flex items-center gap-2">
+            <FontAwesomeIcon icon={faGlobe} className="w-6 h-6" />
+            <span className="text-lg">COVERAGE</span>
+          </div>
+          <span className="text-lg font-semibold">
+            {product.name.split(/(\d+GB|\(.*\))/)[0].trim()}
+          </span>
+        </div>
 
-  {lowestPricePackages.map((product, index) => (
-    <div key={index} className="flex flex-col bg-gray-800 rounded-lg p-4 shadow-lg">
-   
-      <div className="flex items-center gap-2 pb-4">
-        <FontAwesomeIcon icon={faGlobe} className="w-6 h-6" />
-        <span className="text-lg font-semibold">{product.name.split(/(\d+GB|\(.*\))/)[0].trim()}</span>
-      </div>
+            {/* Data */}
+            <div className="flex items-center justify-between border-b border-white/20 pb-4">
+          <div className="flex items-center gap-2">
+            <FontAwesomeIcon icon={faDatabase} className="w-6 h-6" />
+            <span className="text-lg">DATA</span>
+          </div>
+          <span className="text-lg font-semibold">
+            {(product.volume / (1024 * 1024 * 1024)).toFixed(0)}GB
+          </span>
+        </div>
 
-      {/* Data */}
-      <div className="flex items-center justify-between pb-4 border-b border-white/20">
-        <FontAwesomeIcon icon={faDatabase} className="w-6 h-6" />
-        <span className="text-lg font-semibold">{(product.volume / (1024 * 1024 * 1024)).toFixed(0)}GB</span>
-      </div>
+            {/* Validity */}
+            <div className="flex items-center justify-between border-b border-white/20 pb-4">
+          <div className="flex items-center gap-2">
+            <FontAwesomeIcon icon={faCalendarAlt} className="w-6 h-6" />
+            <span className="text-lg">VALIDITY</span>
+          </div>
+          <span className="text-lg font-semibold">
+            {product.duration} {product.durationUnit}
+          </span>
+        </div>
 
-      {/* Validity */}
-      <div className="flex items-center justify-between pb-4 border-b border-white/20">
-        <FontAwesomeIcon icon={faCalendarAlt} className="w-6 h-6" />
-        <span className="text-lg font-semibold">{product.duration} {product.durationUnit}</span>
-      </div>
-
-      {/* Price */}
-      <div className="flex items-center justify-between pb-4 border-b border-white/20">
-        <FontAwesomeIcon icon={faDollarSign} className="w-6 h-6" />
-        <span className="text-lg font-semibold">$ {product.price} USD</span>
-      </div>
-
-      {/* Details Button */}
-      <button
-        className="w-full bg-white text-orange-600 rounded-full py-3 font-semibold hover:bg-orange-50 transition-colors"
-        onClick={() => handleToPackageDetails(product)}
-      >
-        Details
-      </button>
-    </div>
-  ))}
-</div>
+            {/* Price */}
+            <div className="flex items-center justify-between border-b border-white/20 pb-4">
+          <div className="flex items-center gap-2">
+            <FontAwesomeIcon icon={faDollarSign} className="w-6 h-6" />
+            <span className="text-lg">PRICE</span>
+          </div>
+          <span className="text-lg font-semibold">$ {product.price} USD</span>
+        </div>
 
 
-      {isModalOpen && (
+            {/* Details Button */}
+            <button
+              className="w-full bg-white text-orange-600 rounded-full py-3 font-semibold hover:bg-orange-50 transition-colors"
+              onClick={() => {
+                setSelectedPackage(product);
+                setIsModalOpen(true);
+              }}
+            >
+              Details
+            </button>
+          </div>
+        </div>
+      ))}
+
+      {/* Modal */}
+      {isModalOpen && selectedPackage && (
         <div className="fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm flex items-center justify-center z-50">
           <div className="relative bg-[url('/images/auth/auth-bg.png')] p-6 rounded-2xl w-[400px] text-white shadow-lg">
             <button
@@ -124,14 +153,12 @@ export default function ProductList() {
               </p>
               <p>
                 <FontAwesomeIcon icon={faDatabase} className="mr-2" />
-                <strong>Data:</strong>{" "}
-                {(selectedPackage.volume / (1024 * 1024 * 1024)).toFixed(0)}GB
+                <strong>Data:</strong> {(selectedPackage.volume / (1024 * 1024 * 1024)).toFixed(0)}GB
               </p>
               <p>
                 <FontAwesomeIcon icon={faBarcode} className="mr-2" />
                 <strong>Package Code:</strong> {selectedPackage.packageCode}
               </p>
-
               <p>
                 <FontAwesomeIcon icon={faDollarSign} className="mr-2" />
                 <strong>Price:</strong> $ {selectedPackage.price} USD
@@ -140,7 +167,7 @@ export default function ProductList() {
 
             <button
               className="mt-4 w-full bg-white text-orange-600 rounded-full py-3 font-semibold hover:bg-gray-200 transition-colors"
-              onClick={() => handleBuyNow(selectedPackage)}
+              onClick={handleBuyNow}
             >
               Buy Now
             </button>

@@ -13,7 +13,7 @@ const schema = z.object({
 
 const MarkupPriceForm = () => {
     const dispatch = useDispatch();
-    const { pricePercentage } = useSelector((state) => state.settings);
+    const { pricePercentage } = useSelector((state) => state.settings); 
     const [isEditing, setIsEditing] = useState(false);
 
     const {
@@ -27,7 +27,7 @@ const MarkupPriceForm = () => {
     });
 
     useEffect(() => {
-        dispatch(retrieveSettings());
+        dispatch(retrieveSettings()); 
     }, [dispatch]);
 
     useEffect(() => {
@@ -41,58 +41,58 @@ const MarkupPriceForm = () => {
         setIsEditing(false);
     };
 
-    const viewMood = () => (
-        <div className="space-y-4">
-            <h2 className="text-2xl font-bold text-gray-900 mb-6">The markup price is {pricePercentage}% on each eSim plan</h2>
-            <button
-                onClick={() => setIsEditing(true)}
-                className="w-full bg-primary text-white py-2 px-4 rounded-md hover:bg-secondary transition-colors flex items-center justify-center space-x-2"
-            >
-                <FontAwesomeIcon icon={faEdit} />
-                <span>Edit</span>
-            </button>
-        </div>
-    );
+    return (
+        <div className="bg-white shadow-md rounded-lg p-6 w-full max-w-lg mx-auto mt-10">
+            <h2 className="text-xl font-bold text-gray-800 mb-4">Markup Price Settings</h2>
 
-    const editMood = () => (
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-            <div>
-                <label className="text-sm font-medium text-gray-700">Price Percentage (%)</label>
-                <select
-                    {...register("pricePercentage")}
-                    className={`w-full rounded-md border py-2 px-3 text-sm focus:ring-primary outline-none ${errors.pricePercentage ? "border-red-500" : "border-gray-300"}`}
-                >
-                    {[...Array(100).keys()].map(i => (
+            {!isEditing ? (
+                <div className="flex justify-between items-center">
+                    <p className="text-lg text-gray-700">
+                        Current Markup Price: <strong>{pricePercentage}%</strong>
+                    </p>
+                    <button
+                        onClick={() => setIsEditing(true)}
+                       className="flex-1 ml-4 justify-center flex items-center py-2 px-2 border border-transparent rounded-md shadow-sm  font-medium text-white bg-primary hover:bg-[#f67a55]/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#FF7F5C] transition duration-150 ease-in-out"
+                    >
+                        <FontAwesomeIcon icon={faEdit} />
+                        <span>Edit</span>
+                    </button>
+                </div>
+            ) : (
+                <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col space-y-4">
+                    <label className="text-sm font-medium text-gray-700">Set Markup Percentage</label>
+                    <select
+                        {...register("pricePercentage")}
+                        className="border rounded-md py-2 px-3 focus:ring focus:ring-blue-300"
+                    >
+                         {[...Array(100).keys()].map(i => (
                         <option key={i + 1} value={i + 1}>{i + 1}%</option>
                     ))}
-                </select>
-                {errors.pricePercentage && (
-                    <p className="text-red-500 text-xs mt-1">{errors.pricePercentage.message}</p>
-                )}
-            </div>
-            <div className="flex space-x-4">
-                <button
-                    type="submit"
-                    className="flex-1 bg-primary text-white py-2 px-4 rounded-md hover:bg-secondary transition-colors flex items-center justify-center space-x-2"
-                >
-                    <FontAwesomeIcon icon={faSave} />
-                    <span>Save</span>
-                </button>
-                <button
-                    type="button"
-                    onClick={() => setIsEditing(false)}
-                    className="flex-1 bg-gray-200 text-gray-800 py-2 px-4 rounded-md hover:bg-gray-300 transition-colors flex items-center justify-center space-x-2"
-                >
-                    <FontAwesomeIcon icon={faTimes} />
-                    <span>Cancel</span>
-                </button>
-            </div>
-        </form>
-    );
+                       
+                    </select>
+                    {errors.pricePercentage && (
+                        <p className="text-red-500 text-sm">{errors.pricePercentage.message}</p>
+                    )}
 
-    return (
-        <div className="bg-white rounded-lg shadow p-6">
-            {isEditing ? editMood() : viewMood()}
+                    <div className="flex space-x-4">
+                        <button
+                            type="submit"
+                            className="flex-1 justify-center flex items-center py-2 px-4 border border-transparent rounded-md shadow-sm  font-medium text-white bg-primary hover:bg-[#f67a55]/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#FF7F5C] transition duration-150 ease-in-out"
+                        >
+                            <FontAwesomeIcon icon={faSave} />
+                            <span>Save</span>
+                        </button>
+                        <button
+                            type="button"
+                            onClick={() => setIsEditing(false)}
+                            className="flex-1 bg-gray-300 text-gray-700 px-4 py-2 rounded-md flex items-center justify-center space-x-2 hover:bg-gray-400"
+                        >
+                            <FontAwesomeIcon icon={faTimes} />
+                            <span>Cancel</span>
+                        </button>
+                    </div>
+                </form>
+            )}
         </div>
     );
 };

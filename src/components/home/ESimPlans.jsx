@@ -33,6 +33,8 @@ export default function ESimPlans() {
       setActiveTab(id);
     }
   };
+ 
+  
   const showLocalListing = async (id) => {
     const result = await dispatch(fetchProducts({ locationCode: id }));
     if (fetchProducts.fulfilled.match(result)) {
