@@ -62,7 +62,7 @@ const Navbar = () => {
           {/* Logo */}
           <Link to="/">
             <img
-              src="/images/roam-digi-logo.png"
+              src="/public/images/auth/roam-digi-logo.png"
               alt="Roamdigi Logo"
               className="w-32"
             />
