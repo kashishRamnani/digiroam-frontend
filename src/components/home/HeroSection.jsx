@@ -78,9 +78,10 @@ export default function HeroSection() {
                   {/* Background image */}
                 </div>
                 <img
-                  src="/images/home/hero-person.png"
+                  src="/public/images/home/hero-person.png"
                   alt="Person using phone"
-                  className="absolute right-16 sm:right-36 lg:right-28 bottom-0 object-contain w-[76%] h-[96%]"
+                  className="absolute right-20 mt-8 pt-0  sm:right-36 lg:right-28 bottom-[-20px] object-contain w-[76%] h-[83%]"
+                 
                 />
               </div>
             </div>

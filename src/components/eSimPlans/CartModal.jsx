@@ -39,16 +39,14 @@ const CartModal = () => {
 
   return (
     <div
-      className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 px-8"
+      className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 px-4 sm:px-8"
       role="dialog"
       aria-labelledby="cart-modal-title"
       aria-hidden={!isCartOpen}
     >
-      <div className="bg-white rounded-lg p-6 w-full max-w-3xl ml-8">
+     <div className="bg-white rounded-lg p-8 w-full max-w-3xl ml-8 mt-8">
         <div className="flex justify-between items-center mb-4">
-          <h2 id="cart-modal-title" className="text-xl font-semibold">
-            Cart Details
-          </h2>
+          <h2 id="cart-modal-title" className="text-xl font-semibold">Cart Details</h2>
           <button
             onClick={() => dispatch(setCartOpen(false))}
             aria-label="Close cart modal"
@@ -59,13 +57,11 @@ const CartModal = () => {
         </div>
 
         {items.length === 0 ? (
-          <div className="text-center text-gray-500 py-4">
-            Your cart is empty.
-          </div>
+          <div className="text-center text-gray-500 py-4">Your cart is empty.</div>
         ) : (
-          <div className="overflow-x-auto">
-            <table className="w-full">
-              <thead>
+          <div className="overflow-x-auto max-h-60">
+            <table className="w-full min-w-[600px] border-collapse">
+              <thead className="bg-gray-100 px-6">
                 <tr className="border-b">
                   <th className="py-2 text-left">Name</th>
                   <th className="py-2 text-left">Unit Price</th>
@@ -100,16 +96,16 @@ const CartModal = () => {
         )}
 
         <div className="mt-6 space-y-4">
-          <div className="flex items-center space-x-4">
+          <div className="flex flex-col sm:flex-row items-center sm:space-x-4 space-y-4 sm:space-y-0">
             <input
               type="email"
               placeholder="Email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="flex-1 bg-white text-gray-800 border-2 rounded-md p-2"
+              className="flex-1 bg-white text-gray-800 border-2 rounded-md p-2 w-full sm:w-auto"
               aria-label="Email for checkout"
             />
-            <div className="text-right">
+            <div className="text-right w-full sm:w-auto">
               <div className="text-sm text-gray-500">Total:</div>
               <div className="text-xl font-bold">${total.toFixed(2)}</div>
             </div>

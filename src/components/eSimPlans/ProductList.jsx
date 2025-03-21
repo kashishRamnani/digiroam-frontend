@@ -1,5 +1,6 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import Sidebar from "./EsimDetails";
 import {
   setAddToCartOpen,
   setSelectedProduct,
@@ -18,12 +19,12 @@ const ProductList = ({ items }) => {
   const { currentPage, itemsPerPage } = useSelector((state) => state.plans);
   const { pricePercentage } = useSelector((state) => state.settings);
 
+  const [selectedEsim, setSelectedEsim] = useState(null);
+
   useEffect(() => {
     dispatch(fetchProducts({}));
     dispatch(retrieveSettings());
   }, [dispatch]);
-
-  
 
   const handlePageChange = ({ selected }) => {
     dispatch(setCurrentPage(selected + 1));
@@ -33,6 +34,10 @@ const ProductList = ({ items }) => {
   const handleAddToCart = (product) => {
     dispatch(setSelectedProduct(product));
     dispatch(setAddToCartOpen(true));
+  };
+
+  const handleRowClick = (product) => {
+    setSelectedEsim(product);
   };
 
   const totalPages = Math.ceil(items.length / itemsPerPage);
@@ -58,9 +63,6 @@ const ProductList = ({ items }) => {
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                 Duration
               </th>
-              {/* <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Per GB
-              </th> */}
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                 Action
               </th>
@@ -68,7 +70,7 @@ const ProductList = ({ items }) => {
           </thead>
           <tbody className="bg-white divide-y divide-gray-200">
             {currentItems.map((product) => (
-              <tr key={product.packageCode}>
+              <tr key={product.packageCode} onClick={() => handleRowClick(product)} className="cursor-pointer hover:bg-gray-100">
                 <td className="px-6 py-4 whitespace-nowrap">
                   <div className="flex items-center">
                     <div className="text-sm font-medium text-gray-900">
@@ -85,16 +87,13 @@ const ProductList = ({ items }) => {
                 <td className="px-6 py-4 whitespace-nowrap">
                   {product.duration} {product.durationUnit}
                 </td>
-                {/* <td className="px-6 py-4 whitespace-nowrap">
-                  ${(
-                    parseFloat(getPriceWithMarkup(product.price, pricePercentage)) /
-                    (product.volume / (1024 * 1024 * 1024))
-                  ).toFixed(2)}
-                </td> */}
                 <td className="px-6 py-4 whitespace-nowrap">
                   <div className="flex space-x-2">
                     <button
-                      onClick={() => handleAddToCart(product)}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleAddToCart(product);
+                      }}
                       className="text-white px-3 py-1 rounded-md"
                       style={{ backgroundColor: "var(--primary-color)" }}
                     >
@@ -119,6 +118,9 @@ const ProductList = ({ items }) => {
           />
         </div>
       )}
+
+      {/* Sidebar for eSIM Details */}
+      {selectedEsim && <Sidebar selectedEsim={selectedEsim} onClose={() => setSelectedEsim(null)} />}
     </div>
   );
 };

@@ -46,7 +46,7 @@ export const createTemplate = createAsyncThunk(
           }
         });
 
-        // Wait for all uploads to finish
+       
         const uploadedFileUrls = await Promise.all(uploadPromises);
 
         // Append all file URLs to the form data
@@ -113,7 +113,7 @@ const emailSlice = createSlice({
     templates: [],
     currentPage: 1,
     itemsPerPage: 10,
-    loading: false,
+    isLoading: false,
     successMessage: '',
     error: null,
   },
@@ -123,47 +123,48 @@ const emailSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      .addCase(fetchTemplates.pending, (state) => { state.loading = true; })
+      .addCase(fetchTemplates.pending, (state) => { 
+        state.isLoading = true; })
       .addCase(fetchTemplates.fulfilled, (state, action) => {
-        state.loading = false;
+        state.isLoading = false;
         state.templates = action.payload;
        
       })
       .addCase(fetchTemplates.rejected, (state, action) => {
-        state.loading = false;
+        state.isLoading = false;
         state.error = action.payload;
         showErrorToast(action.payload);
       })
 
-      .addCase(createTemplate.pending, (state) => { state.loading = true; })
+      .addCase(createTemplate.pending, (state) => { state.isLoading = true; })
       .addCase(createTemplate.fulfilled, (state, action) => {
-        state.loading = false;
+        state.isLoading = false;
         state.templates.push(action.payload);
        
        
       })
       .addCase(createTemplate.rejected, (state, action) => {
-        state.loading = false;
+        state.isLoading = false;
         state.error = action.payload;
         showErrorToast(action.payload);
       })
 
       .addCase(updateTemplate.fulfilled, (state, action) => {
-        state.loading = false;
+        state.isLoading = false;
         const index = state.templates.findIndex((t) => t._id === action.payload._id);
         if (index !== -1) state.templates[index] = action.payload;
         state.successMessage = 'Template updated successfully!';
         showSuccessToast(state.successMessage);
       })
       .addCase(deleteTemplate.fulfilled, (state, action) => {
-        state.loading = false;
+        state.isLoading = false;
         state.templates = state.templates.filter((t) => t._id !== action.payload);
         state.successMessage = 'Template deleted successfully!';
         showSuccessToast(state.successMessage);
       })
 
       .addCase(sendEmailAction.fulfilled, (state) => {
-        state.loading = false;
+        state.isLoading = false;
         state.successMessage = 'Email sent successfully!';
         showSuccessToast(state.successMessage);
       });
