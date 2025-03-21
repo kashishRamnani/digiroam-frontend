@@ -161,7 +161,7 @@ export default function ProductList() {
               </p>
               <p>
                 <FontAwesomeIcon icon={faDatabase} className="mr-2" />
-                <strong>Data:</strong> {(selectedPackage.volume / (1024 * 1024 * 1024)).toFixed(0)}GB
+                <strong>Data</strong> {getFormattedVolume(selectedPackage.volume)}
               </p>
               <p>
                 <FontAwesomeIcon icon={faBarcode} className="mr-2" />
@@ -169,7 +169,7 @@ export default function ProductList() {
               </p>
               <p>
                 <FontAwesomeIcon icon={faDollarSign} className="mr-2" />
-                <strong>Price:</strong> $ {selectedPackage.price} USD
+                <strong>Price:</strong> ${getPriceWithMarkup(selectedPackage.price , pricePercentage )}
               </p>
             </div>
 
