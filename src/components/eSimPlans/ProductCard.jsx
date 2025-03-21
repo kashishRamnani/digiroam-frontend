@@ -1,23 +1,30 @@
-import { useEffect, useState, useMemo, useCallback } from "react";
+import { useEffect,  useState, useMemo, useCallback } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { fetchProducts } from "../../features/products/productSlice";
-import { addToCart } from "../../features";
+import { addToCart,retrieveSettings } from "../../features";
 import { v4 as uuidv4 } from "uuid";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faGlobe, faDatabase, faCalendarAlt, faDollarSign,
   faBolt, faBarcode, faTimes,
 } from "@fortawesome/free-solid-svg-icons";
-
+import getFormattedVolume from "../../utils/helpers/get.formatted.volume";
+import getPriceWithMarkup from "../../utils/helpers/get.price.with.markup";
 export default function ProductList() {
   const dispatch = useDispatch();
+   
+   const { pricePercentage } = useSelector((state) => state.settings);
+   
   const { items } = useSelector((state) => state.plans);
   const { user } = useSelector((state) => state.auth);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedPackage, setSelectedPackage] = useState(null);
 
   useEffect(() => {
+   
+    dispatch(retrieveSettings());
     if (items.length === 0) {
+        
       dispatch(fetchProducts());
     }
   }, [dispatch, items]);
@@ -30,7 +37,7 @@ export default function ProductList() {
       })),
     [items]
   );
-
+  
   const getLowestPricePackages = useCallback((products) => {
     if (!products || products.length === 0) return [];
 
@@ -44,7 +51,7 @@ export default function ProductList() {
 
     return Object.values(groupedByCategory).slice(0, 6);
   }, []);
-
+  
   const lowestPricePackages = useMemo(() => getLowestPricePackages(productsWithIds), [productsWithIds, getLowestPricePackages]);
 
   const handleBuyNow = useCallback(() => {
@@ -91,7 +98,7 @@ export default function ProductList() {
             <span className="text-lg">DATA</span>
           </div>
           <span className="text-lg font-semibold">
-            {(product.volume / (1024 * 1024 * 1024)).toFixed(0)}GB
+          {getFormattedVolume(product.volume)}
           </span>
         </div>
 
@@ -112,7 +119,8 @@ export default function ProductList() {
             <FontAwesomeIcon icon={faDollarSign} className="w-6 h-6" />
             <span className="text-lg">PRICE</span>
           </div>
-          <span className="text-lg font-semibold">$ {product.price} USD</span>
+          <span className="text-lg font-semibold">${getPriceWithMarkup(product.price , pricePercentage )}</span>
+         
         </div>
 
 
