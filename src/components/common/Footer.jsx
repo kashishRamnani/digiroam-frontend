@@ -61,13 +61,13 @@ const Footer = () => {
                 <span className="font-medium">
                   {t("footer.contact_email_label")}:
                 </span>{" "}
-                roamdigi@gmail.com
+                <Link to="mailto:support@roamdigi.com">support@roamdigi.com</Link>
               </li>
               <li className="text-sm text-gray-300 list-none">
                 <span className="font-medium">
                   {t("footer.contact_number_label")}:
                 </span>{" "}
-                00000000000
+                <Link to="https://wa.me/971507621752" target="_blank"> +971 507 621752</Link>
               </li>
               <li className="text-sm text-gray-300 list-none">
                 <span className="font-medium">

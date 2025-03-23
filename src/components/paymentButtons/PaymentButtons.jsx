@@ -60,7 +60,7 @@ const PaymentButtons = () => {
         (total, item) => total + (getPriceWithMarkup(item.productPrice, pricePercentage) * item.productQuantity),
         0
       );
- const response = await dispatch(
+      const response = await dispatch(
         createStripePaymentIntent({
           amount: totalAmount,
           currency: "USD",
@@ -78,20 +78,19 @@ const PaymentButtons = () => {
     }
   };
 
-
-
   const generatePayPalOrderIdHandler = async () => {
     try {
+      console.log(items);
       const result = await dispatch(
         generatePayPalOrderId({
           amount: items.reduce(
-            (total, item) => total + getPriceWithMarkup(item.productPrice, pricePercentage) * item.productQuantity,
+            (total, item) => total + getPriceWithMarkup(item.productPrice * 10000, pricePercentage) * item.productQuantity,
             0
           ),
           currency: "USD",
           items: items.map((item) => ({
             name: item.productName,
-            price: getPriceWithMarkup(item.productPrice, pricePercentage),
+            price: getPriceWithMarkup(item.productPrice * 10000, pricePercentage),
             quantity: item.productQuantity,
           })),
         })
@@ -131,7 +130,6 @@ const PaymentButtons = () => {
 
       let { transactionId, amount, currency_code, payer, packageInfoList } = result.payload;
 
-      // convert amount properly
       amount = String(amount);
 
       const esimOrderResult = await dispatch(
@@ -142,11 +140,17 @@ const PaymentButtons = () => {
         })
       );
 
-
       if (!esimOrderResult.payload?.success) {
         showErrorToast("eSim Order Failed: " + esimOrderResult.payload?.message);
         return;
       }
+
+      amount = items.reduce(
+        (total, item) => total + (Number(getPriceWithMarkup(item.productPrice * 10000, pricePercentage)).toFixed(0) * item.productQuantity),
+        0
+      );
+
+      amount = String(amount);
 
       // 🔹 Step 4: Save Payment Data
       const saveResult = await dispatch(
@@ -163,9 +167,9 @@ const PaymentButtons = () => {
       if (saveResult.payload.success) {
         showSuccessToast("Payment & eSim Order Successful!");
 
-        setTimeout(() => {
-          window.location.href = '/dashboard';
-        }, 1000);
+        // setTimeout(() => {
+        //   window.location.href = '/dashboard';
+        // }, 1000);
       } else {
         console.log("Failed to save payment", error);
         showErrorToast("Failed to save payment data");
@@ -174,8 +178,6 @@ const PaymentButtons = () => {
       showErrorToast("Error capturing PayPal payment");
     }
   };
-
-
 
   return (
     <>
