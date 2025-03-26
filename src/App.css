@@ -287,32 +287,32 @@ ol li {
 }
 /* Custom CSS to hide the horizontal scrollbar while still allowing scrolling */
 .table-container {
-  overflow-x: scroll; /* Enable horizontal scrolling */
-  -webkit-overflow-scrolling: touch; /* Smooth scrolling on mobile */
+  overflow-x: scroll; 
+  -webkit-overflow-scrolling: touch; 
 }
 
 .table-container::-webkit-scrollbar {
-  display: none; /* Hide scrollbar in Webkit-based browsers (Chrome, Safari, Edge) */
+  display: none; 
 }
 
 .table-container {
-  -ms-overflow-style: none;  /* Hide scrollbar in IE and Edge */
-  scrollbar-width: none;     /* Hide scrollbar in Firefox */
+  -ms-overflow-style: none;  
+  scrollbar-width: none;     
 }
 
 .table {
   width: 100%;
-  table-layout: fixed; /* Prevents table from stretching too much */
+  table-layout: fixed;
 }
 
 th, td {
-  word-wrap: break-word; /* Ensures long content does not overflow */
-  max-width: 200px; /* Optional: Add max-width for cells */
-  text-overflow: ellipsis; /* Optional: Truncate overflowed text */
+  word-wrap: break-word; 
+  max-width: 200px; 
+  text-overflow: ellipsis;
 }
 .quill-wrapper {
-  height: 200px; /* Adjust height as needed */
-  overflow-y: auto; /* Enables scrolling for both toolbar & body */
+  height: 200px; 
+  overflow-y: auto; 
   border: 1px solid #ccc;
   border-radius: 5px;
 }

@@ -1,7 +1,8 @@
 import DashboardLayout from "../../../layouts/DashboardLayout";
 import React, { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import DataPlan from "../DataPlan";
+
+import { Link } from "react-router-dom";
 import {
   faChartBar,
   faShoppingCart,
@@ -138,11 +139,15 @@ const UserDashboardHome = () => {
             <thead>
               <tr className="text-xs font-semibold tracking-wide text-left text-gray-500 uppercase border-b bg-gray-50">
                 <th className="px-4 py-3">Order No</th>
+
                 <th className="px-4 py-3">Amount</th>
+                <th className="px-4 py-3">No.of eSIMs</th>
                 <th className="px-4 py-3">Currency</th>
                 <th className="px-4 py-3">Transaction ID</th>
                 <th className="px-4 py-3">Status</th>
                 <th className="px-4 py-3">Date</th>
+
+
               </tr>
             </thead>
             <tbody className="bg-white divide-y">
@@ -151,15 +156,25 @@ const UserDashboardHome = () => {
                   <tr
                     key={index}
                     className="text-gray-700 cursor-pointer hover:bg-gray-100"
-                    onClick={() => openSidebar(payment.orderNo)}
+
+
                   >
-                    <td className="px-4 py-3">{payment.orderNo}</td>
+                    <td className="px-4 py-3">
+                      <Link
+                        to={`/esims?batchOrderNo=${payment.orderNo}`}
+                        className="text-blue-500 "
+                      >
+                        {payment.orderNo}
+                      </Link>
+                    </td>
                     <td className="px-4 py-3">
                       ${(payment.amount / 10000).toFixed(2)}
                     </td>
+                    <td className="px-4 py-3">{Array.isArray(payment?.packageInfoList) ? payment.packageInfoList.length : 0}</td>
                     <td className="px-4 py-3">{payment.currency}</td>
                     <td className="px-4 py-3">{payment.transactionId}</td>
                     <td className="px-4 py-3">{payment.status}</td>
+
                     <td className="px-4 py-3">
                       {new Date(payment.createdAt).toLocaleString()}
                     </td>
@@ -177,18 +192,18 @@ const UserDashboardHome = () => {
         </div>
       </div>
 
-      {/* Sidebar Popup */}
+      {/* Sidebar Popup
       {isSidebarOpen && selectedEsim && (
         <div className="fixed inset-0 flex items-center justify-end z-50">
-          {/* Overlay - Click to close */}
+          
           <div
             className="bg-gray-900 opacity-50 absolute inset-0 cursor-pointer"
             onClick={closeSidebar}
           ></div>
 
-          {/* Sidebar */}
+        
           <div className="relative w-[52rem] bg-white shadow-2xl h-full p-6 rounded-l-2xl transform transition-transform duration-300 ease-in-out animate-slide-in">
-            {/* Header */}
+          
             <div className="flex justify-between items-center border-b pb-4">
               {selectedEsim && (
                 <div className="flex items-center">
@@ -219,7 +234,7 @@ const UserDashboardHome = () => {
             </div>
 
             <div>
-              {/* Tabs Navigation */}
+            
               <div className="flex space-x-4 mt-4 border-b">
                 {["profile", "Data Plan", "coverage", "action"].map((tab) => (
                   <button
@@ -236,7 +251,7 @@ const UserDashboardHome = () => {
               </div>
 
               <div className="mt-4 space-y-4 overflow-y-auto max-h-screen pr-2">
-                {/* Profile Tab */}
+               
                 {activeTab === "profile" && (
                   <>
                     <div className="grid grid-cols-2 gap-4">
@@ -246,7 +261,7 @@ const UserDashboardHome = () => {
                       <p><strong>Data Volume Left:</strong> {selectedEsim.totalVolume ? `${(selectedEsim.totalVolume / 1024 / 1024).toFixed(2)} MB` : "N/A"}</p>
                     </div>
 
-                    {/* QR Code & Short URL Section */}
+                   
                     <div className="mt-4">
                       <p className="mb-4">
                         <strong>Expired Time:</strong>{" "}
@@ -278,7 +293,7 @@ const UserDashboardHome = () => {
                       </p>
                     </div>
 
-                    {/* QR Code Image */}
+                   
                     {selectedEsim.qrCodeUrl && (
                       <div className="flex justify-center mt-4">
                         <img
@@ -291,13 +306,13 @@ const UserDashboardHome = () => {
                   </>
                 )}
 
-                {/* DataPlan Tab */}
+               
                 {activeTab === "Data Plan" && <DataPlan selectedEsim={selectedEsim} />}
               </div>
             </div>
           </div>
         </div>
-      )}
+      )}  */}
     </DashboardLayout>
   );
 };

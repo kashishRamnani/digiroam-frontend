@@ -11,7 +11,9 @@ import {
   dataPlanSlice,
   emailSlice,
   usersSlice,
-  settingsSlice
+  settingsSlice,
+allocatedProfilesReducer,
+esimSlice
 } from "../features";
 
 export const store = configureStore({
@@ -27,7 +29,9 @@ export const store = configureStore({
     dataPlan: dataPlanSlice,
     email: emailSlice,
     users: usersSlice,
-    settings: settingsSlice
+    settings: settingsSlice,
+    allocatedProfiles: allocatedProfilesReducer,
+    esims:esimSlice, 
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

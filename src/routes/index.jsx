@@ -118,8 +118,12 @@ const Routes = () => {
           path: "/eSim-plans",
           element: <ESimPlans />,
         },
+        // {
+        //   path: "/esims/:batchOrderNo",
+        //   element: <ESimManagement />,
+        // },
         {
-          path: "/manage-user-profiles",
+          path: "/esims/",
           element: <ESimManagement />,
         },
       ]
