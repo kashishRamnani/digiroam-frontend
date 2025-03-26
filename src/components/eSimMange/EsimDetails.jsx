@@ -25,12 +25,12 @@ const Sidebar = ({ selectedEsim, onClose }) => {
 
   return (
     <div className="fixed inset-0 flex items-center justify-end z-50">
-     
+
       <div className="bg-gray-900 opacity-50 absolute inset-0 cursor-pointer" onClick={onClose}></div>
 
-      
+
       <div className="relative w-[52rem] bg-white shadow-2xl h-full p-6 rounded-l-2xl transform transition duration-300 translate-x-0">
-      
+
         <div className="flex justify-between items-center border-b pb-4">
           {selectedEsim && (
             <div className="flex items-center">
@@ -57,9 +57,8 @@ const Sidebar = ({ selectedEsim, onClose }) => {
             <button
               key={tab}
               onClick={() => setActiveTab(tab)}
-              className={`pb-2 text-sm font-medium transition duration-300 ${
-                activeTab === tab ? "text-blue-500 border-b-2 border-blue-500" : "text-gray-500 hover:text-gray-700"
-              }`}
+              className={`pb-2 text-sm font-medium transition duration-300 ${activeTab === tab ? "text-blue-500 border-b-2 border-blue-500" : "text-gray-500 hover:text-gray-700"
+                }`}
             >
               {tab.charAt(0).toUpperCase() + tab.slice(1)}
             </button>
@@ -106,7 +105,7 @@ const Sidebar = ({ selectedEsim, onClose }) => {
 
           {/* Data Plan Tab */}
           {activeTab === "dataPlan" && <DataPlan selectedEsim={selectedEsim} />}
-        {activeTab=="coverage" && <Coverage selectedEsim = {selectedEsim} />}
+          {activeTab == "coverage" && <Coverage selectedEsim={selectedEsim} />}
         </div>
       </div>
     </div>

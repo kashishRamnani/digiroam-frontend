@@ -161,7 +161,7 @@ const UserDashboardHome = () => {
                   >
                     <td className="px-4 py-3">
                       <Link
-                        to={`/esims?batchOrderNo=${payment.orderNo}`}
+                        to={`/esims?orderNo=${payment.orderNo}`}
                         className="text-blue-500 "
                       >
                         {payment.orderNo}

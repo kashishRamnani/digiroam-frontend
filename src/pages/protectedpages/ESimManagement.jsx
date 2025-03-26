@@ -12,32 +12,26 @@ import Pagination from "../../components/common/Pagination";
 import { setCurrentPage } from "../../features";
 const ESimManagement = () => {
   const [searchParams] = useSearchParams();
-  const batchOrderNo = searchParams.get("batchOrderNo");
+  const orderNo = searchParams.get("orderNo");
   const { currentPage, itemsPerPage } = useSelector((state) => state.plans);
   const dispatch = useDispatch();
   const [selectedEsim, setSelectedEsim] = useState(null);
-  const { esims = [], isLoading, error} = useSelector((state) => state.esims || {});
+  const { esims = [], isLoading, error } = useSelector((state) => state.esims || {});
 
 
   useEffect(() => {
-    
-      dispatch(fetchEsims(batchOrderNo ?? null));
-    
-     
-  }, [ batchOrderNo]);
-  
- const handlePageChange = ({ selected }) => {
+    dispatch(fetchEsims(orderNo ?? null));
+  }, [orderNo]);
+
+  const handlePageChange = ({ selected }) => {
     dispatch(setCurrentPage(selected + 1));
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
-  
+
   const totalPages = Math.ceil(esims.length / itemsPerPage);
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
   const currentItems = esims.slice(startIndex, endIndex);
-  
-  
-
 
   const handleCopy = async (text) => {
     if (!text) return showErrorToast("QR Code not available.");
@@ -48,7 +42,7 @@ const ESimManagement = () => {
       showErrorToast("Failed to copy.");
     }
   };
-  const  handleOnClick = (esim) => {
+  const handleOnClick = (esim) => {
     setSelectedEsim(esim);
   };
   return (
@@ -75,7 +69,7 @@ const ESimManagement = () => {
                 </thead>
                 <tbody className="bg-white divide-y">
                   {Array.isArray(esims) && esims.length > 0 ? (
-                   currentItems.map((esim, index)  => (
+                    currentItems.map((esim, index) => (
                       <tr key={index} className="text-gray-700">
                         <td className="px-4 py-3 text-sm flex items-center gap-2">
                           {esim.packageList?.[0]?.locationCode && (
@@ -86,7 +80,7 @@ const ESimManagement = () => {
                             />
                           )}
                           <button
-                            onClick={() => handleOnClick(esim)} 
+                            onClick={() => handleOnClick(esim)}
                             className="text-blue-600 hover:text-blue-800 font-semibold"
                           >
                             {esim.packageList?.[0]?.packageName || "N/A"}
@@ -130,14 +124,14 @@ const ESimManagement = () => {
 
           </div>
           {esims.length > 0 && (
-        <div className="mt-4">
-          <Pagination
-            pageCount={totalPages}
-            currentPage={currentPage-1}
-            onPageChange={handlePageChange}
-          />
-        </div>
-      )}
+            <div className="mt-4">
+              <Pagination
+                pageCount={totalPages}
+                currentPage={currentPage - 1}
+                onPageChange={handlePageChange}
+              />
+            </div>
+          )}
         </div>
       )}
     </DashboardLayout>
