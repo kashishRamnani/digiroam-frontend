@@ -3,11 +3,11 @@ import axiosInstance from "../../utils/axiosConfig";
 
 //All payment info
 export const paymentInfo = createAsyncThunk(
-  "paymentSave/getMyPaymentInfo", // Action type must be a string
+  "paymentSave/getMyPaymentInfo", 
   async (_, { rejectWithValue }) => {
     try {
       const response = await axiosInstance.get("/paymentSave/getMyPaymentInfo");
-      return response.data; // Ensure data is returned
+      return response.data; 
     } catch (error) {
       return rejectWithValue(error.response?.data || "Something went wrong");
     }
@@ -116,6 +116,7 @@ const paymentSlice = createSlice({
     paymentStatus: null,
     paymentSaveStatus: null,
     esimOrderStatus: null, 
+    paymentData: null, 
   },
   reducers: {
     resetPaymentState: (state) => {
@@ -193,6 +194,18 @@ const paymentSlice = createSlice({
         state.loading = false;
         state.error = action.payload;
         state.esimOrderStatus = "failed";
+      })
+      .addCase(paymentInfo.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(paymentInfo.fulfilled, (state, action) => {
+        
+        state.loading = false;
+        state.paymentData = action.payload;
+      })
+      .addCase(paymentInfo.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message;
       });
   },
 });
