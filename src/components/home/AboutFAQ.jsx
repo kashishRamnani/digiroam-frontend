@@ -45,7 +45,7 @@ const AboutFAQ = () => {
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-8 overflow-hidden">
-      <div className="text-center mb-16">
+      {/* <div className="text-center mb-16">
         <h2 className="text-4xl font-bold text-gray-800 mb-8">
           {t("home.faqAbout.download.title")}
           <br />
@@ -84,7 +84,7 @@ const AboutFAQ = () => {
         >
             {t("home.faqAbout.download.buttonText")}
         </motion.button>
-      </div>
+      </div> */}
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
         <div className="text-left">

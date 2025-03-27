@@ -1,8 +1,15 @@
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { retrieveSettings } from "../../features";
 
 const Footer = () => {
   const { t } = useTranslation();
+  const dispatch = useDispatch();
+  const { serviceLinks, contactList, loading } = useSelector((state) => state.settings);
+
+  useEffect(() => { dispatch(retrieveSettings()) }, []);
 
   return (
     <footer className="bg-[#303030] text-white">
@@ -31,23 +38,15 @@ const Footer = () => {
               {t("footer.services_title")}
             </h3>
             <ul className="space-y-2 pl-0">
-              {[
-                "footer.service_no_physical_sim",
-                "footer.service_instant_activation",
-                "footer.service_multiple_profiles",
-                "footer.service_global_roaming",
-                "footer.service_secure_reliable",
-                "footer.service_flexible_plans",
-              ].map((serviceKey) => (
-                <li
-                  key={serviceKey}
-                  className="text-sm text-gray-300 hover:text-[#f67a55] list-none"
-                >
-                  <a href="#" onClick={(e) => e.preventDefault()}>
-                    {t(serviceKey)}
-                  </a>
-                </li>
-              ))}
+              {serviceLinks.length > 0
+                ? serviceLinks.map((service) => !service.isHidden && (
+                  <li
+                    key={service.label} className="text-sm text-gray-300 hover:text-[#f67a55] list-none">
+                    <a href={service.href} onClick={(e) => e.preventDefault()}>
+                      {service.label}
+                    </a>
+                  </li>
+                )) : "There is not any service available"}
             </ul>
           </div>
 
@@ -57,7 +56,17 @@ const Footer = () => {
               {t("footer.contact_us_title")}
             </h3>
             <ul className="space-y-2 pl-0">
-              <li className="text-sm text-gray-300 list-none">
+              {contactList.length > 0
+                ? contactList.map((contact) => !contact.isHidden && (
+                  <li key={contact.field} className="text-sm text-gray-300 list-none ">
+                    <span className="font-medium">
+                      {contact.field}:
+                    </span>{" "}
+                    <Link to={contact.value}>{contact.label}</Link>
+                  </li>
+                )) : "No contact information shared"}
+
+              {/* <li className="text-sm text-gray-300 list-none">
                 <span className="font-medium">
                   {t("footer.contact_email_label")}:
                 </span>{" "}
@@ -92,7 +101,8 @@ const Footer = () => {
                   {t("footer.contact_connects_label")}:
                 </span>{" "}
                 roamdigi
-              </li>
+              </li> */}
+
             </ul>
           </div>
         </div>

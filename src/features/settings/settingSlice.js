@@ -4,6 +4,8 @@ import { showErrorToast, showSuccessToast } from '../../utils/toast';
 
 const initialState = {
     pricePercentage: 0,
+    serviceLinks: [],
+    contactList: [],
     loading: false,
     error: null,
 };
@@ -28,16 +30,23 @@ export const retrieveSettings = createAsyncThunk(
 
 export const updateSettings = createAsyncThunk(
     "settings/update",
-    async ({ pricePercentage }, { rejectWithValue }) => {
+    async ({ pricePercentage, service, contact }, { rejectWithValue }) => {
+        const requestBody = {
+            ...(pricePercentage !== undefined && { pricePercentage }),
+            ...(service !== undefined && { service }),
+            ...(contact !== undefined && { contact })
+        };
+
         try {
-            const response = await axiosInstance.patch(`/settings`, { pricePercentage });
-            showSuccessToast("Markup price updated successfully");
+            const response = await axiosInstance.patch(`/settings`, requestBody);
+            showSuccessToast("Settings updated successfully");
             return response.data.settings;
         } catch (error) {
             return rejectWithValue(handleError(error));
         }
     }
 );
+
 
 // Slice
 const settingsSlice = createSlice({
@@ -53,6 +62,8 @@ const settingsSlice = createSlice({
             .addCase(retrieveSettings.fulfilled, (state, action) => {
                 state.loading = false;
                 state.pricePercentage = action.payload.pricePercentage;
+                state.serviceLinks = action.payload.serviceLinks;
+                state.contactList = action.payload.contactList;
             })
             .addCase(retrieveSettings.rejected, (state, action) => {
                 state.loading = false;
@@ -65,6 +76,8 @@ const settingsSlice = createSlice({
             .addCase(updateSettings.fulfilled, (state, action) => {
                 state.loading = false;
                 state.pricePercentage = action.payload.pricePercentage;
+                state.serviceLinks = action.payload.serviceLinks;
+                state.contactList = action.payload.contactList;
             })
             .addCase(updateSettings.rejected, (state, action) => {
                 state.loading = false;

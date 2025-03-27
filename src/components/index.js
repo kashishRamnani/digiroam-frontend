@@ -27,7 +27,7 @@ import ProfileForm from "./profile/ProfileForm";
 import PasswordForm from "./profile/PasswordForm";
 import HomeProductListing from "./eSimPlans/HomeProductListing";
 import Loader from "./common/Loader";
-import MarkupPriceForm from "./markupPrice/MarkupForm";
+import MarkupPriceForm from "./settings/MarkupForm";
 
 export {
   Footer,

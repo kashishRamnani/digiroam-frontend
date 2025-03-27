@@ -28,7 +28,7 @@ const Coverage = ({ selectedEsim }) => {
             {locationNetworkList.length > 0 ? (
                 locationNetworkList.map((network, index) => (
                     <div key={index} className="flex items-center justify-between  p-4 rounded-md shadow-sm">
-                       
+
                         <div className="flex items-center gap-3">
                             <img
                                 src={`https://static.redteago.com${network.locationLogo}`}

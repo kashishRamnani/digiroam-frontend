@@ -1,7 +1,7 @@
 import DashboardLayout from "../../layouts/DashboardLayout";
 import { MarkupPriceForm } from "../../components";
 
-const MarkupPrice = () => {
+const Settings = () => {
   return (
     <DashboardLayout
       title="Markup Price"
@@ -16,4 +16,4 @@ const MarkupPrice = () => {
   );
 };
 
-export default MarkupPrice;
+export default Settings;

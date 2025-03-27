@@ -8,9 +8,7 @@ import {
   faListCheck,
   faSimCard,
   faClipboardList ,
-  faEnvelopeOpenText,
-  faEnvelope,
-  faMoneyBillWave
+  faTools
 } from "@fortawesome/free-solid-svg-icons";
 import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
@@ -36,9 +34,9 @@ const DashboardSidebar = ({ isOpen, toggleSidebar }) => {
         href: "/email-list",
       },
       {
-        icon:  faMoneyBillWave,
-        text: "Markup Price",
-        href: "/markup-price",
+        icon:  faTools,
+        text: "App Settings",
+        href: "/settings",
       },
       {
         icon: faCog,
