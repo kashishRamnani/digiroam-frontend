@@ -167,9 +167,9 @@ const PaymentButtons = () => {
       if (saveResult.payload.success) {
         showSuccessToast("Payment & eSim Order Successful!");
 
-        // setTimeout(() => {
-        //   window.location.href = '/dashboard';
-        // }, 1000);
+        setTimeout(() => {
+          window.location.href = '/dashboard';
+        }, 1000);
       } else {
         console.log("Failed to save payment", error);
         showErrorToast("Failed to save payment data");

@@ -32,19 +32,21 @@ const CartModal = () => {
   };
 
   if (!isCartOpen) return null;
+
   const total = items.reduce(
-    (sum, item) => sum + getPriceWithMarkup(item.productPrice, pricePercentage) * item.productQuantity,
+    (sum, item) =>
+      sum + getPriceWithMarkup(item.productPrice, pricePercentage) * item.productQuantity,
     0
   );
 
   return (
     <div
-      className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 px-4 sm:px-8"
+      className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 px-4 sm:px-8" 
       role="dialog"
       aria-labelledby="cart-modal-title"
       aria-hidden={!isCartOpen}
     >
-     <div className="bg-white rounded-lg p-8 w-full max-w-3xl ml-8 mt-8">
+      <div className="bg-white rounded-lg p-6 w-full max-w-3xl ml-28 mt-8 shadow-lg">
         <div className="flex justify-between items-center mb-4">
           <h2 id="cart-modal-title" className="text-xl font-semibold">Cart Details</h2>
           <button
@@ -59,30 +61,30 @@ const CartModal = () => {
         {items.length === 0 ? (
           <div className="text-center text-gray-500 py-4">Your cart is empty.</div>
         ) : (
-          <div className="overflow-x-auto max-h-60">
-            <table className="w-full min-w-[600px] border-collapse">
-              <thead className="bg-gray-100 px-6">
+          <div className="overflow-y-auto max-h-40 border rounded-md">
+            <table className="w-full border-collapse text-xl sm:text-base">
+              <thead className="bg-gray-100 sticky top-0">
                 <tr className="border-b">
-                  <th className="py-2 text-left">Name</th>
-                  <th className="py-2 text-left">Unit Price</th>
-                  <th className="py-2 text-left">Quantity</th>
-                  <th className="py-2 text-left">Total Price</th>
-                  <th className="py-2 text-left">Action</th>
+                  <th className="py-2 px-3 text-left">Name</th>
+                  <th className="py-2 px-3 text-left">Price</th>
+                  <th className="py-2 px-3 text-left">Qty</th>
+                  <th className="py-2 px-3 text-left">Total</th>
+                  <th className="py-2 px-3 text-left">Action</th>
                 </tr>
               </thead>
               <tbody>
                 {items.map((item) => (
                   <tr key={item.productId} className="border-b">
-                    <td className="py-2">{item.productName}</td>
-                    <td className="py-2">${getPriceWithMarkup(item.productPrice, pricePercentage)}</td>
-                    <td className="py-2">{item.productQuantity}</td>
-                    <td className="py-2">
+                    <td className="py-1 px-3 whitespace-nowrap">{item.productName}</td>
+                    <td className="py-1 px-3">${getPriceWithMarkup(item.productPrice, pricePercentage)}</td>
+                    <td className="py-1 px-3">{item.productQuantity}</td>
+                    <td className="py-1 px-3">
                       ${(getPriceWithMarkup(item.productPrice, pricePercentage) * item.productQuantity).toFixed(2)}
                     </td>
-                    <td className="py-2">
+                    <td className="py-1 px-3">
                       <button
                         onClick={() => handleRemoveFromCart(item)}
-                        className="text-red-500 hover:text-red-700"
+                        className="text-red-500 hover:text-red-700 text-xs"
                         aria-label={`Remove ${item.productName} from cart`}
                       >
                         Remove
@@ -95,20 +97,19 @@ const CartModal = () => {
           </div>
         )}
 
-        <div className="mt-6 space-y-4">
-          <div className="flex flex-col sm:flex-row items-center sm:space-x-4 space-y-4 sm:space-y-0">
-            <input
-              type="email"
-              placeholder="Email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className="flex-1 bg-white text-gray-800 border-2 rounded-md p-2 w-full sm:w-auto"
-              aria-label="Email for checkout"
-            />
-            <div className="text-right w-full sm:w-auto">
-              <div className="text-sm text-gray-500">Total:</div>
-              <div className="text-xl font-bold">${total.toFixed(2)}</div>
-            </div>
+        <div className="mt-4 space-y-3">
+          <input
+            type="email"
+            placeholder="Email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            className="w-full bg-white text-gray-800 border rounded-md p-2 text-sm"
+            aria-label="Email for checkout"
+          />
+
+          <div className="flex justify-between text-sm">
+            <span className="font-medium">Total:</span>
+            <span className="font-bold">${total.toFixed(2)}</span>
           </div>
 
           <PaymentButtons />

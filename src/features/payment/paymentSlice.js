@@ -1,6 +1,19 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axiosInstance from "../../utils/axiosConfig";
 
+//All payment info
+export const paymentInfo = createAsyncThunk(
+  "paymentSave/getMyPaymentInfo", // Action type must be a string
+  async (_, { rejectWithValue }) => {
+    try {
+      const response = await axiosInstance.get("/paymentSave/getMyPaymentInfo");
+      return response.data; // Ensure data is returned
+    } catch (error) {
+      return rejectWithValue(error.response?.data || "Something went wrong");
+    }
+  }
+);
+
 // Generate PayPal Order ID
 export const generatePayPalOrderId = createAsyncThunk(
   "payment/generatePayPalOrderId",

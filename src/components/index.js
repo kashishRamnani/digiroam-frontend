@@ -4,7 +4,7 @@ import Navbar from "./common/Navbar";
 import ProtectedRoute from "./routes/ProtectedRoutes";
 import HeroSection from "./home/HeroSection";
 import ESimPlans from "./home/ESimPlans";
-import MobileMockups from "./home/MobileMockups";
+// import MobileMockups from "./home/MobileMockups";
 import AboutFAQ from "./home/AboutFAQ";
 import FeaturesGrid from "./home/Features";
 import TestimonialsSection from "./home/Testimonials";
@@ -36,7 +36,7 @@ export {
   ProtectedRoute,
   HeroSection,
   ESimPlans,
-  MobileMockups,
+  // MobileMockups,
   AboutFAQ,
   FeaturesGrid,
   TestimonialsSection,

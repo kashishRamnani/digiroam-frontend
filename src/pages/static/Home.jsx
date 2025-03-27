@@ -3,7 +3,7 @@ import { useTranslation } from "react-i18next";
 import {
   HeroSection,
   ESimPlans,
-  MobileMockups,
+  // MobileMockups,
   AboutFAQ,
   FeaturesGrid,
   TestimonialsSection,
@@ -16,7 +16,7 @@ const Home = () => {
     <MainLayout title="Home" description="Welcome to our app">
       <HeroSection />
       <ESimPlans />
-      <MobileMockups />
+      {/* <MobileMockups /> */}
       <AnimatedSection>
         <FeaturesGrid />
       </AnimatedSection>
