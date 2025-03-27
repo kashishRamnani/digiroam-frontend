@@ -4,15 +4,11 @@ import axiosInstance from "../../utils/axiosConfig";
 
 export const fetchEsims = createAsyncThunk(
   "esims/fetchEsims",
-  async (batchOrderNo, { rejectWithValue }) => {
+  async (params, { rejectWithValue }) => {
     try {
-       const response = await axiosInstance.get("/users/esims", {
-        params: { orderNo: batchOrderNo },
-      });
-     return response.data.esims || [];
-      
+      const response = await axiosInstance.get("/users/esims", { params });
+      return response.data;
     } catch (error) {
-     
       return rejectWithValue(error.response?.data || "Failed to fetch eSIMs");
     }
   }
@@ -32,7 +28,7 @@ const esimSlice = createSlice({
       })
       .addCase(fetchEsims.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.esims = Array.isArray(action.payload) ? action.payload : [];
+        state.esims = action.payload.esims;
       })
       .addCase(fetchEsims.rejected, (state, action) => {
         state.isLoading = false;
@@ -40,5 +36,5 @@ const esimSlice = createSlice({
       });
   },
 });
-export const {setcurrentPage  }= esimSlice.actions
+export const { setcurrentPage } = esimSlice.actions
 export default esimSlice.reducer;
