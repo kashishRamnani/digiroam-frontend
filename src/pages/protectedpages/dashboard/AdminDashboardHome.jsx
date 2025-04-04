@@ -3,7 +3,7 @@ import { fetchUsers } from "../../../features/user/allUserSlice";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faUser, faUsers } from "@fortawesome/free-solid-svg-icons";
+import { faUser, faUsers,faCreditCard } from "@fortawesome/free-solid-svg-icons";
 import { Loader } from "../../../components";
 import { paymentInfo } from "../../../features/payment/paymentSlice";
 
@@ -55,7 +55,7 @@ const AdminDashboardHome = () => {
   const nonVerifiedUsers = totalUsers - verifiedUsers;
 
   const cards = [
-    { icon: faUsers, title: "Total eSims Sold", value: totalSoldESims },
+    { icon: faCreditCard, title: "Total eSims Sold", value: totalSoldESims },
     { icon: faUsers, title: "Total Payments", value: `$${totalPayments}` },
     { icon: faUsers, title: "Total Users", value: totalUsers },
     { icon: faUser, title: "Verified Users", value: verifiedUsers },

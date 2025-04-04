@@ -28,7 +28,10 @@ import PasswordForm from "./profile/PasswordForm";
 import HomeProductListing from "./eSimPlans/HomeProductListing";
 import Loader from "./common/Loader";
 import MarkupPriceForm from "./settings/MarkupForm";
+<<<<<<< HEAD
 import ContactList from "./settings/ContactList";
+=======
+>>>>>>> 17153658e5b1a21d5cfbbd5930a79fb42aa743e4
 import ServiceLinks from "./settings/ServiceLinks";
 
 export {
@@ -62,6 +65,10 @@ export {
   HomeProductListing,
   Loader,
   MarkupPriceForm,
+<<<<<<< HEAD
   ContactList,
   ServiceLinks
+=======
+ 
+>>>>>>> 17153658e5b1a21d5cfbbd5930a79fb42aa743e4
 };

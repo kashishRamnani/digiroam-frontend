@@ -37,7 +37,7 @@ const Footer = () => {
             <h3 className="text-lg font-semibold mb-4 text-white">
               {t("footer.services_title")}
             </h3>
-            <ul className="space-y-2 pl-0">
+            {/* <ul className="space-y-2 pl-0">
               {serviceLinks.length > 0
                 ? serviceLinks.map((service) => !service.isHidden && (
                   <li
@@ -47,7 +47,38 @@ const Footer = () => {
                     </a>
                   </li>
                 )) : "There is not any service available"}
+            </ul> */}
+            <ul className="space-y-2 pl-0">
+              <li className="text-sm text-gray-300 hover:text-[#f67a55] list-none">
+                <a
+                  href="https://www.facebook.com/profile.php?id=61574402734627"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Facebook Profile
+                </a>
+              </li>
+              <li className="text-sm text-gray-300 hover:text-[#f67a55] list-none">
+                <a
+                  href="https://www.linkedin.com/company/roamdigi"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                 Linkedin
+                </a>
+              </li>
+              <li className="text-sm text-gray-300 hover:text-[#f67a55] list-none">
+                <a
+                  href="https://www.instagram.com/roamdigi"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                Instagram
+                </a>
+              </li>
+              
             </ul>
+
           </div>
 
           {/* Contact Info */}
@@ -56,7 +87,7 @@ const Footer = () => {
               {t("footer.contact_us_title")}
             </h3>
             <ul className="space-y-2 pl-0">
-              {contactList.length > 0
+              {/* {contactList.length > 0
                 ? contactList.map((contact) => !contact.isHidden && (
                   <li key={contact.field} className="text-sm text-gray-300 list-none ">
                     <span className="font-medium">
@@ -64,44 +95,29 @@ const Footer = () => {
                     </span>{" "}
                     <Link to={contact.value}>{contact.label}</Link>
                   </li>
-                )) : "No contact information shared"}
+                )) : "No contact information shared"} */}
 
-              {/* <li className="text-sm text-gray-300 list-none">
+              <li className="text-sm text-gray-300 list-none">
                 <span className="font-medium">
                   {t("footer.contact_email_label")}:
                 </span>{" "}
-                <Link to="mailto:support@roamdigi.com">support@roamdigi.com</Link>
+                <Link to="mailto:Info@roamdigi.com">Info@roamdigi.com</Link>
               </li>
               <li className="text-sm text-gray-300 list-none">
                 <span className="font-medium">
                   {t("footer.contact_number_label")}:
                 </span>{" "}
-                <Link to="https://wa.me/971507621752" target="_blank"> +971 507 621752</Link>
+                <Link to="https://wa.me/97142970793" target="_blank"> +971 4 297 0793</Link>
               </li>
-              <li className="text-sm text-gray-300 list-none">
-                <span className="font-medium">
-                  {t("footer.contact_social_label")}:
-                </span>{" "}
-                roamdigi
-              </li>
-              <li className="text-sm text-gray-300 list-none">
-                <span className="font-medium">
-                  {t("footer.contact_media_label")}:
-                </span>{" "}
-                roamdigi
-              </li>
-              <li className="text-sm text-gray-300 list-none">
-                <span className="font-medium">
-                  {t("footer.contact_feedback_label")}:
-                </span>{" "}
-                roamdigi
-              </li>
+             
+             
+             
               <li className="text-sm text-gray-300 list-none">
                 <span className="font-medium">
                   {t("footer.contact_connects_label")}:
                 </span>{" "}
-                roamdigi
-              </li> */}
+                8 The Green Suite R, Dover, Delaware, 19901
+              </li>
 
             </ul>
           </div>
