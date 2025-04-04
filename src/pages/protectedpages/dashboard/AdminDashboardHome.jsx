@@ -9,10 +9,10 @@ import { paymentInfo } from "../../../features/payment/paymentSlice";
 
 const AdminDashboardHome = () => {
   const dispatch = useDispatch();
-  const allUsers = useSelector((state) => state.users?.users?.users || []);
+  const { users } = useSelector((state) => state.users);
   const loading = useSelector((state) => state.users?.loading);
   const paymentData = useSelector((state) => state.payment?.paymentData || []);
-  
+
   const [totalPayments, setTotalPayments] = useState(0);
   const [totalSoldESims, setTotalSoldESims] = useState(0);
   const [usersData, setUsersData] = useState([]);
@@ -23,10 +23,10 @@ const AdminDashboardHome = () => {
   }, [dispatch]);
 
   useEffect(() => {
-    if (paymentData.length > 0 && allUsers.length > 0) {
+    if (paymentData.length > 0 && users.length > 0) {
       let totalPaymentSum = 0;
       let totalEsimsSold = 0;
-      let updatedUsers = allUsers.map(user => ({ ...user, totalPayments: 0, totalPurchasedEsims: 0 }));
+      let updatedUsers = users.map(user => ({ ...user, totalPayments: 0, totalPurchasedEsims: 0 }));
 
       paymentData.forEach(payment => {
         totalPaymentSum += payment.amount / 10000;
@@ -48,18 +48,18 @@ const AdminDashboardHome = () => {
       setTotalSoldESims(totalEsimsSold);
       setUsersData(updatedUsers);
     }
-  }, [paymentData, allUsers]);
+  }, [paymentData, users]);
 
   const totalUsers = usersData.length;
   const verifiedUsers = usersData.filter((user) => user.verified).length;
-  const unverifiedUsers = totalUsers - verifiedUsers;
+  const nonVerifiedUsers = totalUsers - verifiedUsers;
 
   const cards = [
     { icon: faUsers, title: "Total eSims Sold", value: totalSoldESims },
     { icon: faUsers, title: "Total Payments", value: `$${totalPayments}` },
     { icon: faUsers, title: "Total Users", value: totalUsers },
     { icon: faUser, title: "Verified Users", value: verifiedUsers },
-    { icon: faUser, title: "Unverified Users", value: unverifiedUsers },
+    { icon: faUser, title: "Non-verified Users", value: nonVerifiedUsers },
   ];
 
   return (
@@ -101,7 +101,7 @@ const AdminDashboardHome = () => {
                     {user.verified ? (
                       <span className="px-2 py-1 bg-green-200 text-green-700 rounded">Verified</span>
                     ) : (
-                      <span className="px-2 py-1 bg-red-200 text-red-700 rounded">Unverified</span>
+                      <span className="px-2 py-1 bg-red-200 text-red-700 rounded">Non-verified</span>
                     )}
                   </td>
                   <td className="px-4 py-3">{user.totalPurchasedEsims}</td>

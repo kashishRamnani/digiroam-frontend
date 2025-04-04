@@ -28,6 +28,8 @@ import PasswordForm from "./profile/PasswordForm";
 import HomeProductListing from "./eSimPlans/HomeProductListing";
 import Loader from "./common/Loader";
 import MarkupPriceForm from "./settings/MarkupForm";
+import ContactList from "./settings/ContactList";
+import ServiceLinks from "./settings/ServiceLinks";
 
 export {
   Footer,
@@ -59,5 +61,7 @@ export {
   PasswordForm,
   HomeProductListing,
   Loader,
-  MarkupPriceForm
+  MarkupPriceForm,
+  ContactList,
+  ServiceLinks
 };

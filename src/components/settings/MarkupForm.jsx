@@ -4,16 +4,12 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useDispatch, useSelector } from "react-redux";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEdit, faSave, faTimes } from "@fortawesome/free-solid-svg-icons";
-import { z } from "zod";
 import { retrieveSettings, updateSettings } from "../../features";
-
-const schema = z.object({
-    pricePercentage: z.string().min(0).max(100, "Must be between 0 and 100"),
-});
+import { settingsSchema } from "../../schemas/allSchema";
 
 const MarkupPriceForm = () => {
     const dispatch = useDispatch();
-    const { pricePercentage } = useSelector((state) => state.settings); 
+    const { pricePercentage } = useSelector((state) => state.settings);
     const [isEditing, setIsEditing] = useState(false);
 
     const {
@@ -22,12 +18,12 @@ const MarkupPriceForm = () => {
         formState: { errors },
         reset,
     } = useForm({
-        resolver: zodResolver(schema),
+        resolver: zodResolver(settingsSchema),
         defaultValues: { pricePercentage: 0 },
     });
 
     useEffect(() => {
-        dispatch(retrieveSettings()); 
+        dispatch(retrieveSettings());
     }, [dispatch]);
 
     useEffect(() => {
@@ -37,7 +33,8 @@ const MarkupPriceForm = () => {
     }, [pricePercentage, reset]);
 
     const onSubmit = (data) => {
-        dispatch(updateSettings(data));
+        console.log(data);
+        // dispatch(updateSettings(data));
         setIsEditing(false);
     };
 
@@ -52,7 +49,7 @@ const MarkupPriceForm = () => {
                     </p>
                     <button
                         onClick={() => setIsEditing(true)}
-                       className="flex-1 ml-4 justify-center flex items-center py-2 px-2 border border-transparent rounded-md shadow-sm  font-medium text-white bg-primary hover:bg-[#f67a55]/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#FF7F5C] transition duration-150 ease-in-out"
+                        className="flex-1 ml-4 justify-center flex items-center py-2 px-2 border border-transparent rounded-md shadow-sm  font-medium text-white bg-primary hover:bg-[#f67a55]/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#FF7F5C] transition duration-150 ease-in-out"
                     >
                         <FontAwesomeIcon icon={faEdit} />
                         <span>Edit</span>
@@ -65,10 +62,10 @@ const MarkupPriceForm = () => {
                         {...register("pricePercentage")}
                         className="border rounded-md py-2 px-3 focus:ring focus:ring-blue-300"
                     >
-                         {[...Array(100).keys()].map(i => (
-                        <option key={i + 1} value={i + 1}>{i + 1}%</option>
-                    ))}
-                       
+                        {[...Array(100).keys()].map(i => (
+                            <option key={i + 1} value={i + 1}>{i + 1}%</option>
+                        ))}
+
                     </select>
                     {errors.pricePercentage && (
                         <p className="text-red-500 text-sm">{errors.pricePercentage.message}</p>
@@ -79,8 +76,8 @@ const MarkupPriceForm = () => {
                             type="submit"
                             className="flex-1 justify-center flex items-center py-2 px-4 border border-transparent rounded-md shadow-sm  font-medium text-white bg-primary hover:bg-[#f67a55]/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#FF7F5C] transition duration-150 ease-in-out"
                         >
-                            <FontAwesomeIcon icon={faSave} />
-                            <span>Save</span>
+                            <FontAwesomeIcon icon={faSave} className="me-3" />
+                            <span className="ms-3">Save</span>
                         </button>
                         <button
                             type="button"

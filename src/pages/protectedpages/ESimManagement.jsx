@@ -110,7 +110,7 @@ const ESimManagement = () => {
                 ) : (
                   <tr>
                     <td colSpan="5" className="text-center px-4 py-3">
-                      Oops! No eSIMs found. Please <span className="font-semibold">purchase an eSIM</span>.
+                      No eSIMs found. Please try <span className="font-semibold">purchasing any!</span>.
                     </td>
                   </tr>
                 )}

@@ -9,7 +9,7 @@ import { useNavigate } from "react-router-dom";
 const SendEmailForm = ({ template, onClose }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  
+
   const { templates, loading: templatesLoading } = useSelector((state) => state.email);
   const { users, loading: usersLoading } = useSelector((state) => state.users);
 
@@ -42,8 +42,8 @@ const SendEmailForm = ({ template, onClose }) => {
 
   const handleUserChange = (e) => {
     const selectedUserId = e.target.value;
-    const selectedUser = users?.users.find((user) => user._id === selectedUserId);
-  
+    const selectedUser = users?.find((user) => user._id === selectedUserId);
+
     if (selectedUser) {
       setForm((prev) => ({
         ...prev,
@@ -58,28 +58,28 @@ const SendEmailForm = ({ template, onClose }) => {
       }));
     }
   };
-  
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!form.email) return;
-  
+
     const emailData = {
       eventName: form.eventName,
       userEmail: form.email,
       orderNo: form.orderNo || null,
       iccid: form.iccid || null,
     };
-  
+
     try {
       await dispatch(sendEmailAction(emailData)).unwrap();
       onClose?.();
       navigate("/email-list");
     } catch (error) {
-      
+
     }
   };
-  
+
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
@@ -110,10 +110,10 @@ const SendEmailForm = ({ template, onClose }) => {
             value={form.user}
             onChange={handleUserChange}
             className="border p-2 rounded-md w-full"
-            disabled={usersLoading || !users?.users?.length}
+            disabled={usersLoading || !users?.length}
           >
             <option value="">-- Choose --</option>
-            {users?.users?.map((user) => (
+            {users?.map((user) => (
               <option key={user._id} value={user._id}>
                 {user.name}
               </option>
