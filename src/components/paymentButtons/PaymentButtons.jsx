@@ -80,17 +80,16 @@ const PaymentButtons = () => {
 
   const generatePayPalOrderIdHandler = async () => {
     try {
-      console.log(items);
       const result = await dispatch(
         generatePayPalOrderId({
           amount: items.reduce(
-            (total, item) => total + getPriceWithMarkup(item.productPrice * 10000, pricePercentage) * item.productQuantity,
+            (total, item) => total + getPriceWithMarkup(item.productPrice, pricePercentage) * item.productQuantity,
             0
           ),
           currency: "USD",
           items: items.map((item) => ({
             name: item.productName,
-            price: getPriceWithMarkup(item.productPrice * 10000, pricePercentage),
+            price: getPriceWithMarkup(item.productPrice, pricePercentage),
             quantity: item.productQuantity,
           })),
         })
@@ -145,21 +144,15 @@ const PaymentButtons = () => {
         return;
       }
 
-      amount = items.reduce(
-        (total, item) => total + (Number(getPriceWithMarkup(item.productPrice * 10000, pricePercentage)).toFixed(0) * item.productQuantity),
-        0
-      );
-
+      amount = items.reduce((total, { productPrice, productQuantity }) => total + Number(getPriceWithMarkup(productPrice, pricePercentage) * 10000).toFixed(2) * productQuantity, 0);
       amount = String(amount);
-
-      // 🔹 Step 4: Save Payment Data
       const saveResult = await dispatch(
         savePaymentData({
           transactionId,
           amount,
           currency: currency_code,
           payer,
-          packageInfoList: packageInfoList?.map((pkg) => ({ ...pkg, price: getPriceWithMarkup(pkg.price, pricePercentage) })),
+          packageInfoList: packageInfoList?.map((pkg) => ({ ...pkg, price: (getPriceWithMarkup(pkg.price / 10000, pricePercentage) * 10000) })),
           orderNo: esimOrderResult.payload.data.orderNo
         })
       );
@@ -170,7 +163,6 @@ const PaymentButtons = () => {
           window.location.href = '/dashboard';
         }, 1000);
       } else {
-        console.log("Failed to save payment", error);
         showErrorToast("Failed to save payment data");
       }
     } catch (error) {
