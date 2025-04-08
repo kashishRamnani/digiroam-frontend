@@ -166,7 +166,6 @@ const PaymentButtons = () => {
 
       if (saveResult.payload.success) {
         showSuccessToast("Payment & eSim Order Successful!");
-
         setTimeout(() => {
           window.location.href = '/dashboard';
         }, 1000);
@@ -308,7 +307,7 @@ const StripeCheckoutForm = ({ clientSecret, items, pricePercentage }) => {
               0
             ),
             currency: currency_code,
-            packageInfoList: packageInfoList?.map((pkg) => ({ ...pkg, price: getPriceWithMarkup(pkg.price, pricePercentage) })),
+            packageInfoList: packageInfoList?.map((pkg) => ({ ...pkg, price: getPriceWithMarkup((pkg.price / 10000), pricePercentage) * 10000 })),
             orderNo: esimOrderResult.payload.data.orderNo,
           })
         );

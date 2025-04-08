@@ -6,6 +6,7 @@ import {
   faClock,
   faCalendarAlt,
 } from "@fortawesome/free-solid-svg-icons";
+import { paymentInfo } from "../../features/payment/paymentSlice";
 import DashboardLayout from "../../layouts/DashboardLayout";
 import { useTranslation } from "react-i18next";
 import { ProfileForm, PasswordForm } from "../../components";
@@ -20,11 +21,26 @@ const ProfileSettings = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.auth);
-  const { profile, profileUpdated, passwordChanged, loading } = useSelector(
+  const { profile, profileUpdated, passwordChanged} = useSelector(
     (state) => state.userProfile
   );
   const [userName, setUserName] = useState("");
+   const { paymentData, loading } = useSelector((state) => state.payment);
+   const totalOrder = paymentData.length
+   const totalPackages =
+   paymentData.reduce(
+     (sum, payment) =>sum +
+     (payment.packageInfoList?.reduce((pkgSum, pkg) => pkgSum + pkg.count, 0) || 0),
+     0
+   ) || 0;
+   const memberSince = profile?.createdAt
+  ? new Date(profile.createdAt).toLocaleDateString("en-US", {
+      month: "short",
+      year: "numeric",
+    })
+  : "N/A";
 
+   
   useEffect(() => {
     if (user?.name) {
       setUserName(user.name.substring(0, 2).toUpperCase());
@@ -48,6 +64,9 @@ const ProfileSettings = () => {
       dispatch(getMyProfile());
     }
   };
+   useEffect(()=>{
+    dispatch(paymentInfo())
+   },[dispatch])
 
   return (
     <DashboardLayout
@@ -76,16 +95,16 @@ const ProfileSettings = () => {
                       icon={faChartLine}
                       className="text-primary"
                     />
-                    <span className="text-gray-600">Total Purchases</span>
+                    <span className="text-gray-600"> Total Esim</span>
                   </div>
-                  <span className="font-semibold">124</span>
+                  <span className="font-semibold">{totalOrder}</span>
                 </div>
                 <div className="flex items-center justify-between">
                   <div className="flex items-center space-x-2">
                     <FontAwesomeIcon icon={faClock} className="text-primary" />
-                    <span className="text-gray-600">Purchased Plans</span>
+                    <span className="text-gray-600">Total Packages</span>
                   </div>
-                  <span className="font-semibold">256</span>
+                  <span className="font-semibold">{totalPackages}</span>
                 </div>
                 <div className="flex items-center justify-between">
                   <div className="flex items-center space-x-2">
@@ -95,7 +114,7 @@ const ProfileSettings = () => {
                     />
                     <span className="text-gray-600">Member Since</span>
                   </div>
-                  <span className="font-semibold">Jan 2024</span>
+                  <span className="font-semibold">{memberSince}</span>
                 </div>
               </div>
             </div>

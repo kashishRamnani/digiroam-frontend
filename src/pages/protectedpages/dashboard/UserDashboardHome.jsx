@@ -7,13 +7,10 @@ import { faSimCard, faCreditCard, faUser } from "@fortawesome/free-solid-svg-ico
 import { useDispatch, useSelector } from "react-redux";
 import { retrieveSettings } from "../../../features";
 import Loader from "../../../components/common/Loader";
+
 const UserDashboardHome = () => {
   const dispatch = useDispatch();
-
-
   const { paymentData, loading } = useSelector((state) => state.payment);
-
-  const { pricePercentage } = useSelector((state) => state.settings);
 
   useEffect(() => {
     dispatch(retrieveSettings());
@@ -40,7 +37,6 @@ const UserDashboardHome = () => {
   ];
 
   return (
-
     <DashboardLayout title="Dashboard" description="Your personal dashboard">
       {loading && <Loader />}
       <div className="container mx-auto px-6 py-8">

@@ -81,11 +81,16 @@ const DashboardSidebar = ({ isOpen, toggleSidebar }) => {
       style={{ backgroundColor: "var(--secondary-color)" }}
     >
       <div className="flex items-center justify-between px-4">
+        
+       <Link to="/">
+       
         <img
           src="/images/roam-digi-logo-white.png"
           alt="Roamdigi Logo"
           className="w-32"
         />
+       </Link>
+       
         <button onClick={toggleSidebar} className="md:hidden">
           <FontAwesomeIcon icon={faTimes} className="h-6 w-6" />
         </button>

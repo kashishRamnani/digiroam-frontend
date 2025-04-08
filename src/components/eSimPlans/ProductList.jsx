@@ -10,21 +10,22 @@ import {
 import { fetchProducts } from "../../features/products/productSlice";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faShoppingCart, faHeart } from "@fortawesome/free-solid-svg-icons";
+
 import Pagination from "../common/Pagination";
 import getPriceWithMarkup from "../../utils/helpers/get.price.with.markup";
 import getFormattedVolume from "../../utils/helpers/get.formatted.volume";
-
-const ProductList = ({ items }) => {
+const ProductList = ({ items, locationCode = "", noAction }) => {
   const dispatch = useDispatch();
   const { currentPage, itemsPerPage } = useSelector((state) => state.plans);
   const { pricePercentage } = useSelector((state) => state.settings);
-
+  const [sortOrder, setSortOrder] = useState("price");
   const [selectedEsim, setSelectedEsim] = useState(null);
 
   useEffect(() => {
-    dispatch(fetchProducts({}));
+    dispatch(fetchProducts({ locationCode }));
     dispatch(retrieveSettings());
-  }, [dispatch]);
+  }, [dispatch, locationCode]);
+
 
   const handlePageChange = ({ selected }) => {
     dispatch(setCurrentPage(selected + 1));
@@ -45,10 +46,31 @@ const ProductList = ({ items }) => {
   const endIndex = startIndex + itemsPerPage;
   const currentItems = items.slice(startIndex, endIndex);
 
+  const sortProducts = (order) => {
+    if (order === "asc") {
+      return [...currentItems].sort((a, b) => a.price - b.price);
+    } else {
+      return [...currentItems].sort((a, b) => b.price - a.price);
+    }
+  };
+
+  const sortedItems = sortProducts(sortOrder);
+
+  const handleSortChange = (e) => {
+    setSortOrder(e.target.value);
+  };
+
   return (
     <div>
       <div className="overflow-x-auto">
         <table className="min-w-full bg-white">
+
+          <select onChange={handleSortChange} value={sortOrder} className="p-2 border rounded-md">
+            <option value=""> Price</option>
+            <option value="asc">Low to High</option>
+            <option value="desc">High to Low</option>
+          </select>
+
           <thead>
             <tr className="bg-gray-50">
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
@@ -63,19 +85,21 @@ const ProductList = ({ items }) => {
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                 Duration
               </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              {!noAction && <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                 Action
-              </th>
+              </th>}
             </tr>
           </thead>
           <tbody className="bg-white divide-y divide-gray-200">
-            {currentItems.map((product) => (
-              <tr key={product.packageCode} onClick={() => handleRowClick(product)} className="cursor-pointer hover:bg-gray-100">
+            {sortedItems.map((product) => (
+              <tr
+                key={product.packageCode}
+                onClick={() => handleRowClick(product)}
+                className="cursor-pointer hover:bg-gray-100"
+              >
                 <td className="px-6 py-4 whitespace-nowrap">
                   <div className="flex items-center">
-                    <div className="text-sm font-medium text-gray-900">
-                      {product.name}
-                    </div>
+                    <div className="text-sm font-medium text-gray-900">{product.name}</div>
                   </div>
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap">
@@ -87,7 +111,7 @@ const ProductList = ({ items }) => {
                 <td className="px-6 py-4 whitespace-nowrap">
                   {product.duration} {product.durationUnit}
                 </td>
-                <td className="px-6 py-4 whitespace-nowrap">
+                {!noAction && <td className="px-6 py-4 whitespace-nowrap">
                   <div className="flex space-x-2">
                     <button
                       onClick={(e) => {
@@ -103,7 +127,7 @@ const ProductList = ({ items }) => {
                       <FontAwesomeIcon icon={faHeart} />
                     </button>
                   </div>
-                </td>
+                </td>}
               </tr>
             ))}
           </tbody>
@@ -126,3 +150,6 @@ const ProductList = ({ items }) => {
 };
 
 export default ProductList;
+
+
+

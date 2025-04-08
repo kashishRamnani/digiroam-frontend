@@ -14,8 +14,9 @@ export default function ESimPlans() {
   const dispatch = useDispatch();
   const [showProduct, setShowProduct] = useState(false);
   const { isLoading } = useSelector((state) => state.plans);
-
+  const [ShowAllCountries, setShowCountries] = useState(false)
   const onSubmit = async (id) => {
+    setShowCountries(false)
     if (id === "local") {
       setShowProduct(false);
       setActiveTab(id);
@@ -33,15 +34,17 @@ export default function ESimPlans() {
       setActiveTab(id);
     }
   };
- 
-  
+
+
   const showLocalListing = async (id) => {
     const result = await dispatch(fetchProducts({ locationCode: id }));
     if (fetchProducts.fulfilled.match(result)) {
       setShowProduct(true);
     }
   };
-
+  const countriesToShow = ShowAllCountries
+    ? countryData[activeTab] || []
+    : (countryData[activeTab] || []).slice(0, 9)
   return (
     <div className="relative max-w-7xl mx-auto px-4 py-8">
       {isLoading && <Loader />}
@@ -52,10 +55,9 @@ export default function ESimPlans() {
               key={type.id}
               onClick={() => onSubmit(type.id)}
               className={`flex-1 py-2 px-6 rounded-full text-sm font-medium transition-all
-                ${
-                  activeTab === type.id
-                    ? "bg-[#f67a55] text-white shadow-md"
-                    : "text-gray-500 hover:text-gray-700"
+                ${activeTab === type.id
+                  ? "bg-[#f67a55] text-white shadow-md"
+                  : "text-gray-500 hover:text-gray-700"
                 }`}
             >
               {type.label}
@@ -75,7 +77,7 @@ export default function ESimPlans() {
       ) : (
         <>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
-            {countryData[activeTab]?.map((country) => (
+            {countriesToShow.map((country) => (
               <button
                 key={country.id}
                 onClick={() => showLocalListing(country.id)}
@@ -98,11 +100,18 @@ export default function ESimPlans() {
               </button>
             ))}
           </div>
-          <div className="text-center">
-            <button className="bg-gray-900 text-white px-8 py-3 rounded-lg hover:bg-gray-800 transition-colors">
-              {t("home.esimplan.btnText")}
-            </button>
-          </div>
+
+          {!ShowAllCountries && countryData[activeTab]?.length > 9 ? (
+            <div className="text-center">
+              <button
+                className="bg-gray-900 text-white px-8 py-3 rounded-lg hover:bg-gray-800 transition-colors"
+                onClick={() => setShowCountries(true)}
+              >
+                {t("home.esimplan.btnText")}
+              </button>
+            </div>
+          ) : null}
+
         </>
       )}
     </div>

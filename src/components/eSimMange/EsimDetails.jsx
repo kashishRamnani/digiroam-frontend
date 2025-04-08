@@ -10,13 +10,13 @@ const Sidebar = ({ selectedEsim, onClose }) => {
 
   const getEsimStatusIcon = (status) => {
     switch (status) {
-      case "canceled":
-        return { icon: faTimes, color: "red", label: "Canceled" };
-      case "got_resource":
+      case "CANCEL":
+        return { icon: faTimes, color: "red", label: "Cancel" };
+      case "GOT_RESOURCE":
         return { icon: faShoppingCart, color: "blue", label: "Resource Received" };
-      case "new":
+      case "NEW":
         return { icon: faPlusCircle, color: "green", label: "New" };
-      case "in_use":
+      case "IN_USE":
         return { icon: faSimCard, color: "green", label: "In Use" };
       default:
         return { icon: faChartBar, color: "gray", label: status || "Unknown" };

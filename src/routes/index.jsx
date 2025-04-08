@@ -23,10 +23,11 @@ import {
   ESimManagement,
 
   // admin pages
-  // EmailTemplateForm,
   EmailTemplateList,
   Settings,
-  // SendEmailForm
+
+  // public
+  QueriedEsimPlans,
 } from "../pages";
 
 import { SocialCallback } from "../callBacks";
@@ -91,6 +92,10 @@ const Routes = () => {
     {
       path: "/auth/callback",
       element: <SocialCallback />,
+    },
+    {
+      path: "/:locationCode/plans",
+      element: <QueriedEsimPlans />,
     },
 
     // protect routes for both user type

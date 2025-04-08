@@ -9,7 +9,7 @@ import { filterProductSchema } from "../../schemas/allSchema";
 const ProductFilters = () => {
   const dispatch = useDispatch();
   const types = ["BASE", "TOPUP"];
-
+  
   const { register, handleSubmit, reset } = useForm({
     resolver: zodResolver(filterProductSchema),
     defaultValues: {

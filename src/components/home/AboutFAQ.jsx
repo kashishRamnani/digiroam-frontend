@@ -94,13 +94,14 @@ const AboutFAQ = () => {
           <p className="text-[#303030] mb-8">
           {t("home.faqAbout.general.description")}
           </p>
-          <motion.button
+          <motion.a
+          href='/faqs'
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
             className="bg-primary text-white font-semibold py-3 px-8 rounded-full shadow-lg hover:bg-orange-500 transition-colors"
           >
             {t("home.faqAbout.general.buttonText")}
-          </motion.button>
+          </motion.a>
         </div>
 
         <div className="space-y-2">

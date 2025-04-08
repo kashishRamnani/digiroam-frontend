@@ -38,7 +38,7 @@ const ESimPlans = () => {
           </button>
         </div>
 
-        <FilterPlans plans={items} pricePercentage={pricePercentage} onFilter={handleFilter} />
+        <FilterPlans plans={items} pricePercentage={pricePercentage} onFilter={handleFilter} sort/>
         <ProductList items={filteredPlans} />
         <AddToCartModal />
         <CartModal />

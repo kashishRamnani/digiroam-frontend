@@ -16,6 +16,9 @@ import ESimManagement from "./protectedpages/ESimManagement";
 import EmailTemplateList from "./protectedpages/EmailList.jsx";
 import Settings from "./protectedpages/Settings.jsx";
 
+// public
+import QueriedEsimPlans from "./public/QueriedEsimPlans.jsx";
+
 export {
   Home,
   FAQs,
@@ -33,5 +36,8 @@ export {
 
   // admin pages
   EmailTemplateList,
-  Settings
+  Settings,
+
+  // public
+  QueriedEsimPlans
 };

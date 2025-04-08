@@ -55,7 +55,7 @@
   "footer": {
     "company_info_title": "eSim Provider",
     "company_info_description": "We are a leading eSIM provider offering seamless, digital connectivity solutions for your mobile devices. Our eSIM technology eliminates the need for physical SIM cards, allowing you to activate mobile plans instantly and switch between carriers with ease.",
-    "services_title": "Services",
+    "services_title": "Follow Us",
     "service_no_physical_sim": "No Physical SIM Card",
     "service_instant_activation": "Instant Activation",
     "service_multiple_profiles": "Multiple Profiles",
@@ -359,7 +359,7 @@
       },
       "location": {
         "title": "Contact Us",
-        "content": "If you have any questions, concerns, or requests regarding this Privacy Policy or our data practices, please contact us at **RoamDigiexample@gmail.com**.\n\nBy using RoamDigi eSIM, you acknowledge that you have read, understood, and agreed to the terms outlined in this Privacy Policy."
+        "content": "If you have any questions, concerns, or requests regarding this Privacy Policy or our data practices, please contact us at **info@roamdigi.com**.\n\nBy using RoamDigi eSIM, you acknowledge that you have read, understood, and agreed to the terms outlined in this Privacy Policy."
       }
     }
   },
