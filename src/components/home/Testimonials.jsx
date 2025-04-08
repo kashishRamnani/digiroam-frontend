@@ -1,13 +1,16 @@
-import { motion } from "framer-motion"
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faQuoteRight } from '@fortawesome/free-solid-svg-icons'
-import { useTranslation } from "react-i18next"
+import { useState } from "react";
+import { motion } from "framer-motion";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faQuoteRight } from '@fortawesome/free-solid-svg-icons';
+import { useTranslation } from "react-i18next";
 
 export default function TestimonialsSection() {
 
-  const {t} = useTranslation();
+  const { t } = useTranslation();
   const testimonialObj = t("home.testimonials", { returnObjects: true });
-  const mainTestimonial = t("home.mainTestimonial",{ returnObjects: true })
+  const mainTestimonial = t("home.mainTestimonial", { returnObjects: true });
+
+  const [showFullText, setShowFullText] = useState(false);
 
   return (
     <section className="max-w-7xl mx-auto px-4 py-8 overflow-hidden">
@@ -19,17 +22,22 @@ export default function TestimonialsSection() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
           >
-           {mainTestimonial.heading}
+            {mainTestimonial.heading}
           </motion.h2>
+
           <motion.p 
             className="text-[#303030] text-md leading-relaxed"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.2 }}
           >
-            {mainTestimonial.text}
+            {showFullText
+              ? mainTestimonial.text
+              : `${mainTestimonial.text.slice(0, 400)}...`}
           </motion.p>
+
           <motion.button
+            onClick={() => setShowFullText(prev => !prev)}
             className="px-8 py-2 bg-[#f67a55] text-white rounded-full font-semibold hover:bg-[#e56a45] transition-colors"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -37,7 +45,7 @@ export default function TestimonialsSection() {
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
           >
-            {mainTestimonial.btnText}
+            {showFullText ? "Show Less" : mainTestimonial.btnText}
           </motion.button>
         </div>
 
@@ -67,6 +75,5 @@ export default function TestimonialsSection() {
         </div>
       </div>
     </section>
-  )
+  );
 }
-
