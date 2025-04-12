@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Sidebar from "./EsimDetails";
 import {
@@ -6,26 +6,37 @@ import {
   setSelectedProduct,
   setCurrentPage,
   retrieveSettings,
+  retrieveFavouritePlans,
+  upsertFavouritePlan,
+  removeFavouritePlan
 } from "../../features";
 import { fetchProducts } from "../../features/products/productSlice";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faShoppingCart, faHeart } from "@fortawesome/free-solid-svg-icons";
-
 import Pagination from "../common/Pagination";
 import getPriceWithMarkup from "../../utils/helpers/get.price.with.markup";
 import getFormattedVolume from "../../utils/helpers/get.formatted.volume";
+import FavouritePlans from "./FavouritePlans";
+
 const ProductList = ({ items, locationCode = "", noAction }) => {
   const dispatch = useDispatch();
   const { currentPage, itemsPerPage } = useSelector((state) => state.plans);
   const { pricePercentage } = useSelector((state) => state.settings);
+  const { favouritePlans } = useSelector((state) => state.favouritePlans);
+  
   const [sortOrder, setSortOrder] = useState("price");
   const [selectedEsim, setSelectedEsim] = useState(null);
+  // const [showFavourites, setShowFavourites] = useState(false);
 
-  useEffect(() => {
+  const fetchData = useCallback(() => {
+    dispatch(retrieveFavouritePlans());
     dispatch(fetchProducts({ locationCode }));
     dispatch(retrieveSettings());
   }, [dispatch, locationCode]);
 
+  useEffect(() => {
+    fetchData();
+  }, [fetchData]);
 
   const handlePageChange = ({ selected }) => {
     dispatch(setCurrentPage(selected + 1));
@@ -37,36 +48,48 @@ const ProductList = ({ items, locationCode = "", noAction }) => {
     dispatch(setAddToCartOpen(true));
   };
 
-  const handleRowClick = (product) => {
-    setSelectedEsim(product);
-  };
+  const handleRowClick = (product) => setSelectedEsim(product);
 
   const totalPages = Math.ceil(items.length / itemsPerPage);
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
   const currentItems = items.slice(startIndex, endIndex);
 
-  const sortProducts = (order) => {
-    if (order === "asc") {
-      return [...currentItems].sort((a, b) => a.price - b.price);
+  const sortedItems = [...currentItems].sort((a, b) => {
+    return sortOrder === "asc" ? a.price - b.price : b.price - a.price;
+  });
+
+  const handleSortChange = (e) => setSortOrder(e.target.value);
+
+  const toggleFavorite = (product) => {
+    const isAlreadyFavourite = favouritePlans.some(
+      (item) => item.packageCode === product.packageCode
+    );
+
+    if (isAlreadyFavourite) {
+      dispatch(removeFavouritePlan(product.packageCode));
     } else {
-      return [...currentItems].sort((a, b) => b.price - a.price);
+      dispatch(upsertFavouritePlan({ packageCode: product.packageCode, slug: product.slug }));
     }
   };
 
-  const sortedItems = sortProducts(sortOrder);
-
-  const handleSortChange = (e) => {
-    setSortOrder(e.target.value);
-  };
+  // const filteredItems = showFavourites
+  //   ? items.filter(item => favouritePlans.some(fav => fav.packageCode === item.packageCode))
+  //   : items;
 
   return (
     <div>
       <div className="overflow-x-auto">
         <table className="min-w-full bg-white">
-
+        
+        {/* <button
+            onClick={() => setShowFavourites(!showFavourites)}
+            className="p-2 bg-blue-500 text-white rounded-md m-2"
+          >
+            {showFavourites ? "Show All Plans" : "Show Favourites"}
+          </button> */}
           <select onChange={handleSortChange} value={sortOrder} className="p-2 border rounded-md">
-            <option value=""> Price</option>
+            <option value="price">Price</option>
             <option value="asc">Low to High</option>
             <option value="desc">High to Low</option>
           </select>
@@ -85,9 +108,11 @@ const ProductList = ({ items, locationCode = "", noAction }) => {
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                 Duration
               </th>
-              {!noAction && <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Action
-              </th>}
+              {!noAction && (
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Action
+                </th>
+              )}
             </tr>
           </thead>
           <tbody className="bg-white divide-y divide-gray-200">
@@ -105,29 +130,39 @@ const ProductList = ({ items, locationCode = "", noAction }) => {
                 <td className="px-6 py-4 whitespace-nowrap">
                   ${getPriceWithMarkup(product.price, pricePercentage)}
                 </td>
-                <td className="px-6 py-4 whitespace-nowrap">
-                  {getFormattedVolume(product.volume)}
-                </td>
+                <td className="px-6 py-4 whitespace-nowrap">{getFormattedVolume(product.volume)}</td>
                 <td className="px-6 py-4 whitespace-nowrap">
                   {product.duration} {product.durationUnit}
                 </td>
-                {!noAction && <td className="px-6 py-4 whitespace-nowrap">
-                  <div className="flex space-x-2">
-                    <button
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        handleAddToCart(product);
-                      }}
-                      className="text-white px-3 py-1 rounded-md"
-                      style={{ backgroundColor: "var(--primary-color)" }}
-                    >
-                      <FontAwesomeIcon icon={faShoppingCart} />
-                    </button>
-                    <button className="text-gray-400 hover:text-red-500">
-                      <FontAwesomeIcon icon={faHeart} />
-                    </button>
-                  </div>
-                </td>}
+                {!noAction && (
+                  <td className="px-6 py-4 whitespace-nowrap">
+                    <div className="flex space-x-2">
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleAddToCart(product);
+                        }}
+                        className="text-white px-3 py-1 rounded-md"
+                        style={{ backgroundColor: "var(--primary-color)" }}
+                      >
+                        <FontAwesomeIcon icon={faShoppingCart} />
+                      </button>
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          toggleFavorite(product);
+                        }}
+                        className={`text-lg ${
+                          favouritePlans.find((item) => item.packageCode === product.packageCode)
+                            ? "text-red-500"
+                            : "text-gray-400"
+                        } hover:text-red-500`}
+                      >
+                        <FontAwesomeIcon icon={faHeart} />
+                      </button>
+                    </div>
+                  </td>
+                )}
               </tr>
             ))}
           </tbody>
@@ -150,6 +185,9 @@ const ProductList = ({ items, locationCode = "", noAction }) => {
 };
 
 export default ProductList;
+
+
+
 
 
 

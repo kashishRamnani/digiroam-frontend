@@ -12,7 +12,6 @@ const AdminDashboardHome = () => {
   const { users } = useSelector((state) => state.users);
   const loading = useSelector((state) => state.users?.loading);
   const paymentData = useSelector((state) => state.payment?.paymentData || []);
-
   const [totalPayments, setTotalPayments] = useState(0);
   const [totalSoldESims, setTotalSoldESims] = useState(0);
   const [usersData, setUsersData] = useState([]);

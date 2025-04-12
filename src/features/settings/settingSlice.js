@@ -30,15 +30,9 @@ export const retrieveSettings = createAsyncThunk(
 
 export const updateSettings = createAsyncThunk(
     "settings/update",
-    async ({ pricePercentage, service, contact }, { rejectWithValue }) => {
-        const requestBody = {
-            ...(pricePercentage !== undefined && { pricePercentage }),
-            ...(service !== undefined && { service }),
-            ...(contact !== undefined && { contact })
-        };
-
+    async (formData, { rejectWithValue }) => {
         try {
-            const response = await axiosInstance.patch(`/settings`, requestBody);
+            const response = await axiosInstance.patch(`/settings`, formData);
             showSuccessToast("Settings updated successfully");
             return response.data.settings;
         } catch (error) {

@@ -17,12 +17,12 @@ const LoginButtons = () => {
     window.location.href = `${API_URL}auth/facebook`;
   };
 
+
   const handleAppleLogin = () => {
     window.location.href = `${API_URL}auth/apple`;
   };
+ 
   
-
-
   return (
     <>
       <div className="mt-6 grid grid-cols-3 gap-3">

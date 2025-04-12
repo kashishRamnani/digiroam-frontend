@@ -12,8 +12,9 @@ import {
   emailSlice,
   usersSlice,
   settingsSlice,
-allocatedProfilesReducer,
-esimSlice
+  allocatedProfilesReducer,
+  esimSlice,
+  favouritePlanSlice,
 } from "../features";
 
 export const store = configureStore({
@@ -31,7 +32,8 @@ export const store = configureStore({
     users: usersSlice,
     settings: settingsSlice,
     allocatedProfiles: allocatedProfilesReducer,
-    esims:esimSlice, 
+    esims: esimSlice,
+    favouritePlans: favouritePlanSlice
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

@@ -32,7 +32,7 @@ const Login = () => {
       await dispatch(loginUser(data)).unwrap();
       navigate("/dashboard");
     } catch (error) {
-      console.log(error.message);
+      (error.message);
     }
   };
 
@@ -41,7 +41,7 @@ const Login = () => {
       <div className="flex flex-col min-h-screen bg-gray-50">
         <div className="md:hidden bg-[url('/images/auth/auth-bg.png')] rounded-b-lg">
           {/* Mobile Welcome Section */}
-          <div className="max-w-md w-full mx-auto p-6 text-white">
+          <div className="max-w-md w-full mx-auto p-12 text-white">
             <img
               src="/images/auth/roam-digi-logo.png"
               alt="Roamdigi Logo"

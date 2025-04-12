@@ -18,71 +18,55 @@ const ServiceLinks = () => {
   const {
     register,
     handleSubmit,
-    formState: { errors },
     setValue,
+    formState: { errors },
     reset,
-    watch,
   } = useForm({
     resolver: zodResolver(settingsSchema),
     defaultValues: {
       service: {
         label: "",
         href: "",
-        isHidden: true,
       },
     },
   });
-
-  const watchLabel = watch("service.label");
-  const watchHref = watch("service.href");
-  const watchHidden = watch("service.isHidden");
 
   useEffect(() => {
     dispatch(retrieveSettings());
   }, [dispatch]);
 
-  const onSubmit = (data) => {
-    const payload = {
-      service: {
-        ...data.service,
-        isHidden: !data.service.isHidden, // reverse checkbox logic
-      },
-    };
+  const onSubmit = async (data) => {
     if (isEditing) {
-      payload.service._id = isEditing;
+      data.service._id = isEditing?._id;
     }
+    data.service.isHidden = isEditing?.isHidden ?? false;
+    const result = await dispatch(updateSettings(data));
 
-    dispatch(updateSettings(payload));
-    reset();
-    setAddNew(false);
-    setIsEditing(null);
+    if (updateSettings.fulfilled.match(result)) {
+      setIsEditing(null);
+      setAddNew(false);
+      reset();
+    }
   };
+
+  const handleEdit = (id) => {
+    const service = serviceLinks.find((s) => s._id === id)
+    setValue("service.label", service.label);
+    setValue("service.href", service.href);
+    setIsEditing(service);
+  }
 
   const toggleVisibility = (id) => {
     const service = serviceLinks.find((s) => s._id === id);
-    if (service) {
-      dispatch(
-        updateSettings({
-          service: {
-            label: service.label,
-            href: service.href,
-            isHidden: !service.isHidden,
-            _id: service._id,
-          },
-        })
-      );
-    }
+    dispatch(updateSettings({ service: { ...service, isHidden: !service.isHidden } }))
+
   };
 
-  const handleEditClick = (id) => {
-    const service = serviceLinks.find((s) => s._id === id);
-    if (service) {
-      setValue("service.label", service.label);
-      setValue("service.href", service.href);
-      setValue("service.isHidden", service.isHidden);
-      setIsEditing(service._id);
-    }
-  };
+  const handleCloseForm = () => {
+    setAddNew(false);
+    setIsEditing(null);
+    reset();
+  }
 
   const renderForm = () => (
     <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col space-y-4">
@@ -94,9 +78,7 @@ const ServiceLinks = () => {
           type="text"
           id="label"
           {...register("service.label")}
-          className={`mt-1 block w-full px-3 py-2 bg-white border rounded-md shadow-sm focus:outline-none focus:ring-[#FF7F5C] focus:border-[#FF7F5C] sm:text-sm ${
-            errors.service?.label ? "border-red-500" : "border-gray-300"
-          }`}
+          className={`mt-1 block w-full px-3 py-2 bg-white border rounded-md shadow-sm focus:outline-none focus:ring-[#FF7F5C] focus:border-[#FF7F5C] sm:text-sm ${errors.service?.label ? "border-red-500" : "border-gray-300"}`}
         />
         {errors.service?.label && <p className="text-red-600 text-sm">{errors.service.label.message}</p>}
       </div>
@@ -109,18 +91,9 @@ const ServiceLinks = () => {
           type="text"
           id="href"
           {...register("service.href")}
-          className={`mt-1 block w-full px-3 py-2 bg-white border rounded-md shadow-sm focus:outline-none focus:ring-[#FF7F5C] focus:border-[#FF7F5C] sm:text-sm ${
-            errors.service?.href ? "border-red-500" : "border-gray-300"
-          }`}
+          className={`mt-1 block w-full px-3 py-2 bg-white border rounded-md shadow-sm focus:outline-none focus:ring-[#FF7F5C] focus:border-[#FF7F5C] sm:text-sm ${errors.service?.href ? "border-red-500" : "border-gray-300"}`}
         />
         {errors.service?.href && <p className="text-red-600 text-sm">{errors.service.href.message}</p>}
-      </div>
-
-      <div className="flex items-center">
-        <label htmlFor="isHidden" className="mr-2 text-sm font-medium text-gray-700">
-          Should be visible instantly?
-        </label>
-        <input type="checkbox" id="isHidden" {...register("service.isHidden")} className="cursor-pointer" />
       </div>
 
       <div className="flex space-x-4">
@@ -129,15 +102,12 @@ const ServiceLinks = () => {
           className="flex-1 flex items-center justify-center py-2 px-4 bg-primary text-white rounded-md shadow-sm hover:bg-[#f67a55]/90 transition"
         >
           <FontAwesomeIcon icon={faSave} className="pe-2" />
-          <span>{isEditing ? "Save Changes" : "Save"}</span>
+          <span>{isEditing ? "Save Changes" : "Create"}</span>
         </button>
+
         <button
           type="button"
-          onClick={() => {
-            setAddNew(false);
-            setIsEditing(null);
-            reset();
-          }}
+          onClick={handleCloseForm}
           className="flex-1 bg-gray-300 text-gray-700 px-4 py-2 rounded-md flex items-center justify-center space-x-2 hover:bg-gray-400"
         >
           <FontAwesomeIcon icon={faTimes} />
@@ -148,7 +118,7 @@ const ServiceLinks = () => {
   );
 
   return (
-    <div className="bg-white shadow-md rounded-lg p-6 w-full max-w-3xl mx-auto mt-10">
+    <div className="bg-white shadow-md rounded-lg p-6 w-full max-w-3xl mx-4 mt-10">
       <div className="mb-6">
         {!addNew && !isEditing && (
           <button
@@ -158,19 +128,21 @@ const ServiceLinks = () => {
               reset();
             }}
             className="flex items-center px-4 py-2 bg-primary text-white rounded-md hover:bg-[#f67a55]/90 transition"
+            disabled={addNew || isEditing}
           >
             <FontAwesomeIcon icon={faPlus} className="mr-2" />
-            Create Service Link
+            Create Follow Us Link
           </button>
         )}
         {(addNew || isEditing) && renderForm()}
       </div>
 
-      <table className="w-full border border-gray-200 rounded">
+      <div className="table-container">
+      <table className="min-w-full bg-white table-auto max-w-full">
         <thead className="bg-gray-50">
           <tr className="text-xs font-semibold text-left text-gray-500 uppercase">
             <th className="px-1 py-2">Label</th>
-            <th className="px-1 py-2">Link</th>
+            <th className="px-1 py-2" >Link</th>
             <th className="px-1 py-2">Visibility</th>
             <th className="px-1 py-2">Action</th>
           </tr>
@@ -179,8 +151,8 @@ const ServiceLinks = () => {
           {serviceLinks.length > 0 ? (
             serviceLinks.map((service) => (
               <tr key={service._id} className="border-t">
-                <td className="px-4 py-3">{service.label}</td>
-                <td className="px-4 py-3">
+                <td className="px-4 py-3 truncate">{service.label}</td>
+                <td className="px-4 py-3 truncate">
                   <Link to={service.href} className="text-blue-500 underline">
                     {service.href}
                   </Link>
@@ -199,7 +171,7 @@ const ServiceLinks = () => {
                 </td>
                 <td className="px-4 py-3">
                   <button
-                    onClick={() => handleEditClick(service._id)}
+                    onClick={() => handleEdit(service._id)}
                     className="text-green-500 hover:text-green-700"
                   >
                     <FaEdit size={18} />
@@ -216,7 +188,8 @@ const ServiceLinks = () => {
           )}
         </tbody>
       </table>
-    </div>
+      </div>
+    </div >
   );
 };
 

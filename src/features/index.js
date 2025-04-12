@@ -9,11 +9,14 @@ export { default as paymentSlice } from "./payment/paymentSlice";
 export { default as dataPlanSlice } from "./dataplan/dataPlanSlice";
 export { default as emailSlice } from "./email/emailSlice"
 export { default as usersSlice } from "./user/allUserSlice"
-export {default as esimSlice} from "./user/allEsimSlice";
-export {default as allocatedProfilesReducer} from "./profile/allocatedProfileSlice"
+export { default as esimSlice } from "./user/allEsimSlice";
+export { default as allocatedProfilesReducer } from "./profile/allocatedProfileSlice"
 export { setTheme, setLanguage } from "./preferences/preferenceSlice";
 export { setLoading, setError, clearError } from "./ui/uiSlice";
 export { setCurrentPage } from "./products/productSlice";
+
+
+
 export {
   fetchCartFromServer,
   addToCart,
@@ -28,3 +31,8 @@ export { resetProfileState } from "./user/userSlice";
 export { resetPaymentState, setPaymentStatus } from "./payment/paymentSlice";
 
 export { default as settingsSlice, retrieveSettings, updateSettings } from "./settings/settingSlice"
+
+export {
+  default as favouritePlanSlice,
+  retrieveFavouritePlans, upsertFavouritePlan, removeFavouritePlan
+} from "./favouritePlan/favouritePlanSlice";

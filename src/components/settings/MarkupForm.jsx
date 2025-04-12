@@ -33,13 +33,13 @@ const MarkupPriceForm = () => {
     }, [pricePercentage, reset]);
 
     const onSubmit = (data) => {
-        console.log(data);
-        // dispatch(updateSettings(data));
+        
+        dispatch(updateSettings(data));
         setIsEditing(false);
     };
 
     return (
-        <div className="bg-white shadow-md rounded-lg p-6 w-full max-w-lg mx-auto mt-10">
+        <div className="bg-white shadow-md rounded-lg p-6 w-full max-w-3xl mx-4 mt-10">
             <h2 className="text-xl font-bold text-gray-800 mb-4">Markup Price Settings</h2>
 
             {!isEditing ? (

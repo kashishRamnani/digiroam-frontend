@@ -8,18 +8,32 @@ import {
 } from "../../features";
 import PaymentButtons from "../paymentButtons/PaymentButtons";
 import getPriceWithMarkup from "../../utils/helpers/get.price.with.markup";
+import  RemoveConfirmationModal  from '../common/RemoveConfirmation';
 
 const CartModal = () => {
   const dispatch = useDispatch();
   const { items, isCartOpen } = useSelector((state) => state.cart);
   const { pricePercentage } = useSelector((state) => state.settings);
   const [email, setEmail] = useState("");
-
+  const [showConfirm,setShowConfirm] = useState(false);
+  const [itemToRemove,setItemToRemove] = useState(null)
   useEffect(() => {
     dispatch(fetchCartFromServer());
     dispatch(retrieveSettings());
   }, [dispatch]);
 
+  const handleRemoveClick = (item) => {
+    setItemToRemove(item);
+    setShowConfirm(true);
+  };
+  
+  const confirmRemoveItem = async () => {
+    if (itemToRemove) {
+      await handleRemoveFromCart(itemToRemove);
+      setItemToRemove(null);
+      setShowConfirm(false);
+    }
+  };
   const handleRemoveFromCart = async (item) => {
     try {
       const result = await dispatch(removeFromCart({ productId: item.productId }));
@@ -85,7 +99,8 @@ const CartModal = () => {
                     </td>
                     <td className="py-1 px-3">
                       <button
-                        onClick={() => handleRemoveFromCart(item)}
+                       onClick={() => handleRemoveClick(item)}
+                       
                         className="text-red-500 hover:text-red-700 text-xs"
                         aria-label={`Remove ${item.productName} from cart`}
                       >
@@ -115,6 +130,12 @@ const CartModal = () => {
           </div>
 
           <PaymentButtons />
+          <RemoveConfirmationModal
+  isVisible={showConfirm}
+  onCancel={() => setShowConfirm(false)}
+  onConfirm={confirmRemoveItem}
+/>
+
         </div>
       </div>
     </div>

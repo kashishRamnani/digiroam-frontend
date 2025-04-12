@@ -29,10 +29,9 @@ export default function HeroSection() {
         });
         return acc;
       }, {});
-
       setAvailableLocations(locations);
     }
-  }, [dispatch, items]);
+  }, [items]);
 
   useEffect(() => {
     if (query === "") {
@@ -73,8 +72,8 @@ export default function HeroSection() {
             </p>
           </div>
 
-          {/* Search Bar */}
-          <div className="relative max-w-xl">
+          {/* Search Bar with Suggestions */}
+          <div className="relative max-w-xl w-full">
             <div className="flex items-center bg-white rounded-full shadow-lg overflow-hidden border border-gray-100">
               <div className="pl-6">
                 <FontAwesomeIcon icon={faLocationDot} className="text-[#f67a55]" />
@@ -89,24 +88,23 @@ export default function HeroSection() {
               <button className="bg-[#f67a55] py-4 px-8 rounded-full hover:bg-[#e56944] transition-colors">
                 <FontAwesomeIcon icon={faSearch} className="text-white" />
               </button>
-
-              {/* Suggestions */}
-              {!!filteredLocations.length && query && (
-                <div className="absolute left-0 right-0 top-full mt-2 bg-white shadow-lg rounded-lg">
-                  <ul>
-                    {filteredLocations.map(([code, name]) => (
-                      <li
-                        key={code}
-                        className="px-4 py-2 text-gray-700 cursor-pointer hover:bg-[#f67a55] hover:text-white"
-                        onClick={() => handleSuggestionClick(code)}
-                      >
-                        {name}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              )}
             </div>
+
+            {/* Suggestions Dropdown */}
+            {!!filteredLocations.length && query && (
+              <div className="absolute border left-0 right-0 top-full mt-0 bg-white shadow-lg rounded-t-lg z-50">
+
+                {filteredLocations.map(([code, name]) => (
+                  <div
+                    key={code}
+                    className="px-4 py-2 text-gray-700 cursor-pointer hover:bg-[#f67a55] hover:text-white"
+                    onClick={() => handleSuggestionClick(code)}
+                  >
+                    {name}
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
 
           {/* Icon Section */}
