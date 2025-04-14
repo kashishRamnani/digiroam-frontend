@@ -16,17 +16,14 @@ import { faShoppingCart, faHeart } from "@fortawesome/free-solid-svg-icons";
 import Pagination from "../common/Pagination";
 import getPriceWithMarkup from "../../utils/helpers/get.price.with.markup";
 import getFormattedVolume from "../../utils/helpers/get.formatted.volume";
-import FavouritePlans from "./FavouritePlans";
 
 const ProductList = ({ items, locationCode = "", noAction }) => {
   const dispatch = useDispatch();
   const { currentPage, itemsPerPage } = useSelector((state) => state.plans);
   const { pricePercentage } = useSelector((state) => state.settings);
   const { favouritePlans } = useSelector((state) => state.favouritePlans);
-  
-  const [sortOrder, setSortOrder] = useState("price");
+
   const [selectedEsim, setSelectedEsim] = useState(null);
-  // const [showFavourites, setShowFavourites] = useState(false);
 
   const fetchData = useCallback(() => {
     dispatch(retrieveFavouritePlans());
@@ -55,12 +52,6 @@ const ProductList = ({ items, locationCode = "", noAction }) => {
   const endIndex = startIndex + itemsPerPage;
   const currentItems = items.slice(startIndex, endIndex);
 
-  const sortedItems = [...currentItems].sort((a, b) => {
-    return sortOrder === "asc" ? a.price - b.price : b.price - a.price;
-  });
-
-  const handleSortChange = (e) => setSortOrder(e.target.value);
-
   const toggleFavorite = (product) => {
     const isAlreadyFavourite = favouritePlans.some(
       (item) => item.packageCode === product.packageCode
@@ -73,27 +64,10 @@ const ProductList = ({ items, locationCode = "", noAction }) => {
     }
   };
 
-  // const filteredItems = showFavourites
-  //   ? items.filter(item => favouritePlans.some(fav => fav.packageCode === item.packageCode))
-  //   : items;
-
   return (
     <div>
       <div className="overflow-x-auto">
         <table className="min-w-full bg-white">
-        
-        {/* <button
-            onClick={() => setShowFavourites(!showFavourites)}
-            className="p-2 bg-blue-500 text-white rounded-md m-2"
-          >
-            {showFavourites ? "Show All Plans" : "Show Favourites"}
-          </button> */}
-          <select onChange={handleSortChange} value={sortOrder} className="p-2 border rounded-md">
-            <option value="price">Price</option>
-            <option value="asc">Low to High</option>
-            <option value="desc">High to Low</option>
-          </select>
-
           <thead>
             <tr className="bg-gray-50">
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
@@ -116,7 +90,7 @@ const ProductList = ({ items, locationCode = "", noAction }) => {
             </tr>
           </thead>
           <tbody className="bg-white divide-y divide-gray-200">
-            {sortedItems.map((product) => (
+            {currentItems.map((product) => (
               <tr
                 key={product.packageCode}
                 onClick={() => handleRowClick(product)}
@@ -152,11 +126,10 @@ const ProductList = ({ items, locationCode = "", noAction }) => {
                           e.stopPropagation();
                           toggleFavorite(product);
                         }}
-                        className={`text-lg ${
-                          favouritePlans.find((item) => item.packageCode === product.packageCode)
+                        className={`text-lg ${favouritePlans.find((item) => item.packageCode === product.packageCode)
                             ? "text-red-500"
                             : "text-gray-400"
-                        } hover:text-red-500`}
+                          } hover:text-red-500`}
                       >
                         <FontAwesomeIcon icon={faHeart} />
                       </button>

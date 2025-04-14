@@ -10,7 +10,7 @@ import {
 import DashboardLayout from "../../layouts/DashboardLayout";
 import FilterPlans from "../../components/eSimPlans/FilterPlans";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faShoppingCart,faHeart } from "@fortawesome/free-solid-svg-icons";
+import { faShoppingCart, faHeart } from "@fortawesome/free-solid-svg-icons";
 import FavouritePlans from "../../components/eSimPlans/FavouritePlans";
 
 const ESimPlans = () => {
@@ -21,6 +21,7 @@ const ESimPlans = () => {
   const [filteredPlans, setFilteredPlans] = useState([]);
   const [showFavourites, setShowFavourites] = useState(false);
   const { favouritePlans } = useSelector((state) => state.favouritePlans);
+
   useEffect(() => {
     dispatch(retrieveSettings());
     setFilteredPlans(items);
@@ -45,20 +46,27 @@ const ESimPlans = () => {
           </button>
 
           <button
-          onClick={() => setShowFavourites(!showFavourites)}
-          className="flex items-center  space-x-2 text-white px-4 py-2 rounded-md"
+            onClick={() => setShowFavourites(!showFavourites)}
+            className="flex items-center  space-x-2 text-white px-4 py-2 rounded-md"
             style={{ backgroundColor: "var(--secondary-color)" }}
-        >
-          <FontAwesomeIcon  icon={faHeart}/>
-          <div className="mx-4"> {!showFavourites ? "Show All Plans" : "Show Favourites" }</div>
-          <span>({showFavourites ? favouritePlans.length : filteredPlans.length})</span>
-         
-        </button>
+          >
+            {!showFavourites && (
+              <span className="mx-4">
+                <FontAwesomeIcon icon={faHeart} /> Show Favourite Plans ({favouritePlans.length})
+              </span>
+            )}
+
+            {!!showFavourites && (
+              <span className="mx-4">
+                Show All Plans ({items.length})
+              </span>
+            )}
+          </button>
         </div>
 
-      <FilterPlans plans={items} pricePercentage={pricePercentage} onFilter={handleFilter}/>
-        {showFavourites ? ( <FavouritePlans plans={filteredPlans} />) : (<ProductList items={filteredPlans} />)}
-       <AddToCartModal />
+        <FilterPlans plans={items} pricePercentage={pricePercentage} onFilter={handleFilter} />
+        {!!showFavourites ? (<FavouritePlans pricePercentage={pricePercentage} />) : (<ProductList items={filteredPlans} />)}
+        <AddToCartModal />
         <CartModal />
       </div>
     </DashboardLayout>

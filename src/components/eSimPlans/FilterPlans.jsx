@@ -7,22 +7,23 @@ import getFormattedVolume from "../../utils/helpers/get.formatted.volume";
 const FilterPlans = ({ plans = [], pricePercentage = 0, onFilter }) => {
     const [filterText, setFilterText] = useState("");
     const [selectedField, setSelectedField] = useState("all");
+    const [sortOrder, setSortOrder] = useState("asc");
 
     const handleInputChange = (e) => {
         const value = e.target.value;
         setFilterText(value);
-        applyFilter(value, selectedField);
+        applyFilter(value, selectedField, sortOrder);
     };
 
     const handleFieldChange = (e) => {
         const field = e.target.value;
         setSelectedField(field);
-        applyFilter(filterText, field);
+        applyFilter(filterText, field, sortOrder);
     };
 
-    const applyFilter = (query, field) => {
+    const applyFilter = (query, field, algo) => {
         if (!query) {
-            onFilter(plans);
+            onFilter(sort(algo, plans));
             return;
         }
 
@@ -56,13 +57,22 @@ const FilterPlans = ({ plans = [], pricePercentage = 0, onFilter }) => {
             }
         });
 
-        onFilter(filteredResults);
+        onFilter(sort(algo, filteredResults));
     };
 
     const clearFilter = () => {
         setFilterText("");
         setSelectedField("all");
-        onFilter(plans);
+        onFilter(sort(sortOrder, plans));
+    };
+
+    const sort = (algo, plans) => ([...plans].sort((a, b) => {
+        return algo === "asc" ? a.price - b.price : b.price - a.price;
+    }))
+
+    const handleSortChange = (e) => {
+        setSortOrder(e.target.value);
+        applyFilter(filterText, selectedField, e.target.value);
     };
 
     return (
@@ -96,6 +106,11 @@ const FilterPlans = ({ plans = [], pricePercentage = 0, onFilter }) => {
                     />
                 )}
             </div>
+
+            <select onChange={handleSortChange} value={sortOrder} className="p-2 border rounded-md">
+                <option value="asc">Price: Low to High</option>
+                <option value="desc">Price: High to Low</option>
+            </select>
         </div>
     );
 };

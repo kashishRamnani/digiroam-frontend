@@ -20,7 +20,7 @@ export const upsertFavouritePlan = createAsyncThunk(
     async (formData, { rejectWithValue }) => {
         try {
             const response = await axiosInstance.post("/favourite-plans", formData);
-            showSuccessToast("Favourite plan Added successfully");
+            showSuccessToast("Plan has been added to favourites");
             return response.data;
         } catch (error) {
             return rejectWithValue(error.response?.data?.message ?? "Something went wrong");
@@ -33,7 +33,7 @@ export const removeFavouritePlan = createAsyncThunk(
     async (packageCode, { rejectWithValue }) => {
         try {
             const response = await axiosInstance.delete("/favourite-plans/" + packageCode);
-            showSuccessToast("Favourite plan Remove successfully");
+            showSuccessToast("Plan has been removed from favourites");
             return response.data;
         } catch (error) {
             return rejectWithValue(error.response?.data?.message ?? "Something went wrong");
@@ -78,17 +78,14 @@ const favouritePlanSlice = createSlice({
 
             .addCase(removeFavouritePlan.pending, (state, action) => {
                 state.loading = true;
-                state.favouritePlans = state.favouritePlans.filter((plan) => plan.packageCode !== action.meta.arg.packageCode)
+                state.favouritePlans = state.favouritePlans.filter((plan) => plan.packageCode !== action.meta.arg)
             })
             .addCase(removeFavouritePlan.fulfilled, (state, action) => {
                 state.loading = false;
-                
             })
-           
-            
             .addCase(removeFavouritePlan.rejected, (state, action) => {
                 state.loading = false;
-                state.favouritePlans = [...state.favouritePlans, { packageCode: action.meta.arg.packageCode }]
+                state.favouritePlans = [...state.favouritePlans, { packageCode: action.meta.arg }]
             })
 })
 

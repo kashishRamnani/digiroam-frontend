@@ -86,13 +86,11 @@ export const loginUser = createAsyncThunk(
         email,
         password,
       });
-      const { user, accessToken } = response.data.data;
+      const { user, accessToken } = response.data;
 
       localStorage.setItem("token", accessToken);
       localStorage.setItem("user", JSON.stringify(user));
-
       showSuccessToast("Login successful!");
-
       return { user, token: accessToken };
     } catch (error) {
       if (error?.response?.status === 403) {
