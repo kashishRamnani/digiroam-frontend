@@ -6,7 +6,7 @@ export const fetchCountries = createAsyncThunk(
   "countries/fetchCountries",
   async (_, { rejectWithValue }) => {
     try {
-      const response = await axiosInstance.get("/");
+      const response = await axiosInstance.get("/coumtries");
       return response.data.countries;
     } catch (error) {
       const errorMessage =
