@@ -30,10 +30,11 @@ const Login = () => {
   const onSubmit = async (data) => {
     try {
       if (mode === "login") {
-        dispatch(loginUser({ email: data.email, password: data.password }));
+        await dispatch(loginUser(data)).unwrap();
         navigate("/dashboard");
-      } else if (mode === "forgotPassword") {
-        await dispatch(requestPasswordReset(data.email));
+      } else {
+        await dispatch(requestPasswordReset(data.email)).unwrap();
+        // navigate("/login");
       }
     } catch (error) {
       (error.message);
