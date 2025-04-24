@@ -86,12 +86,7 @@ const PaymentButtons = () => {
             (total, item) => total + getPriceWithMarkup(item.productPrice, pricePercentage) * item.productQuantity,
             0
           ),
-          currency: "USD",
-          items: items.map((item) => ({
-            name: item.productName,
-            price: getPriceWithMarkup(item.productPrice, pricePercentage),
-            quantity: item.productQuantity,
-          })),
+          currency: "USD"
         })
       );
 
