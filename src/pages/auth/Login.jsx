@@ -33,7 +33,7 @@ const Login = () => {
         await dispatch(loginUser(data)).unwrap();
         navigate("/dashboard");
       } else {
-        await dispatch(requestPasswordReset(data.email)).unwrap();
+        await dispatch(requestPasswordReset(data.email)).inwrap();
         // navigate("/login");
       }
     } catch (error) {

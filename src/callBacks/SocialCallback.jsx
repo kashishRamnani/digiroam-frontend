@@ -26,7 +26,7 @@ const SocialCallback = () => {
 
       if (userParam) {
         try {
-          userObject = JSON.stringify(userParam);
+          userObject = JSON.parse(userParam);
         } catch (error) {
           console.error("Error parsing user object:", error);
         }
@@ -34,7 +34,7 @@ const SocialCallback = () => {
 
       if (token && userObject) {
         localStorage.setItem("token", token);
-        localStorage.setItem("user", JSON.parse(userObject));
+        localStorage.setItem("user", JSON.stringify(userObject));
 
         await dispatch(setUserAndToken({ user: userObject, token }));
         navigate("/dashboard");
