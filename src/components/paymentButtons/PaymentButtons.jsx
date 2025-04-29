@@ -90,7 +90,6 @@ const PaymentButtons = () => {
         })
       );
 
-
       if (result.error) {
         console.error("PayPal Order Generation Failed:", result.error);
         throw new Error(result.error.message ?? "Unknown error");

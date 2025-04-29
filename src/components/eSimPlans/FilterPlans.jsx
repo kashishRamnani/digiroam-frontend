@@ -107,7 +107,7 @@ const FilterPlans = ({ plans = [], pricePercentage = 0, onFilter }) => {
                 )}
             </div>
 
-            <select onChange={handleSortChange} value={sortOrder} className="p-2 border rounded-md">
+            <select onChange={handleSortChange} value={sortOrder} className="p-2 border rounded-md bg-white">
                 <option value="asc">Price: Low to High</option>
                 <option value="desc">Price: High to Low</option>
             </select>

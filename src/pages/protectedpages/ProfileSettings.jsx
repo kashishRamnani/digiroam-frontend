@@ -21,26 +21,26 @@ const ProfileSettings = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.auth);
-  const { profile, profileUpdated, passwordChanged} = useSelector(
+  const { profile, profileUpdated, passwordChanged } = useSelector(
     (state) => state.userProfile
   );
   const [userName, setUserName] = useState("");
-   const { paymentData, loading } = useSelector((state) => state.payment);
-   const totalOrder = paymentData.length
-   const totalPackages =
-   paymentData.reduce(
-     (sum, payment) =>sum +
-     (payment.packageInfoList?.reduce((pkgSum, pkg) => pkgSum + pkg.count, 0) || 0),
-     0
-   ) || 0;
-   const memberSince = profile?.createdAt
-  ? new Date(profile.createdAt).toLocaleDateString("en-US", {
+  const { paymentData, loading } = useSelector((state) => state.payment);
+  const totalOrder = paymentData.length
+  const totalPackages =
+    paymentData.reduce(
+      (sum, payment) => sum +
+        (payment.packageInfoList?.reduce((pkgSum, pkg) => pkgSum + pkg.count, 0) || 0),
+      0
+    ) || 0;
+  const memberSince = profile?.createdAt
+    ? new Date(profile.createdAt).toLocaleDateString("en-US", {
       month: "short",
       year: "numeric",
     })
-  : "N/A";
+    : "N/A";
 
-   
+
   useEffect(() => {
     if (user?.name) {
       setUserName(user.name.substring(0, 2).toUpperCase());
@@ -61,12 +61,13 @@ const ProfileSettings = () => {
   const onSubmitProfile = async (data) => {
     const result = await dispatch(updateProfile(data));
     if (updateProfile.fulfilled.match(result)) {
-      dispatch(getMyProfile());
+      await dispatch(getMyProfile());
+      return true;
     }
   };
-   useEffect(()=>{
+  useEffect(() => {
     dispatch(paymentInfo())
-   },[dispatch])
+  }, [dispatch])
 
   return (
     <DashboardLayout

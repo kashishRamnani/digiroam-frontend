@@ -16,7 +16,8 @@ const CartModal = () => {
   const { pricePercentage } = useSelector((state) => state.settings);
   const [email, setEmail] = useState("");
   const [showConfirm,setShowConfirm] = useState(false);
-  const [itemToRemove,setItemToRemove] = useState(null)
+  const [itemToRemove,setItemToRemove] = useState(null);
+  
   useEffect(() => {
     dispatch(fetchCartFromServer());
     dispatch(retrieveSettings());
