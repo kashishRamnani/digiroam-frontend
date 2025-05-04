@@ -33,19 +33,19 @@ const MarkupPriceForm = () => {
     }, [pricePercentage, reset]);
 
     const onSubmit = (data) => {
-        
+
         dispatch(updateSettings(data));
         setIsEditing(false);
     };
 
     return (
         <div className="bg-white shadow-md rounded-lg p-6 w-full max-w-3xl mx-4 mt-10">
-            <h2 className="text-xl font-bold text-gray-800 mb-4">Markup Price Settings</h2>
+            <h2 className="text-xl font-bold text-gray-800 mb-4">Markup Percentage (%)</h2>
 
             {!isEditing ? (
                 <div className="flex justify-between items-center">
                     <p className="text-lg text-gray-700">
-                        Current Markup Price: <strong>{pricePercentage}%</strong>
+                        Current Markup <strong>{pricePercentage}%</strong>
                     </p>
                     <button
                         onClick={() => setIsEditing(true)}
@@ -57,16 +57,12 @@ const MarkupPriceForm = () => {
                 </div>
             ) : (
                 <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col space-y-4">
-                    <label className="text-sm font-medium text-gray-700">Set Markup Percentage</label>
-                    <select
+                    <label className="text-sm font-medium text-gray-700">Set Markup Percentage (%)</label>
+                    <input
                         {...register("pricePercentage")}
-                        className="border rounded-md py-2 px-3 focus:ring focus:ring-blue-300"
-                    >
-                        {[...Array(100).keys()].map(i => (
-                            <option key={i + 1} value={i + 1}>{i + 1}%</option>
-                        ))}
-
-                    </select>
+                        className={`pl-10 w-full rounded-md border bg-white py-2 text-sm outline-none focus:border-primary focus:ring-1 focus:ring-primary ${errors.name ? 'border-red-500' : 'border-gray-300'
+                            }`}
+                    />
                     {errors.pricePercentage && (
                         <p className="text-red-500 text-sm">{errors.pricePercentage.message}</p>
                     )}

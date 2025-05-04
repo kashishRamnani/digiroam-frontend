@@ -102,7 +102,7 @@ const allEvents = ["ON_LOGIN", "ON_PASSWORD_CHANGE", "ON_PURCHASE", "ON_CANCEL",
               <label className="block text-sm font-medium text-gray-600">Event Name</label>
               <select
                 {...register("eventName")}
-                className="border p-1 rounded-lg w-full mt-1 focus:ring-blue-500 focus:border-blue-500"
+                className="border bg-white p-1 rounded-lg w-full mt-1 focus:ring-blue-500 focus:border-blue-500"
               >
                 <option value="">Select an event</option>
                 {availableEvents.map((event) => (
@@ -128,7 +128,7 @@ const allEvents = ["ON_LOGIN", "ON_PASSWORD_CHANGE", "ON_PURCHASE", "ON_CANCEL",
             <label className="block text-sm p-1 font-medium text-gray-700">Subject</label>
             <input
               {...register("subject")}
-              className="border p-1 rounded-md w-full"
+              className="border p-1 rounded-md w-full bg-white"
               placeholder="Enter Subject"
             />
             {errors.subject && <p className="text-red-500 text-xs mt-1">{errors.subject.message}</p>}
