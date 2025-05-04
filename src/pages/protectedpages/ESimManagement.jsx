@@ -10,6 +10,7 @@ import Sidebar from "../../components/eSimMange/EsimDetails";
 import { useSearchParams } from "react-router-dom";
 import Pagination from "../../components/common/Pagination";
 import { setCurrentPage } from "../../features";
+
 const ESimManagement = () => {
   const dispatch = useDispatch();
   const [searchParams] = useSearchParams();
@@ -72,7 +73,7 @@ const ESimManagement = () => {
                       <td className="px-4 py-3 text-sm flex items-center gap-2">
                         {esim.packageList?.[0]?.locationCode && (
                           <img
-                            src={`https://flagcdn.com/w40/${esim.packageList[0].locationCode.toLowerCase()}.png`}
+                            src={`https://flagcdn.com/w40/${esim.packageList[0].locationCode.split(",")[0].toLowerCase()}.png`}
                             alt={esim.packageList[0].locationCode}
                             className="w-8 h-8 rounded-full object-cover shadow-inner"
                           />

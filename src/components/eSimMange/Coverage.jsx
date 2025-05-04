@@ -13,7 +13,7 @@ const Coverage = ({ selectedEsim }) => {
 
         const payload = {
             iccid: selectedEsim.iccid,
-            locationCode: selectedEsim.packageList[0].locationCode,
+            // locationCode: selectedEsim.packageList[0].locationCode.split(",")[0],
             slug: selectedEsim.packageList[0].slug,
             packageCode: selectedEsim.packageList[0].packageCode,
         };
