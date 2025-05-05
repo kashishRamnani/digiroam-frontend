@@ -8,12 +8,14 @@ const Settings = () => {
       title="App Settings"
       description="Manage various app settings controlled by the admin."
     >
-      <div className="grid grid-cols-1  md:grid-cols-2 lg:grid-cols-2 gap-6 items-start">
+      <div className="grid lg:grid-cols-1 items-start">
         <ContactList />
+        <div className="grid lg:grid-cols-2">
         <ServiceLinks />
         <MarkupPriceForm />
+        </div>
       </div>
-
+     
     </DashboardLayout>
   );
 };

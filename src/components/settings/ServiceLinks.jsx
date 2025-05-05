@@ -118,7 +118,7 @@ const ServiceLinks = () => {
   );
 
   return (
-    <div className="bg-white shadow-md rounded-lg p-6 w-full max-w-3xl mx-4 mt-10">
+    <div className="bg-white shadow-md rounded-lg p-6  mx-4 mt-10">
       <div className="mb-6">
         {!addNew && !isEditing && (
           <button

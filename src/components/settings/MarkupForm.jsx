@@ -39,17 +39,17 @@ const MarkupPriceForm = () => {
     };
 
     return (
-        <div className="bg-white shadow-md rounded-lg p-6 w-full max-w-3xl mx-4 mt-10">
+        <div className="bg-white shadow-md lg:h-[70%] rounded-lg p-6  mx-4 mt-10">
             <h2 className="text-xl font-bold text-gray-800 mb-4">Markup Percentage (%)</h2>
 
             {!isEditing ? (
                 <div className="flex justify-between items-center">
-                    <p className="text-lg text-gray-700">
+                    <p className="text-lg text-gray-700 mt-4">
                         Current Markup <strong>{pricePercentage}%</strong>
                     </p>
                     <button
                         onClick={() => setIsEditing(true)}
-                        className="flex-1 ml-4 justify-center flex items-center py-2 px-2 border border-transparent rounded-md shadow-sm  font-medium text-white bg-primary hover:bg-[#f67a55]/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#FF7F5C] transition duration-150 ease-in-out"
+                        className="flex-1 ml-4 mt-4 justify-center flex items-center py-2 px-2 border border-transparent rounded-md shadow-sm  font-medium text-white bg-primary hover:bg-[#f67a55]/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#FF7F5C] transition duration-150 ease-in-out"
                     >
                         <FontAwesomeIcon icon={faEdit} />
                         <span>Edit</span>

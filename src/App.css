@@ -24,6 +24,7 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  
 }
 
 body {
@@ -289,6 +290,7 @@ ol li {
 .table-container {
   overflow-x: scroll; 
   -webkit-overflow-scrolling: touch; 
+ 
 }
 
 .table-container::-webkit-scrollbar {
@@ -297,7 +299,8 @@ ol li {
 
 .table-container {
   -ms-overflow-style: none;  
-  scrollbar-width: none;     
+  scrollbar-width: none; 
+   
 }
 
 .table {
