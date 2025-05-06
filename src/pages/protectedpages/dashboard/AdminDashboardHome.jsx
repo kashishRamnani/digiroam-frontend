@@ -6,11 +6,14 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser, faUsers,faCreditCard } from "@fortawesome/free-solid-svg-icons";
 import { Loader } from "../../../components";
 import { paymentInfo } from "../../../features/payment/paymentSlice";
+import UserFilters from "../../../components/users/UserFilters";
+
 
 const AdminDashboardHome = () => {
   const dispatch = useDispatch();
   const { users } = useSelector((state) => state.users);
   const loading = useSelector((state) => state.users?.loading);
+  const [filterUsers, setFilterUser] = useState([])
   const paymentData = useSelector((state) => state.payment?.paymentData || []);
   const [totalPayments, setTotalPayments] = useState(0);
   const [totalSoldESims, setTotalSoldESims] = useState(0);
@@ -21,6 +24,15 @@ const AdminDashboardHome = () => {
     dispatch(fetchUsers());
   }, [dispatch]);
 
+  const handleFilter = (filteredList) => {
+    setFilterUser(filteredList);
+  };
+  
+  
+  useEffect(() => {
+    setFilterUser(usersData); 
+  }, [usersData]);
+  
   useEffect(() => {
     if (paymentData.length > 0 && users.length > 0) {
       let totalPaymentSum = 0;
@@ -64,6 +76,7 @@ const AdminDashboardHome = () => {
   return (
     <DashboardLayout title="Admin Dashboard" description="Manage users and system data">
       {loading && <Loader />}
+    
       <div className="container mx-auto px-6 py-8">
         <h3 className="text-3xl font-medium text-gray-700 mb-6">Welcome, Admin!</h3>
         <div className="grid gap-6 mb-8 md:grid-cols-2 xl:grid-cols-3">
@@ -78,8 +91,9 @@ const AdminDashboardHome = () => {
               </div>
             </div>
           ))}
+          
         </div>
-
+        <UserFilters paymentInfo={usersData}  onfilter={handleFilter} />
         <table className="w-full border-collapse bg-white border border-gray-300 rounded-lg overflow-hidden">
           <thead>
             <tr className="text-xs font-semibold tracking-wide text-left text-gray-500 uppercase border-b bg-gray-50">
@@ -90,9 +104,10 @@ const AdminDashboardHome = () => {
               <th className="px-4 py-3">Total Payment</th>
             </tr>
           </thead>
+         
           <tbody className="divide-y">
-            {usersData.length > 0 ? (
-              usersData.map((user) => (
+            {filterUsers.length > 0 ? (
+              filterUsers.map((user) => (
                 <tr key={user._id} className="text-gray-700 hover:bg-gray-100">
                   <td className="px-4 py-3">{user.name}</td>
                   <td className="px-4 py-3">{user.email}</td>

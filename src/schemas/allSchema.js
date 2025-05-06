@@ -32,6 +32,7 @@ export const filterProductSchema = z.object({
   locationCode: z.string().optional(),
   type: z.string().optional(),
 });
+
 export const emailTemplateSchema = z.object({
   eventName: z.string().min(1, "Select any EventName."),
   subject: z.string().min(1, "Subject is required"),
