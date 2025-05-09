@@ -21,6 +21,7 @@ export const fetchDataPlan = createAsyncThunk(
         let remainingTime = 0;
         let totalDays = esimData.totalDuration ?? 0;
         let usagePercentage = 100;
+        let isActivated = false;
 
         if (esimData?.expiredTime) {
           const currentDate = new Date();
@@ -63,6 +64,7 @@ export const fetchDataPlan = createAsyncThunk(
           dataLeft,
           dataUsagePercentage,
           esimDetails: esimData,
+          isActivated,
         };
       } else {
         return rejectWithValue("Failed to fetch data");

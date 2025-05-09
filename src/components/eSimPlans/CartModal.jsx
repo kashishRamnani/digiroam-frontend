@@ -14,7 +14,7 @@ const CartModal = () => {
   const dispatch = useDispatch();
   const { items, isCartOpen } = useSelector((state) => state.cart);
   const { pricePercentage } = useSelector((state) => state.settings);
-  const [email, setEmail] = useState("");
+  // const [email, setEmail] = useState("");
   const [showConfirm,setShowConfirm] = useState(false);
   const [itemToRemove,setItemToRemove] = useState(null);
   
@@ -116,14 +116,14 @@ const CartModal = () => {
         )}
 
         <div className="mt-4 space-y-3">
-          <input
+          {/* <input
             type="email"
             placeholder="Email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             className="w-full bg-white text-gray-800 border rounded-md p-2 text-sm"
             aria-label="Email for checkout"
-          />
+          /> */}
 
           <div className="flex justify-between text-sm">
             <span className="font-medium">Total:</span>

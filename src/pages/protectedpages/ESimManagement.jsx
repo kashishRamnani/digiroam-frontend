@@ -4,7 +4,7 @@ import { fetchEsims } from "../../features/user/allEsimSlice";
 import DashboardLayout from "../../layouts/DashboardLayout";
 import { Loader } from "../../components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faQrcode } from "@fortawesome/free-solid-svg-icons";
+import { faQrcode, faBan,faFileAlt,faClock,faMicrochip,faQuestionCircle } from "@fortawesome/free-solid-svg-icons";
 import { showSuccessToast, showErrorToast } from "../../utils/toast";
 import Sidebar from "../../components/eSimMange/EsimDetails";
 import { useSearchParams } from "react-router-dom";
@@ -48,6 +48,22 @@ const ESimManagement = () => {
     setSelectedEsim(esim);
   };
 
+
+  const getEsimStatus = (status) => {
+    switch (status) {
+      case "CANCEL":
+        return { icon: faBan, color: "red", label: "Deactivated" };
+      case "GOT_RESOURCE":
+        return { icon: faFileAlt, color: "purple", label: "Provisioned" };
+      case "NEW":
+        return { icon: faClock, color: "orange", label: "Awaiting Activation" };
+      case "IN_USE":
+        return { icon: faMicrochip, color: "teal", label: "Active on Device" };
+      default:
+        return { icon: faQuestionCircle, color: "gray", label: "Unknown State" };
+    }
+  };
+
   return (
     <DashboardLayout>
       {isLoading && <Loader />}
@@ -60,7 +76,6 @@ const ESimManagement = () => {
               <thead>
                 <tr className="text-xs font-semibold tracking-wide text-left text-gray-500 uppercase border-b bg-gray-50">
                   <th className="px-4 py-3">Plan Name</th>
-                  <th className="px-4 py-3">ICCID</th>
                   <th className="px-4 py-3">Expiry Date</th>
                   <th className="px-4 py-3">Status</th>
                   <th className="px-4 py-3">Action</th>
@@ -68,46 +83,49 @@ const ESimManagement = () => {
               </thead>
               <tbody className="bg-white divide-y">
                 {Array.isArray(esims) && esims.length > 0 ? (
-                  currentItems.map((esim, index) => (
-                    <tr key={index} className="text-gray-700">
-                      <td className="px-4 py-3 text-sm flex items-center gap-2">
-                        {esim.packageList?.[0]?.locationCode && (
-                          <img
-                            src={`https://flagcdn.com/w40/${esim.packageList[0].locationCode.split(",")[0].toLowerCase()}.png`}
-                            alt={esim.packageList[0].locationCode}
-                            className="w-8 h-8 rounded-full object-cover shadow-inner"
-                          />
-                        )}
-                        <button
-                          onClick={() => handleOnClick(esim)}
-                          className="text-blue-600 hover:text-blue-800 font-semibold"
-                        >
-                          {esim.packageList?.[0]?.packageName || "N/A"}
-                        </button>
-                      </td>
-                      <td className="px-4 py-3 text-sm">{esim.iccid || "N/A"}</td>
-                      <td className="px-4 py-3 text-sm">
-                        {esim.expiredTime ? new Date(esim.expiredTime).toLocaleDateString() : "N/A"}
-                      </td>
-                      <td className="px-4 py-3 text-xs">
-                        <span
-                          className="px-2 py-1 font-semibold leading-tight rounded-full"
-                          style={{ backgroundColor: "var(--primary-color)", color: "white" }}
-                        >
-                          {esim.esimStatus}
-                        </span>
-                      </td>
-                      <td className="px-4 py-3">
-                        <button
-                          onClick={() => handleCopy(esim.qrCodeUrl)}
-                          className="text-blue-600 hover:text-blue-800"
-                          title="Copy QR Code"
-                        >
-                          <FontAwesomeIcon icon={faQrcode} className="w-5 h-5" />
-                        </button>
-                      </td>
-                    </tr>
-                  ))
+                  currentItems.map((esim, index) => {
+                    const { icon, color, label } = getEsimStatus(esim.esimStatus);
+                    return (
+                      <tr key={index} className="text-gray-700">
+                        <td className="px-4 py-3 text-sm flex items-center gap-2">
+                          {esim.packageList?.[0]?.locationCode && (
+                            <img
+                              src={`https://flagcdn.com/w40/${esim.packageList[0].locationCode.split(",")[0].toLowerCase()}.png`}
+                              alt={esim.packageList[0].locationCode}
+                              className="w-8 h-8 rounded-full object-cover shadow-inner"
+                            />
+                          )}
+                          <button
+                            onClick={() => handleOnClick(esim)}
+                            className="text-blue-600 hover:text-blue-800 font-semibold"
+                          >
+                            {esim.packageList?.[0]?.packageName || "N/A"}
+                          </button>
+                        </td>
+                        <td className="px-4 py-3 text-sm">
+                          {esim.expiredTime ? new Date(esim.expiredTime).toLocaleDateString() : "N/A"}
+                        </td>
+                        <td className="px-4 py-3 text-xs">
+                          <span
+                            className="px-2 py-1 font-semibold leading-tight rounded-full"
+                            style={{ backgroundColor: color, color: "white" }}
+                          >
+                            <FontAwesomeIcon icon={icon} className="mr-2" />
+                            {label}
+                          </span>
+                        </td>
+                        <td className="px-4 py-3">
+                          <button
+                            onClick={() => handleCopy(esim.qrCodeUrl)}
+                            className="text-blue-600 hover:text-blue-800"
+                            title="Copy QR Code"
+                          >
+                            <FontAwesomeIcon icon={faQrcode} className="w-5 h-5" />
+                          </button>
+                        </td>
+                      </tr>
+                    );
+                  })
                 ) : (
                   <tr>
                     <td colSpan="5" className="text-center px-4 py-3">
@@ -119,7 +137,6 @@ const ESimManagement = () => {
             </table>
           </div>
           <Sidebar selectedEsim={selectedEsim} onClose={() => setSelectedEsim(null)} />
-
         </div>
         {esims.length > 0 && (
           <div className="mt-4">

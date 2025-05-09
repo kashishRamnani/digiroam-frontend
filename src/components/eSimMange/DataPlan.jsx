@@ -109,14 +109,14 @@ const DataPlan = ({ selectedEsim }) => {
           <span className="font-medium">Top up type:</span> Data Reloadable for same area within validity
         </p>
         <p>
-          <span className="font-medium">Breakout IP:</span> UK/NO
+          <span className="font-medium">IP Export:</span> UK/NO
         </p>
         <p>
           <span className="font-medium">APN:</span> {selectedEsim?.apn || "N/A"}
         </p>
       </div>
 
-      <h3 className="mt-6 font-semibold text-lg text-gray-800">Basic Plan</h3>
+     
     </div>
   );
 };

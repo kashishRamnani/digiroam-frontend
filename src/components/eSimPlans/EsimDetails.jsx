@@ -5,11 +5,12 @@ import { faTimes } from "@fortawesome/free-solid-svg-icons";
 import getPriceWithMarkup from "../../utils/helpers/get.price.with.markup";
 import getFormattedVolume from "../../utils/helpers/get.formatted.volume";
 
-const Sidebar = ({ selectedEsim, onClose }) => {
+const Sidebar = ({ selectedEsim, onClose}) => {
     const { pricePercentage } = useSelector((state) => state.settings);
     if (!selectedEsim) return null;
-    console.log(selectedEsim);
-
+   
+  
+      
     return (
         <div className="fixed inset-0 flex items-center justify-end z-50">
           
@@ -27,20 +28,22 @@ const Sidebar = ({ selectedEsim, onClose }) => {
                 <div className="grid grid-cols-2 gap-4 mt-4">
                     <p><strong>Name:</strong> {selectedEsim.name || "N/A"}</p>
                     <p><strong>Package Code:</strong> {selectedEsim.packageCode || "N/A"}</p>
-                    <p><strong>Slug:</strong> {selectedEsim.slug || "N/A"}</p>
-                    <p><strong>Data Type:</strong> {selectedEsim.dataType || "N/A"}</p>
+                    <p><strong>Speed:</strong> {selectedEsim.speed || "N/A"}</p>
                     <p><strong>IP Export:</strong> {selectedEsim.ipExport || "N/A"}</p>
                     <p><strong>Data:</strong> {getFormattedVolume(selectedEsim.volume)}</p>
                     <p><strong>Duration:</strong> {selectedEsim.duration} {selectedEsim.durationUnit}</p>
-                    <p><strong>Top up type:</strong> {selectedEsim.supportTopUpType || "N/A"}</p>
+                    <p><strong>Top up type:</strong> {selectedEsim ?(<>Data is reloadable for the <br/>same area within the validity time.</>) :  "N/A"}</p>
                     <p><strong>CurrencyCode:</strong> {selectedEsim.currencyCode|| "N/A"}</p>
-                    <p><strong>Location:</strong> 
-                        {selectedEsim.location || "N/A"}
+                    <p><strong>Location Name:</strong> 
+                        {selectedEsim.locationNetworkList?.map(loc => loc.locationName).join (" ,") || "N/A"}
                     </p>
-
                     <p><strong>Price:</strong> ${getPriceWithMarkup(selectedEsim.price, pricePercentage)}</p>
+                   
                 </div>
+                    
             </div>
+          
+
         </div>
     );
 };

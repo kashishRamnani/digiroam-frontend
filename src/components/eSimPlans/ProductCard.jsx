@@ -10,6 +10,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import getFormattedVolume from "../../utils/helpers/get.formatted.volume";
 import getPriceWithMarkup from "../../utils/helpers/get.price.with.markup";
+
 export default function ProductList() {
   const dispatch = useDispatch();
    
