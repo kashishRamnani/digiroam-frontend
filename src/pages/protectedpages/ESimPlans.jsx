@@ -23,7 +23,6 @@ const ESimPlans = () => {
   const { favouritePlans } = useSelector((state) => state.favouritePlans);
 
   useEffect(() => {
-    dispatch(retrieveSettings());
     setFilteredPlans(items);
   }, [dispatch, items]);
 

@@ -33,7 +33,6 @@ const PaymentButtons = () => {
   const [paymentMethod, setPaymentMethod] = useState(null);
 
   useEffect(() => {
-    dispatch(retrieveSettings());
     return () => {
       dispatch(resetPaymentState());
     };

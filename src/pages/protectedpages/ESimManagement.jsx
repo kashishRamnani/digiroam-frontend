@@ -4,12 +4,13 @@ import { fetchEsims } from "../../features/user/allEsimSlice";
 import DashboardLayout from "../../layouts/DashboardLayout";
 import { Loader } from "../../components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faQrcode, faBan,faFileAlt,faClock,faMicrochip,faQuestionCircle } from "@fortawesome/free-solid-svg-icons";
+import { faQrcode, faBan, faFileAlt, faClock, faMicrochip, faQuestionCircle } from "@fortawesome/free-solid-svg-icons";
 import { showSuccessToast, showErrorToast } from "../../utils/toast";
 import Sidebar from "../../components/eSimMange/EsimDetails";
 import { useSearchParams } from "react-router-dom";
 import Pagination from "../../components/common/Pagination";
 import { setCurrentPage } from "../../features";
+import formateDateTime from "../../utils/helpers/formte.date.time";
 
 const ESimManagement = () => {
   const dispatch = useDispatch();
@@ -52,13 +53,13 @@ const ESimManagement = () => {
   const getEsimStatus = (status) => {
     switch (status) {
       case "CANCEL":
-        return { icon: faBan, color: "red", label: "Deactivated" };
+        return { icon: faBan, color: "red", label: "Cancelled" };
       case "GOT_RESOURCE":
         return { icon: faFileAlt, color: "purple", label: "Provisioned" };
       case "NEW":
         return { icon: faClock, color: "orange", label: "Awaiting Activation" };
       case "IN_USE":
-        return { icon: faMicrochip, color: "teal", label: "Active on Device" };
+        return { icon: faMicrochip, color: "teal", label: "Activated" };
       default:
         return { icon: faQuestionCircle, color: "gray", label: "Unknown State" };
     }
@@ -69,7 +70,6 @@ const ESimManagement = () => {
       {isLoading && <Loader />}
       <div className="container mx-auto px-6 py-8">
         <h3 className="text-3xl font-medium text-gray-700">Manage your eSIM Effectively!!</h3>
-
         <div className="mt-8 w-full overflow-hidden rounded-lg shadow-xs">
           <div className="w-full overflow-x-auto">
             <table className="w-full whitespace-no-wrap">
@@ -83,7 +83,7 @@ const ESimManagement = () => {
               </thead>
               <tbody className="bg-white divide-y">
                 {Array.isArray(esims) && esims.length > 0 ? (
-                  currentItems.map((esim, index) => {
+                  [...currentItems].reverse().map((esim, index) => {
                     const { icon, color, label } = getEsimStatus(esim.esimStatus);
                     return (
                       <tr key={index} className="text-gray-700">
@@ -96,14 +96,15 @@ const ESimManagement = () => {
                             />
                           )}
                           <button
-                            onClick={() => handleOnClick(esim)}
-                            className="text-blue-600 hover:text-blue-800 font-semibold"
+                            onClick={() => handleOnClick(esim.esimStatus === "CANCEL" ? null : esim)}
+                            disabled={esim.esimStatus === "CANCEL"}
+                            className={`font-semibold ${esim.esimStatus === "CANCEL" ? "text-gray-400 cursor-not-allowed" : "text-blue-600 hover:text-blue-800"}`}
                           >
                             {esim.packageList?.[0]?.packageName || "N/A"}
                           </button>
                         </td>
-                        <td className="px-4 py-3 text-sm">
-                          {esim.expiredTime ? new Date(esim.expiredTime).toLocaleDateString() : "N/A"}
+                        <td className={`px-4 py-3 text-sm ${esim.esimStatus === "CANCEL" ? "text-gray-700" : ''}`}>
+                          {esim.expiredTime ? formateDateTime(esim.expiredTime) : "N/A"}
                         </td>
                         <td className="px-4 py-3 text-xs">
                           <span
@@ -116,8 +117,9 @@ const ESimManagement = () => {
                         </td>
                         <td className="px-4 py-3">
                           <button
+                            disabled={esim.esimStatus === "CANCEL"}
                             onClick={() => handleCopy(esim.qrCodeUrl)}
-                            className="text-blue-600 hover:text-blue-800"
+                            className={`${esim.esimStatus === "CANCEL" ? "text-gray-700" : 'text-blue-600 hover:text-blue-800'}`}
                             title="Copy QR Code"
                           >
                             <FontAwesomeIcon icon={faQrcode} className="w-5 h-5" />
@@ -138,6 +140,7 @@ const ESimManagement = () => {
           </div>
           <Sidebar selectedEsim={selectedEsim} onClose={() => setSelectedEsim(null)} />
         </div>
+
         {esims.length > 0 && (
           <div className="mt-4">
             <Pagination
@@ -148,7 +151,7 @@ const ESimManagement = () => {
           </div>
         )}
       </div>
-    </DashboardLayout>
+    </DashboardLayout >
   );
 };
 

@@ -6,10 +6,7 @@ import { retrieveSettings } from "../../features";
 
 const Footer = () => {
   const { t } = useTranslation();
-  const dispatch = useDispatch();
   const { serviceLinks, contactList, loading } = useSelector((state) => state.settings);
-
-  useEffect(() => { dispatch(retrieveSettings()) }, []);
 
   return (
     <footer className="bg-[#303030] text-white">

@@ -32,10 +32,6 @@ const contactList = () => {
     },
   });
 
-  useEffect(() => {
-    dispatch(retrieveSettings());
-  }, [dispatch]);
-
   const onSubmit = async (data) => {
     if (!data.contact?.href) delete data.contact.href;
 

@@ -31,10 +31,6 @@ const ServiceLinks = () => {
     },
   });
 
-  useEffect(() => {
-    dispatch(retrieveSettings());
-  }, [dispatch]);
-
   const onSubmit = async (data) => {
     if (isEditing) {
       data.service._id = isEditing?._id;
