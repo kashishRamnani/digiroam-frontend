@@ -29,6 +29,7 @@ const DataPlan = ({ selectedEsim }) => {
   if (error)
     return <p className="text-red-500 text-center font-medium">Error: {error}</p>;
 
+ 
   return (
     <div className="p-4 bg-white shadow-md rounded-md">
       
@@ -42,7 +43,7 @@ const DataPlan = ({ selectedEsim }) => {
       </p>
       <p className="text-gray-600">
         <span className="font-medium">Left:</span>{" "}
-        {timeLeft ? `${timeLeft} Days` : `${daysLeft}D ${hoursLeft}H ${minutesLeft}M`}
+        {totalDays ? `${totalDays} Days` : `${daysLeft}D ${hoursLeft}H ${minutesLeft}M`}
       </p>
 
       {/* Progress Bar */}
