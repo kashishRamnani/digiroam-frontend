@@ -3,6 +3,9 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTimes, faShoppingCart, faPlusCircle, faSimCard, faChartBar } from "@fortawesome/free-solid-svg-icons";
 import DataPlan from "./DataPlan";
 import Coverage from "./Coverage"
+import getFormattedVolume from "../../utils/helpers/get.formatted.volume";
+import { formatBytesDetailed } from "../../utils/helpers/formatBytesDetailed";
+import formateDateTime from "../../utils/helpers/formte.date.time";
 const Sidebar = ({ selectedEsim, onClose }) => {
   const [activeTab, setActiveTab] = useState("profile");
 
@@ -11,7 +14,7 @@ const Sidebar = ({ selectedEsim, onClose }) => {
   const getEsimStatusIcon = (status) => {
     switch (status) {
       case "CANCEL":
-        return { icon: faTimes, color: "red", label: "Cancel" };
+        return { icon: faTimes, color: "red", label: "Cancelled" };
       case "GOT_RESOURCE":
         return { icon: faShoppingCart, color: "blue", label: "Resource Received" };
       case "NEW":
@@ -71,15 +74,25 @@ const Sidebar = ({ selectedEsim, onClose }) => {
           {activeTab === "profile" && (
             <>
               <div className="grid  grid-cols-2 gap-4">
-                <p><strong>Order No:</strong> {selectedEsim.orderNo}</p>
-                <p><strong>eSIM Status:</strong> {selectedEsim.esimStatus}</p>
+                {/* <p><strong>Order No:</strong> {selectedEsim.orderNo}</p> */}
+                {/* <p><strong>eSIM Status:</strong> {selectedEsim.esimStatus}</p>s */}
+                {/* <p><strong>eSIM Status:</strong>
+                  {(() => {
+                    const statusDetails = getEsimStatusIcon(selectedEsim.esimStatus);
+                    return (
+                      <>
+                        <FontAwesomeIcon icon={statusDetails.icon} style={{ color: statusDetails.color }} className="mr-2" />
+                        <span>{statusDetails.label}</span>
+                      </>
+                    );
+                  })()}</p> */}
                 <p><strong>Package Name:</strong> {selectedEsim.packageList?.[0]?.packageName || "N/A"}</p>
-                <p><strong>Data Volume Left:</strong> {selectedEsim.totalVolume ? `${(selectedEsim.totalVolume / 1024 / 1024).toFixed(2)} MB` : "N/A"}</p>
+                <p><strong>Data Left:</strong> {formatBytesDetailed(selectedEsim.totalVolume - selectedEsim.orderUsage, !selectedEsim.orderUsage > 0)}</p>
               </div>
 
               <div className="mt-4">
                 <p className="mb-4">
-                  <strong>Expired Time:</strong> {selectedEsim.expiredTime ? new Date(selectedEsim.expiredTime).toLocaleString() : "N/A"}
+                  <strong>Expired Time:</strong> {formateDateTime(selectedEsim.expiredTime)}
                 </p>
                 <p className="mb-2">
                   <strong>QR Code URL:</strong>{" "}

@@ -22,8 +22,6 @@ export default function ProductList() {
   const [selectedPackage, setSelectedPackage] = useState(null);
 
   useEffect(() => {
-   
-    dispatch(retrieveSettings());
     if (items.length === 0) {
         
       dispatch(fetchProducts());

@@ -20,7 +20,6 @@ const CartModal = () => {
   
   useEffect(() => {
     dispatch(fetchCartFromServer());
-    dispatch(retrieveSettings());
   }, [dispatch]);
 
   const handleRemoveClick = (item) => {

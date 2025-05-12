@@ -30,10 +30,6 @@ const AddToCartModal = () => {
     }
   };
 
-  useEffect(() => {
-    dispatch(retrieveSettings());
-  }, []);
-
   if (!isAddToCartOpen || !selectedProduct) return null;
 
   const total = (getPriceWithMarkup(selectedProduct.price, pricePercentage) * quantity).toFixed(2);

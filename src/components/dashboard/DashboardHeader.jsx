@@ -7,7 +7,7 @@ import {
   faUser,
   faSignOutAlt,
 } from "@fortawesome/free-solid-svg-icons";
-import { Popover } from "@headlessui/react";
+import { Popover, PopoverButton, PopoverPanel } from "@headlessui/react";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import { signoutUser } from "../../features/auth/authSlice";
@@ -16,11 +16,13 @@ import { resetCart } from "../../features";
 
 const DashboardHeader = ({ toggleSidebar }) => {
   const dispatch = useDispatch();
+  const { user } = useSelector((state) => state.auth);
+
   const logout = () => {
     dispatch(resetCart());
     dispatch(signoutUser());
   };
-  const { user } = useSelector((state) => state.auth);
+
   return (
     <header
       className="bg-white shadow-md"
@@ -46,16 +48,16 @@ const DashboardHeader = ({ toggleSidebar }) => {
           </button> */}
           <div className="relative">
             <Popover className="relative">
-              <Popover.Button className="flex items-center focus:outline-none">
+              <PopoverButton className="flex items-center focus:outline-none">
                 <div
                   className="w-8 h-8 rounded-full flex items-center justify-center text-white font-semibold"
                   style={{ backgroundColor: "var(--primary-color)" }}
                 >
                   {user?.name?.substring(0, 2).toUpperCase()}
                 </div>
-              </Popover.Button>
+              </PopoverButton>
 
-              <Popover.Panel className="absolute right-0 z-10 mt-2  rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+              <PopoverPanel className="absolute right-0 z-10 mt-2  rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
                 <div className="px-4 py-2 text-xs text-gray-500">
                   Signed in as
                   <br />
@@ -69,14 +71,15 @@ const DashboardHeader = ({ toggleSidebar }) => {
                   <FontAwesomeIcon icon={faUser} className="mr-2" />
                   View Profile
                 </Link>
-                <button
+                <Link
+                  to=''
                   onClick={logout}
-                  className=" px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 flex items-center"
+                  className="px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 flex items-center"
                 >
                   <FontAwesomeIcon icon={faSignOutAlt} className="mr-2" />
                   Logout
-                </button>
-              </Popover.Panel>
+                </Link>
+              </PopoverPanel>
             </Popover>
           </div>
         </div>

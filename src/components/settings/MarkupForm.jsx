@@ -33,7 +33,6 @@ const MarkupPriceForm = () => {
     }, [pricePercentage, reset]);
 
     const onSubmit = (data) => {
-
         dispatch(updateSettings(data));
         setIsEditing(false);
     };

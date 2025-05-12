@@ -28,7 +28,6 @@ const ProductList = ({ items, locationCode = "", noAction }) => {
   const fetchData = useCallback(() => {
     dispatch(retrieveFavouritePlans());
     dispatch(fetchProducts({ locationCode }));
-    dispatch(retrieveSettings());
   }, [dispatch, locationCode]);
 
   useEffect(() => {

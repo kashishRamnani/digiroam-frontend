@@ -13,7 +13,6 @@ const UserDashboardHome = () => {
   const { paymentData, loading } = useSelector((state) => state.payment);
 
   useEffect(() => {
-    dispatch(retrieveSettings());
     dispatch(paymentInfo());
   }, [dispatch]);
 
