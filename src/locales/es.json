@@ -13,6 +13,13 @@
     "message": "¡Ups! Es posible que la página que estás buscando haya sido eliminada o no esté disponible temporalmente.",
     "backHome": "Volver al Inicio"
   },
+  "unauthorized": {
+    "title": "Acceso No Autorizado",
+    "description": "No tienes permiso para acceder a esta página.",
+    "heading": "403 - Acceso No Autorizado",
+    "message": "Lo sentimos, pero no estás autorizado para ver esta página.",
+    "backHome": "Volver al Inicio"
+  },
   "signup": {
     "title": "Registreeru - Liitu DigiRoamiga",
     "description": "Loo oma DigiRoami konto, et avastada globaalset eSIM teenust.",
@@ -85,44 +92,137 @@
       "subtitle": "Demostración"
     },
     "esimTypes": [
-      { "id": "local", "label": "eSIM Local" },
-      { "id": "regional", "label": "eSIM Regional" },
-      { "id": "global", "label": "eSIM Global" }
+      {
+        "id": "local",
+        "label": "eSIM Local"
+      },
+      {
+        "id": "regional",
+        "label": "eSIM Regional"
+      },
+      {
+        "id": "global",
+        "label": "eSIM Global"
+      }
     ],
     "esimplan": {
       "title": "Países Populares",
       "btnText": "Ver Todos los Países"
     },
-
     "countryData": {
       "local": [
-        { "id": "pk", "name": "Pakistán", "flag": "pk", "plans": [] },
-        { "id": "sa", "name": "Arabia Saudita", "flag": "sa", "plans": [] },
-        { "id": "us", "name": "Estados Unidos", "flag": "us", "plans": [] },
+        {
+          "id": "pk",
+          "name": "Pakistán",
+          "flag": "pk",
+          "plans": []
+        },
+        {
+          "id": "sa",
+          "name": "Arabia Saudita",
+          "flag": "sa",
+          "plans": []
+        },
+        {
+          "id": "us",
+          "name": "Estados Unidos",
+          "flag": "us",
+          "plans": []
+        },
         {
           "id": "ae",
           "name": "Emiratos Árabes Unidos",
           "flag": "ae",
           "plans": []
         },
-        { "id": "gb", "name": "Reino Unido", "flag": "gb", "plans": [] },
-        { "id": "tr", "name": "Turquía", "flag": "tr", "plans": [] },
-        { "id": "th", "name": "Tailandia", "flag": "th", "plans": [] },
-        { "id": "gr", "name": "Grecia", "flag": "gr", "plans": [] },
-        { "id": "es", "name": "España", "flag": "es", "plans": [] },
-        { "id": "qa", "name": "Qatar", "flag": "qa", "plans": [] },
-        { "id": "cn", "name": "China", "flag": "cn", "plans": [] },
-        { "id": "np", "name": "Nepal", "flag": "np", "plans": [] },
-        { "id": "iq", "name": "Irak", "flag": "iq", "plans": [] },
-        { "id": "nl", "name": "Países Bajos", "flag": "nl", "plans": [] },
-        { "id": "my", "name": "Malasia", "flag": "my", "plans": [] }
+        {
+          "id": "gb",
+          "name": "Reino Unido",
+          "flag": "gb",
+          "plans": []
+        },
+        {
+          "id": "tr",
+          "name": "Turquía",
+          "flag": "tr",
+          "plans": []
+        },
+        {
+          "id": "th",
+          "name": "Tailandia",
+          "flag": "th",
+          "plans": []
+        },
+        {
+          "id": "gr",
+          "name": "Grecia",
+          "flag": "gr",
+          "plans": []
+        },
+        {
+          "id": "es",
+          "name": "España",
+          "flag": "es",
+          "plans": []
+        },
+        {
+          "id": "qa",
+          "name": "Qatar",
+          "flag": "qa",
+          "plans": []
+        },
+        {
+          "id": "cn",
+          "name": "China",
+          "flag": "cn",
+          "plans": []
+        },
+        {
+          "id": "np",
+          "name": "Nepal",
+          "flag": "np",
+          "plans": []
+        },
+        {
+          "id": "iq",
+          "name": "Irak",
+          "flag": "iq",
+          "plans": []
+        },
+        {
+          "id": "nl",
+          "name": "Países Bajos",
+          "flag": "nl",
+          "plans": []
+        },
+        {
+          "id": "my",
+          "name": "Malasia",
+          "flag": "my",
+          "plans": []
+        }
       ],
       "regional": [
-        { "id": "eu", "name": "Unión Europea", "flag": "eu", "plans": [] },
-        { "id": "asia", "name": "Asia-Pacífico", "flag": "as", "plans": [] }
+        {
+          "id": "eu",
+          "name": "Unión Europea",
+          "flag": "eu",
+          "plans": []
+        },
+        {
+          "id": "asia",
+          "name": "Asia-Pacífico",
+          "flag": "as",
+          "plans": []
+        }
       ],
       "global": [
-        { "id": "world", "name": "Mundial", "flag": "un", "plans": [] }
+        {
+          "id": "world",
+          "name": "Mundial",
+          "flag": "un",
+          "plans": []
+        }
       ]
     },
     "featuresheading": "Disfruta de internet confiable y asequible en tus viajes.",

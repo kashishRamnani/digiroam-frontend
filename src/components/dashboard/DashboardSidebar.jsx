@@ -35,8 +35,8 @@ const DashboardSidebar = ({ isOpen, toggleSidebar }) => {
       },
       {
         icon:  faTools,
-        text: "App Settings",
-        href: "/settings",
+        text: "App CMS",
+        href: "/app-cms",
       },
       {
         icon: faCog,

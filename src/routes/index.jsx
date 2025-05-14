@@ -28,6 +28,7 @@ import {
 
   // public
   QueriedEsimPlans,
+  Unauthorized,
 } from "../pages";
 
 import { SocialCallback } from "../callBacks";
@@ -140,17 +141,15 @@ const Routes = () => {
           element: <EmailTemplateList />,
         },
         {
-          path: "/settings",
+          path: "/app-cms",
           element: <Settings />,
         },
       ]
     },
 
     // unknown routes
-    {
-      path: "*",
-      element: <NotFound />,
-    },
+    { path: "/unauthorized", element: <Unauthorized /> },
+    { path: "*", element: <NotFound /> },
   ]);
 
 

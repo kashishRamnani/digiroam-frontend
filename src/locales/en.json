@@ -17,6 +17,13 @@
     "message": "Oops! The page you are looking for might have been removed or is temporarily unavailable.",
     "backHome": "Back to Home"
   },
+  "unauthorized": {
+    "title": "403 Unauthorized",
+    "description": "You are not authorized to access this page.",
+    "heading": "403 - Unauthorized Access",
+    "message": "Sorry, you do not have permission to view this page.",
+    "backHome": "Back to Home"
+  },
   "signup": {
     "title": "Signup - Join DigiRoam",
     "description": "Create your DigiRoam account to explore global eSIM services.",
@@ -89,9 +96,18 @@
       "subtitle": "Demo"
     },
     "esimTypes": [
-      { "id": "local", "label": "Local eSIM" },
-      { "id": "regional", "label": "Regional eSIM" },
-      { "id": "global", "label": "Global eSIM" }
+      {
+        "id": "local",
+        "label": "Local eSIM"
+      },
+      {
+        "id": "regional",
+        "label": "Regional eSIM"
+      },
+      {
+        "id": "global",
+        "label": "Global eSIM"
+      }
     ],
     "esimplan": {
       "title": "Popular Countries",
@@ -99,33 +115,118 @@
     },
     "countryData": {
       "local": [
-        { "id": "pk", "name": "Pakistan", "flag": "pk", "plans": [] },
-        { "id": "sa", "name": "Saudi Arabia", "flag": "sa", "plans": [] },
-        { "id": "us", "name": "United States", "flag": "us", "plans": [] },
+        {
+          "id": "pk",
+          "name": "Pakistan",
+          "flag": "pk",
+          "plans": []
+        },
+        {
+          "id": "sa",
+          "name": "Saudi Arabia",
+          "flag": "sa",
+          "plans": []
+        },
+        {
+          "id": "us",
+          "name": "United States",
+          "flag": "us",
+          "plans": []
+        },
         {
           "id": "ae",
           "name": "United Arab Emirates",
           "flag": "ae",
           "plans": []
         },
-        { "id": "gb", "name": "United Kingdom", "flag": "gb", "plans": [] },
-        { "id": "tr", "name": "Turkey", "flag": "tr", "plans": [] },
-        { "id": "th", "name": "Thailand", "flag": "th", "plans": [] },
-        { "id": "gr", "name": "Greece", "flag": "gr", "plans": [] },
-        { "id": "es", "name": "Spain", "flag": "es", "plans": [] },
-        { "id": "qa", "name": "Qatar", "flag": "qa", "plans": [] },
-        { "id": "cn", "name": "China", "flag": "cn", "plans": [] },
-        { "id": "np", "name": "Nepal", "flag": "np", "plans": [] },
-        { "id": "iq", "name": "Iraq", "flag": "iq", "plans": [] },
-        { "id": "nl", "name": "Netherlands", "flag": "nl", "plans": [] },
-        { "id": "my", "name": "Malaysia", "flag": "my", "plans": [] }
+        {
+          "id": "gb",
+          "name": "United Kingdom",
+          "flag": "gb",
+          "plans": []
+        },
+        {
+          "id": "tr",
+          "name": "Turkey",
+          "flag": "tr",
+          "plans": []
+        },
+        {
+          "id": "th",
+          "name": "Thailand",
+          "flag": "th",
+          "plans": []
+        },
+        {
+          "id": "gr",
+          "name": "Greece",
+          "flag": "gr",
+          "plans": []
+        },
+        {
+          "id": "es",
+          "name": "Spain",
+          "flag": "es",
+          "plans": []
+        },
+        {
+          "id": "qa",
+          "name": "Qatar",
+          "flag": "qa",
+          "plans": []
+        },
+        {
+          "id": "cn",
+          "name": "China",
+          "flag": "cn",
+          "plans": []
+        },
+        {
+          "id": "np",
+          "name": "Nepal",
+          "flag": "np",
+          "plans": []
+        },
+        {
+          "id": "iq",
+          "name": "Iraq",
+          "flag": "iq",
+          "plans": []
+        },
+        {
+          "id": "nl",
+          "name": "Netherlands",
+          "flag": "nl",
+          "plans": []
+        },
+        {
+          "id": "my",
+          "name": "Malaysia",
+          "flag": "my",
+          "plans": []
+        }
       ],
       "regional": [
-        { "id": "eu", "name": "European Union", "flag": "eu", "plans": [] },
-        { "id": "asia", "name": "Asia Pacific", "flag": "as", "plans": [] }
+        {
+          "id": "eu",
+          "name": "European Union",
+          "flag": "eu",
+          "plans": []
+        },
+        {
+          "id": "asia",
+          "name": "Asia Pacific",
+          "flag": "as",
+          "plans": []
+        }
       ],
       "global": [
-        { "id": "world", "name": "Worldwide", "flag": "un", "plans": [] }
+        {
+          "id": "world",
+          "name": "Worldwide",
+          "flag": "un",
+          "plans": []
+        }
       ]
     },
     "featuresheading": "Enjoy reliable and affordable internet in your trips.",
@@ -170,7 +271,7 @@
       {
         "id": 3,
         "name": "Sumita",
-        "text":"Switching to an eSIM was the best decision! Roamdigi's eSIM offers customer-friendly services as it eliminates the need to swap physical SIM cards while traveling. I activated my plan instantly, and the connection was smooth and hassle-free."
+        "text": "Switching to an eSIM was the best decision! Roamdigi's eSIM offers customer-friendly services as it eliminates the need to swap physical SIM cards while traveling. I activated my plan instantly, and the connection was smooth and hassle-free."
       }
     ],
     "mainTestimonial": {
@@ -187,7 +288,6 @@
         "question": "How do I create an account?",
         "answer": "To create an account, simply click on the 'Sign Up' button on our website or mobile app. Follow the prompts to enter your information and set up your account. It's quick and easy!"
       },
-     
       {
         "question": "Do you have a mobile app?",
         "answer": "Yes, we have a mobile app available for both iOS and Android devices. You can download it from the App Store or Google Play Store. Our app offers all the features of our website, plus some exclusive mobile-only benefits."
