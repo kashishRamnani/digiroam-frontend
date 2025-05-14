@@ -84,8 +84,8 @@ const DataPlan = ({ selectedEsim }) => {
         </div>
       </div>
       {/* eSIM Details */}
-     
-      <div className="grid grid-cols-2 gap-4 pt-4">
+
+      {/* <div className="grid grid-cols-2 gap-4">
         <p>
           <strong>OrderNo:</strong> {selectedEsim?.orderNo || "N/A"}
         </p>
@@ -118,7 +118,7 @@ const DataPlan = ({ selectedEsim }) => {
         <p>
           <span className="font-medium">APN:</span> {selectedEsim?.apn || "N/A"}
         </p>
-      </div> 
+      </div> */}
 
       <div className="grid grid-cols-2 gap-4 mt-4">
         <p>Name: <strong>{selectedEsim?.packageList[0].packageName ?? "N/A"}</strong></p>
