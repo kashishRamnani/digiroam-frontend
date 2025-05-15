@@ -139,7 +139,7 @@ export default function HeroSection() {
                 <img
                   src="/images/home/hero-person.png"
                   alt="Person using phone"
-                  className="absolute right-20 mt-8 pt-0 sm:right-36 lg:right-28 bottom-[-20px] object-contain w-[76%] h-[83%]"
+                  className="absolute right-20 lg:mb-0 mb-3 pt-0 sm:right-36 lg:right-28 bottom-[-20px] object-contain w-[76%] h-[83%]"
                 />
               </div>
             </div>

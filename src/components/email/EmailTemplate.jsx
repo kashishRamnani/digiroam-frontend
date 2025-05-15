@@ -59,7 +59,7 @@ const allEvents = ["ON_LOGIN", "ON_PASSWORD_CHANGE", "ON_PURCHASE", "ON_CANCEL",
   
 
   const onSubmit = async (data) => {
-    // Ensure body remains in HTML format
+  
     data.body = quillRef.current?.getEditor()?.root.innerHTML || data.body;
 
     const action = initialData
@@ -99,7 +99,7 @@ const allEvents = ["ON_LOGIN", "ON_PASSWORD_CHANGE", "ON_PURCHASE", "ON_CANCEL",
 
           {!initialData ? (
             <div>
-              <label className="block text-sm font-medium text-gray-600">Event Name</label>
+              <label className="block text-sm font-medium text-gray-600">Event Name  <span className="text-red-500">*</span></label>
               <select
                 {...register("eventName")}
                 className="border bg-white p-1 rounded-lg w-full mt-1 focus:ring-blue-500 focus:border-blue-500"
@@ -118,14 +118,18 @@ const allEvents = ["ON_LOGIN", "ON_PASSWORD_CHANGE", "ON_PURCHASE", "ON_CANCEL",
           ) : (
             /* Show event name as plain text in Edit mode */
             <div>
-              <label className="block text-sm font-medium text-gray-600">Event Name</label>
+              <label className="block text-sm font-medium text-gray-600">Event Name 
+                 <span className="text-red-500">*</span>
+              </label>
               <p className="border p-1 rounded-lg w-full mt-1 bg-gray-100">
                 {initialData.eventName.replace(/_/g, " ")}
               </p>
             </div>
           )}
           <div>
-            <label className="block text-sm p-1 font-medium text-gray-700">Subject</label>
+            <label className="block text-sm p-1 font-medium text-gray-700">Subject
+               <span className="text-red-500">*</span>
+            </label>
             <input
               {...register("subject")}
               className="border p-1 rounded-md w-full bg-white"
@@ -134,7 +138,7 @@ const allEvents = ["ON_LOGIN", "ON_PASSWORD_CHANGE", "ON_PURCHASE", "ON_CANCEL",
             {errors.subject && <p className="text-red-500 text-xs mt-1">{errors.subject.message}</p>}
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700">Attachments </label>
+            <label className="block text-sm font-medium text-gray-700">Attachments  </label>
             <input type="file" multiple onChange={handleAttachmentChange}   max={5} className="border p-2 rounded-md w-full mt-1 focus:ring-blue-500 focus:border-blue-500" />
             {errors.attachments && <p className="text-red-500 text-xs mt-1">{errors.attachments.message}</p>}
           </div>
@@ -142,7 +146,7 @@ const allEvents = ["ON_LOGIN", "ON_PASSWORD_CHANGE", "ON_PURCHASE", "ON_CANCEL",
           {/* Body (ReactQuill) */}
           
           <div className="relative">
-            <label className="block text-sm font-medium text-gray-700">Body</label>
+            <label className="block text-sm font-medium text-gray-700">Body  <span className="text-red-500">*</span></label>
             <div className="quill-wrapper">
               <ReactQuill
                 ref={quillRef}

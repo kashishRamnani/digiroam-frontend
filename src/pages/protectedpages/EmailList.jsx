@@ -35,7 +35,7 @@ const EmailTemplateList = () => {
   }, [showTemplateForm, showSendEmailForm]);
 
   const handlePageChange = ({ selected }) => {
-    dispatch(setCurrentPage(selected + 1)); // Ensure correct pagination indexing
+    dispatch(setCurrentPage(selected + 1)); 
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
@@ -45,9 +45,8 @@ const EmailTemplateList = () => {
       if (!response.payload || response.payload.success === false) {
         throw new Error(response.payload?.message || "Delete failed");
       }
-      console.log("Email template deleted successfully.");
     } catch (error) {
-      console.error("Error deleting email template:", error.message);
+      
     }
   };
 
@@ -99,6 +98,7 @@ const EmailTemplateList = () => {
                 </tr>
               ) : (
                 currentItems.map((template,index) => (
+                    
                   <tr key={index }>
                     <td className="px-6 py-4 whitespace-nowrap text-gray-900">
                       {template.eventName}
@@ -123,7 +123,7 @@ const EmailTemplateList = () => {
                         <FaEdit size={18} />
                       </button>
                       <button
-                        onClick={() => handleDelete(template.id)}
+                        onClick={() => handleDelete(template._id)}
                         className="text-red-500 hover:text-red-700"
                       >
                         <FaTrash size={18} />

@@ -38,7 +38,7 @@ const MarkupPriceForm = () => {
     };
 
     return (
-        <div className="bg-white shadow-md lg:h-[70%] rounded-lg p-6  mx-4 mt-10">
+        <div className="bg-white table-container mb-8 shadow-md lg:h-[70%] rounded-lg p-6  mx-4 mt-10">
             <h2 className="text-xl font-bold text-gray-800 mb-4">Markup Percentage (%)</h2>
 
             {!isEditing ? (
@@ -77,7 +77,7 @@ const MarkupPriceForm = () => {
                         <button
                             type="button"
                             onClick={() => setIsEditing(false)}
-                            className="flex-1 bg-gray-300 text-gray-700 px-4 py-2 rounded-md flex items-center justify-center space-x-2 hover:bg-gray-400"
+                            className="flex-1 bg-gray-300  text-gray-700 px-4 py-2 rounded-md flex items-center justify-center space-x-2 hover:bg-gray-400"
                         >
                             <FontAwesomeIcon icon={faTimes} />
                             <span>Cancel</span>

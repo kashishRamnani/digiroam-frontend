@@ -3,7 +3,7 @@ import { fetchUsers } from "../../../features/user/allUserSlice";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faUser, faUsers,faCreditCard } from "@fortawesome/free-solid-svg-icons";
+import { faUser, faUserCheck,faUsers,faTimesCircle,faDollarSign , faSimCard} from "@fortawesome/free-solid-svg-icons";
 import { Loader } from "../../../components";
 import { paymentInfo } from "../../../features/payment/paymentSlice";
 import UserFilters from "../../../components/users/UserFilters";
@@ -66,11 +66,11 @@ const AdminDashboardHome = () => {
   const nonVerifiedUsers = totalUsers - verifiedUsers;
 
   const cards = [
-    { icon: faCreditCard, title: "Total eSims Sold", value: totalSoldESims },
-    { icon: faUsers, title: "Total Payments", value: `$${totalPayments}` },
+    { icon:  faSimCard, title: "Total eSims Sold", value: totalSoldESims },
+    { icon: faDollarSign, title: "Total Payments", value: `$${totalPayments}` },
     { icon: faUsers, title: "Total Users", value: totalUsers },
-    { icon: faUser, title: "Verified Users", value: verifiedUsers },
-    { icon: faUser, title: "Non-verified Users", value: nonVerifiedUsers },
+    { icon:  faUserCheck, title: "Verified Users", value: verifiedUsers },
+    { icon:faTimesCircle, title: "Non-verified Users", value: nonVerifiedUsers },
   ];
 
   return (
@@ -78,10 +78,11 @@ const AdminDashboardHome = () => {
       {loading && <Loader />}
     
       <div className="container mx-auto px-6 py-8">
-        <h3 className="text-3xl font-medium text-gray-700 mb-6">Welcome, Admin!</h3>
-        <div className="grid gap-6 mb-8 md:grid-cols-2 xl:grid-cols-3">
+        <h3 className="text-3xl font-medium text-gray-700">Welcome, Admin!</h3>
+       <div className="mt-8">
+         <div className="grid gap-6 mb-8 md:grid-cols-2 xl:grid-cols-3">
           {cards.map((card, index) => (
-            <div key={index} className="flex items-center p-4 bg-white rounded-lg shadow-md">
+            <div key={index} className="flex items-center p-4 bg-white rounded-lg shadow-xs">
               <div className="p-3 mr-4 rounded-full bg-primary text-white">
                 <FontAwesomeIcon icon={card.icon} className="w-5 h-5" />
               </div>
@@ -94,23 +95,24 @@ const AdminDashboardHome = () => {
           
         </div>
         <UserFilters paymentInfo={usersData}  onfilter={handleFilter} />
-        <table className="w-full border-collapse bg-white border border-gray-300 rounded-lg overflow-hidden">
+     <div className="table-container px-4">
+         <table className="min-w-full bg-white table-auto max-w-full">
           <thead>
             <tr className="text-xs font-semibold tracking-wide text-left text-gray-500 uppercase border-b bg-gray-50">
-              <th className="px-4 py-3">User Name</th>
+              <th className="px-4 py-3 whitespace-nowrap">User Name</th>
               <th className="px-4 py-3">Email</th>
-              <th className="px-4 py-3">Account Status</th>
-              <th className="px-4 py-3">Total eSims</th>
-              <th className="px-4 py-3">Total Payment</th>
+              <th className="px-4 py-3 whitespace-nowrap">Account Status</th>
+              <th className="px-4 py-3 whitespace-nowrap">Total eSims</th>
+              <th className="px-4 py-3 whitespace-nowrap">Total Payment</th>
             </tr>
           </thead>
          
           <tbody className="divide-y">
             {filterUsers.length > 0 ? (
               filterUsers.map((user) => (
-                <tr key={user._id} className="text-gray-700 hover:bg-gray-100">
-                  <td className="px-4 py-3">{user.name}</td>
-                  <td className="px-4 py-3">{user.email}</td>
+                <tr key={user._id}  className="text-gray-700 cursor-pointer hover:bg-gray-100">
+                  <td className="px-4 py-3 whitespace-nowrap">{user.name}</td>
+                  <td className="px-4 py-3 whitespace-nowrap">{user.email}</td>
                   <td className="px-4 py-3">
                     {user.verified ? (
                       <span className="px-2 py-1 bg-green-200 text-green-700 rounded">Verified</span>
@@ -129,6 +131,8 @@ const AdminDashboardHome = () => {
             )}
           </tbody>
         </table>
+      </div>
+       </div>
       </div>
     </DashboardLayout>
   );

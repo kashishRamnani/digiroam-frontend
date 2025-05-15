@@ -50,7 +50,7 @@ const Signup = () => {
             />
 
             <button
-              className=" absolute top-60 w-32 p-2 border border-transparent rounded-md shadow-sm text-sm font-medium bg-white   focus:outline-none focus:ring-2 focus:ring-offset-2 bg-primary focus:ring-[#FF7F5C] transition duration-150 ease-in-out"
+              className=" absolute top-56 w-32 p-2 border border-transparent rounded-md shadow-sm text-sm font-medium bg-white   focus:outline-none focus:ring-2 focus:ring-offset-2 bg-primary focus:ring-[#FF7F5C] transition duration-150 ease-in-out"
               onClick={() => {
                 navigate("/");
               }}

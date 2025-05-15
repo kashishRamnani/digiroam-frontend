@@ -109,7 +109,7 @@ const SendEmailForm = ({ template, onClose }) => {
             name="user"
             value={form.user}
             onChange={handleUserChange}
-            className="border p-2 rounded-md w-full"
+            className="border p-2 rounded-md w-full bg-white"
             disabled={usersLoading || !users?.length}
           >
             <option value="">-- Choose --</option>
@@ -127,7 +127,7 @@ const SendEmailForm = ({ template, onClose }) => {
             name="orderNo"
             value={form.orderNo}
             onChange={(e) => setForm({ ...form, orderNo: e.target.value })}
-            className="border p-2 rounded-md w-full"
+            className="border p-2 rounded-md w-full bg-white"
           />
 
           {/* ICCID */}
@@ -136,7 +136,7 @@ const SendEmailForm = ({ template, onClose }) => {
             type="text"
             name="iccid"
             value={form.iccid}
-            className="border p-2 rounded-md w-full"
+            className="border p-2 rounded-md w-full bg-white"
             onChange={(e) => setForm({ ...form, iccid: e.target.value })}
           />
 
