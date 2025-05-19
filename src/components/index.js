@@ -30,7 +30,8 @@ import Loader from "./common/Loader";
 import ContactList from "./settings/ContactList";
 import MarkupPriceForm from "./settings/MarkupForm";
 import ServiceLinks from "./settings/ServiceLinks";
-
+import WalletModal from "./wallet/WalletModel";
+import WalletCards from "./wallet/Walletcards";
 export {
   Footer,
   LoginButtons,
@@ -63,5 +64,7 @@ export {
   Loader,
   MarkupPriceForm,
   ContactList,
-  ServiceLinks
+  ServiceLinks,
+  WalletModal,
+  WalletCards,
 };

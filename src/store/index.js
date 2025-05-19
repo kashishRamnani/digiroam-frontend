@@ -15,6 +15,7 @@ import {
   allocatedProfilesReducer,
   esimSlice,
   favouritePlanSlice,
+ walletSlice
 } from "../features";
 
 export const store = configureStore({
@@ -33,7 +34,8 @@ export const store = configureStore({
     settings: settingsSlice,
     allocatedProfiles: allocatedProfilesReducer,
     esims: esimSlice,
-    favouritePlans: favouritePlanSlice
+    favouritePlans: favouritePlanSlice,
+    wallet:walletSlice,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

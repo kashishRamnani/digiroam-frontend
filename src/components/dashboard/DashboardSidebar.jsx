@@ -8,13 +8,15 @@ import {
   faListCheck,
   faSimCard,
   faClipboardList ,
-  faTools
+  faTools,
+  faWallet
 } from "@fortawesome/free-solid-svg-icons";
 import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 import { signoutUser } from "../../features/auth/authSlice";
 import { resetCart } from "../../features";
 import { useAuth } from "../../hooks/useAuth";
+
 
 const DashboardSidebar = ({ isOpen, toggleSidebar }) => {
   const dispatch = useDispatch();
@@ -66,6 +68,11 @@ const DashboardSidebar = ({ isOpen, toggleSidebar }) => {
         text: "Profile Settings",
         href: "/profile"
       },
+      {
+        icon:faWallet,
+        text:"Wallet",
+        href:"/wallet"
+      }
     ];
   }
 

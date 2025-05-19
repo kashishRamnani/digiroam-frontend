@@ -17,6 +17,7 @@ import { resetCart } from "../../features";
 const DashboardHeader = ({ toggleSidebar }) => {
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.auth);
+   const { balance} = useSelector((state) => state.wallet);
 
   const logout = () => {
     dispatch(resetCart());
@@ -46,6 +47,7 @@ const DashboardHeader = ({ toggleSidebar }) => {
           {/* <button className="text-gray-500 hover:text-gray-700 focus:outline-none">
             <FontAwesomeIcon icon={faEnvelope} className="h-6 w-6" />
           </button> */}
+            <h3>Balance:${balance}</h3>
           <div className="relative">
             <Popover className="relative">
               <PopoverButton className="flex items-center focus:outline-none">

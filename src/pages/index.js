@@ -12,6 +12,7 @@ import ProfileSettings from "./protectedpages/ProfileSettings";
 import OTPVerification from "./auth/OTPVerification";
 import ESimPlans from "./protectedpages/ESimPlans";
 import ESimManagement from "./protectedpages/ESimManagement";
+import Wallet from "./protectedpages/Wallet";
 
 // admin pages
 import EmailTemplateList from "./protectedpages/EmailList.jsx";
@@ -35,6 +36,7 @@ export {
   OTPVerification,
   ESimPlans,
   ESimManagement,
+  Wallet,
 
   // admin pages
   EmailTemplateList,

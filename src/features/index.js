@@ -15,7 +15,7 @@ export { setTheme, setLanguage } from "./preferences/preferenceSlice";
 export { setLoading, setError, clearError } from "./ui/uiSlice";
 export { setCurrentPage } from "./products/productSlice";
 
-
+export {default as walletSlice,walletBalance,stripeAddFunds,addFunds} from "./wallet/walletSlice";
 
 export {
   fetchCartFromServer,

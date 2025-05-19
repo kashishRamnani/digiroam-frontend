@@ -21,6 +21,7 @@ import {
   OTPVerification,
   ESimPlans,
   ESimManagement,
+  Wallet,
 
   // admin pages
   EmailTemplateList,
@@ -128,6 +129,10 @@ const Routes = () => {
           path: "/esims",
           element: <ESimManagement />,
         },
+        {
+          path: "/wallet",
+          element: <Wallet/>
+        }
       ]
     },
 
