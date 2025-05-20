@@ -139,10 +139,13 @@ const WalletModel = ({ isVisible, onClose }) => {
           Top Up Your Wallet
         </h2>
 
+
+        <label className="ms-1 font-semibold" htmlFor="amount">Amount</label>
         <input
           type="number"
           placeholder="Enter Amount (USD)"
           value={amount}
+          id="amount"
           onChange={(e) => setAmount(e.target.value)}
           min="0"
           step="0.01"

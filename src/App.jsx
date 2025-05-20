@@ -6,7 +6,7 @@ import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { verifyToken } from "./features/auth/authSlice";
 import i18n from "./i18n";
-import { retrieveSettings, walletBalance } from "./features";
+import { retrieveSettings } from "./features";
 
 function AppContent() {
   const dispatch = useDispatch();
@@ -17,9 +17,8 @@ function AppContent() {
   }, [language]);
 
   useEffect(() => {
-    dispatch(retrieveSettings())
     dispatch(verifyToken());
-    dispatch(walletBalance());
+    dispatch(retrieveSettings())
   }, []);
 
   return (

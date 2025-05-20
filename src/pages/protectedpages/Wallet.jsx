@@ -49,15 +49,13 @@ const Wallet = () => {
               </thead>
                <tbody>
                 {transactions && transactions.length > 0 ? (
-                  transactions.map((txn) => (
+                  [...transactions].reverse().map((txn) => (
                     <tr key={txn.transactionId || txn.id} className="text-gray-700 cursor-pointer hover:bg-gray-100">
                       <td className=" px-4 py-2">{txn.transactionId|| txn.id}</td>
                       <td className=" px-4 py-2">{txn.amount}</td>
                       <td className="px-4 py-2">{txn.currency}</td>
                        <td className='py-2 px-2'>{txn.source}</td>
                       <td className=" px-4 py-2">{new Date(txn.madeAt).toLocaleString()}</td>
-                     
-                      
                     </tr>
                   ))
                 ) : (

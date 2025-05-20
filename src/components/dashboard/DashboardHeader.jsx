@@ -6,6 +6,7 @@ import {
   faEnvelope,
   faUser,
   faSignOutAlt,
+  faWallet,
 } from "@fortawesome/free-solid-svg-icons";
 import { Popover, PopoverButton, PopoverPanel } from "@headlessui/react";
 import { useDispatch } from "react-redux";
@@ -13,6 +14,7 @@ import { useSelector } from "react-redux";
 import { signoutUser } from "../../features/auth/authSlice";
 import { Link } from "react-router-dom";
 import { resetCart } from "../../features";
+import formatBalance from "../../utils/helpers/formateBalance";
 
 const DashboardHeader = ({ toggleSidebar }) => {
   const dispatch = useDispatch();
@@ -45,12 +47,14 @@ const DashboardHeader = ({ toggleSidebar }) => {
         </div>
         <div className="flex items-center space-x-4">
 
-          <div className="flex flex-col items-center">
-            <p className="text-2xl font-bold text-blue-600">
-              ${balance ? balance : '0.00'}
-            </p>
-            <p className="text-sm text-gray-500">Balance</p>
-          </div>
+          {user.accountType == 1 && (
+            <div className="flex flex-col items-center">
+              <p className="text-xl font-bold text-blue-600">
+                ${formatBalance(balance)}
+              </p>
+              <p className="text-sm text-gray-500">Balance</p>
+            </div>
+          )}
           <div className="relative">
             <Popover className="relative">
               <PopoverButton className="flex items-center focus:outline-none">
@@ -76,6 +80,15 @@ const DashboardHeader = ({ toggleSidebar }) => {
                   <FontAwesomeIcon icon={faUser} className="mr-2" />
                   View Profile
                 </Link>
+                {user.accountType == 1 && (
+                  <Link
+                    to="/wallet"
+                    className="px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 flex items-center"
+                  >
+                    <FontAwesomeIcon icon={faWallet} className="mr-2" />
+                    Wallet
+                  </Link>
+                )}
                 <Link
                   to=''
                   onClick={logout}

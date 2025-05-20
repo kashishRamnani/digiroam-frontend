@@ -8,9 +8,10 @@ import {
   faWallet,
 } from "@fortawesome/free-solid-svg-icons";
 import { WalletModal } from "../../components";
+import formatBalance from "../../utils/helpers/formateBalance";
 
 const WalletCards = () => {
-  const { balance = 0, transactions = [] } = useSelector((state) => state.wallet || {});
+  const { balance, transactions } = useSelector((state) => state.wallet || {});
   const [isModalVisible, setModalVisible] = useState(false);
 
   const handleCloseModal = () => {
@@ -18,30 +19,30 @@ const WalletCards = () => {
   };
 
   const totalDeposit = transactions
-    .filter((txn) => txn.type === "DEPOSIT")
+    .filter((txn) => txn.type == "DEPOSIT")
     .reduce((acc, txn) => acc + txn.amount, 0);
 
-  const totalWithdraw = transactions
-    .filter((txn) => txn.type === "WITHDRAW")
+  const totalPurchase = transactions
+    .filter((txn) => txn.type == "PURCHASE")
     .reduce((acc, txn) => acc + txn.amount, 0);
 
   const cards = [
     {
       icon: faCoins,
-      title: "Balance",
-      value: `$${balance}`,
+      title: "Current Balance",
+      value: `$${formatBalance(balance)}`,
       showButton: true,
     },
     {
       icon: faHandHoldingUsd,
       title: "Total Deposit",
-      value: `$${totalDeposit}`,
+      value: `$${formatBalance(totalDeposit)}`,
       showButton: false,
     },
     {
       icon: faFileInvoiceDollar,
-      title: "Total Withdraw",
-      value: `$${totalWithdraw}`,
+      title: "Total Purchases",
+      value: `$${formatBalance(totalPurchase)}`,
       showButton: false,
     },
   ];
@@ -56,8 +57,8 @@ const WalletCards = () => {
     <div
       key={index}
       className={`${isBalanceCard 
-        ? "md:col-span-2 xl:col-span-1 max-w-7xl scale-105 border-2 p-6"
-        : "max-w-xs p-4"} bg-white rounded-2xl shadow-lg hover:shadow-xl transition-shadow duration-300 flex flex-row justify-between items-center`}
+        ? "md:col-span-2 xl:col-span-1 max-w-7xl scale-105 border p-6"
+        : "max-w-xs p-4"} bg-white rounded-md duration-300 flex flex-row justify-between items-center`}
     >
       <div className="flex items-center space-x-4">
         <div className:p-3 rounded-xl 

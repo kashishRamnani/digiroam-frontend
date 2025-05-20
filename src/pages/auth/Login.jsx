@@ -10,6 +10,7 @@ import { loginUser, requestPasswordReset } from "../../features/auth/authSlice";
 import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleLeft } from "@fortawesome/free-solid-svg-icons";
+import { walletBalance } from "../../features";
 
 const Login = () => {
   const dispatch = useDispatch();
@@ -31,6 +32,7 @@ const Login = () => {
     try {
       if (mode === "login") {
         await dispatch(loginUser(data)).unwrap();
+        dispatch(walletBalance());
         navigate("/dashboard");
       } else {
         await dispatch(requestPasswordReset(data.email)).inwrap();

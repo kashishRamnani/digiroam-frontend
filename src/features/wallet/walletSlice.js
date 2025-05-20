@@ -89,9 +89,9 @@ export const transactions = createAsyncThunk(
 const walletSlice = createSlice({
   name: "wallet",
   initialState: {
-    balance: null,
+    balance: "0.00",
     paypalOrder: null,
-    currency: null,
+    currency: "USD",
     stripeClientSecret: null,
     transactions: [],
     loading: false,
@@ -118,7 +118,7 @@ const walletSlice = createSlice({
       .addCase(walletBalance.fulfilled, (state, action) => {
         state.loading = false;
         state.balance = action.payload.balance;
-        state.currency = action.payload.currency;
+        // state.currency = action.payload.currency?;
       })
       .addCase(walletBalance.rejected, (state, action) => {
         state.loading = false;
