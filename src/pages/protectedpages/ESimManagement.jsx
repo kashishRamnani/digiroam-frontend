@@ -83,7 +83,7 @@ const ESimManagement = () => {
               </thead>
               <tbody className="bg-white divide-y">
                 {Array.isArray(esims) && esims.length > 0 ? (
-                  [...currentItems].reverse().map((esim, index) => {
+                  currentItems.map((esim, index) => {
                     const { icon, color, label } = getEsimStatus(esim.esimStatus);
                     return (
                       <tr key={index} className="text-gray-700">
