@@ -17,7 +17,7 @@ import { resetCart } from "../../features";
 const DashboardHeader = ({ toggleSidebar }) => {
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.auth);
-   const { balance} = useSelector((state) => state.wallet);
+  const { balance } = useSelector((state) => state.wallet);
 
   const logout = () => {
     dispatch(resetCart());
@@ -29,7 +29,7 @@ const DashboardHeader = ({ toggleSidebar }) => {
       className="bg-white shadow-md"
       style={{ borderBottom: "2px solid var(--secondary-color)" }}
     >
-      <div className="flex items-center justify-between px-4 py-3">
+      <div className="flex items-center justify-between px-4 py-3 ">
         <div className="flex items-center">
           <button
             onClick={toggleSidebar}
@@ -44,10 +44,13 @@ const DashboardHeader = ({ toggleSidebar }) => {
           />
         </div>
         <div className="flex items-center space-x-4">
-          {/* <button className="text-gray-500 hover:text-gray-700 focus:outline-none">
-            <FontAwesomeIcon icon={faEnvelope} className="h-6 w-6" />
-          </button> */}
-            <h3>Balance:${balance}</h3>
+
+          <div className="flex flex-col items-center">
+            <p className="text-2xl font-bold text-blue-600">
+              ${balance ? balance : '0.00'}
+            </p>
+            <p className="text-sm text-gray-500">Balance</p>
+          </div>
           <div className="relative">
             <Popover className="relative">
               <PopoverButton className="flex items-center focus:outline-none">

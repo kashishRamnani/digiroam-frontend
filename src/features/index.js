@@ -15,7 +15,12 @@ export { setTheme, setLanguage } from "./preferences/preferenceSlice";
 export { setLoading, setError, clearError } from "./ui/uiSlice";
 export { setCurrentPage } from "./products/productSlice";
 
-export {default as walletSlice,walletBalance,stripeAddFunds,addFunds} from "./wallet/walletSlice";
+export {default as walletSlice,
+  walletBalance,stripePayment,paypalCaptureOrder,
+  paypalGenerateOrder,
+  addFunds,
+  transactions
+} from "./wallet/walletSlice";
 
 export {
   fetchCartFromServer,

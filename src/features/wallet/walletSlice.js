@@ -7,7 +7,6 @@ export const walletBalance = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     try {
       const response = await axiosInstance.get("/wallet/balance");
-      console.log("WALLET BALANCE RESPONSE:", response.data);
       return response.data;
     } catch (error) {
       return rejectWithValue(error.response?.data);
@@ -16,8 +15,8 @@ export const walletBalance = createAsyncThunk(
 );
 
 
-export const stripeAddFunds = createAsyncThunk(
-  "wallet/stripeAddFunds",
+export const stripePayment = createAsyncThunk(
+  "wallet/stripePayment",
   async ({ amount, currency }, { rejectWithValue }) => {
     try {
       const response = await axiosInstance.post("/wallet/stripe/add-funds", {
@@ -31,6 +30,33 @@ export const stripeAddFunds = createAsyncThunk(
   }
 );
 
+
+export const paypalGenerateOrder = createAsyncThunk("wallet/paypalGenerateOrder",
+  async ({ amount, currency }, { rejectWithValue }) => {
+    try {
+      const response = await axiosInstance.post("/wallet/paypal/generate-order/add-funds", {
+        amount, currency
+      });
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.response?.data);
+    }
+  }
+)
+
+
+export const paypalCaptureOrder = createAsyncThunk("wallet/paypal/CaptureOrder",
+  async ({ orderId }, { rejectWithValue }) => {
+    try {
+      const response = await axiosInstance.post("/wallet/paypal/capture-order/add-funds", {
+        orderId
+      });
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.response?.data);
+    }
+  }
+)
 
 export const addFunds = createAsyncThunk(
   "wallet/addFunds",
@@ -48,21 +74,40 @@ export const addFunds = createAsyncThunk(
   }
 );
 
+export const transactions = createAsyncThunk(
+  "wallet/fetchTransactions",
+  async (_, { rejectWithValue }) => {
+    try {
+      const response = await axiosInstance.get("/wallet/transactions");
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.response?.data);
+    }
+  }
+);
+
 const walletSlice = createSlice({
   name: "wallet",
   initialState: {
     balance: null,
+    paypalOrder: null,
     currency: null,
     stripeClientSecret: null,
+    transactions: [],
     loading: false,
     error: null,
+
   },
   reducers: {
     resetPaymentState: (state) => {
       state.stripeClientSecret = null;
+      state.paypalOrder = null;
+      state.balance = null;
       state.loading = false;
       state.error = null;
+      state.paymentStatus = null
     },
+
   },
   extraReducers: (builder) => {
     builder
@@ -80,15 +125,43 @@ const walletSlice = createSlice({
         state.error = action.payload;
       })
 
-      .addCase(stripeAddFunds.pending, (state) => {
+      .addCase(stripePayment.pending, (state) => {
         state.loading = true;
         state.error = null;
       })
-      .addCase(stripeAddFunds.fulfilled, (state, action) => {
+      .addCase(stripePayment.fulfilled, (state, action) => {
         state.loading = false;
         state.stripeClientSecret = action.payload.clientSecret;
       })
-      .addCase(stripeAddFunds.rejected, (state, action) => {
+      .addCase(stripePayment.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+      .addCase(paypalGenerateOrder.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(paypalGenerateOrder.fulfilled, (state, action) => {
+        state.loading = false;
+        state.paypalOrder = action.payload.orderId;
+
+
+      })
+      .addCase(paypalGenerateOrder.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+      .addCase(paypalCaptureOrder.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(paypalCaptureOrder.fulfilled, (state, action) => {
+        state.loading = false;
+        state.paypalOrder = null;
+
+
+      })
+      .addCase(paypalCaptureOrder.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
       })
@@ -97,16 +170,32 @@ const walletSlice = createSlice({
         state.loading = true;
         state.error = null;
       })
-      .addCase(addFunds.fulfilled, (state,action) => {
+      .addCase(addFunds.fulfilled, (state, action) => {
         state.balance = action.payload.balance;
         state.loading = false;
-         state.stripeClientSecret = null
-       
+        state.stripeClientSecret = null
+
       })
       .addCase(addFunds.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
-      });
+      })
+
+      .addCase(transactions.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(transactions.fulfilled, (state, action) => {
+        state.loading = false;
+        state.transactions = action.payload.transactions;
+
+        console.log("Transaction successful:", action.payload);
+      })
+      .addCase(transactions.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+
   },
 });
 
