@@ -3,7 +3,7 @@ import axiosInstance from "../../utils/axiosConfig";
 import { formatBytesDetailed } from "../../utils/helpers/formatBytesDetailed";
 import { convertMillisecondsToDHMS } from "../../utils/helpers/convertMillisecondsToDHMS";
 
-// Async Thunk to fetch eSIM data
+
 export const fetchDataPlan = createAsyncThunk(
   "dataPlan/fetchData",
   async (iccid, { rejectWithValue }) => {

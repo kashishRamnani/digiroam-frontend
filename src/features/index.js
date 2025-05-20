@@ -19,7 +19,8 @@ export {default as walletSlice,
   walletBalance,stripePayment,paypalCaptureOrder,
   paypalGenerateOrder,
   addFunds,
-  transactions
+  transactions,
+  cancelAndRefund
 } from "./wallet/walletSlice";
 
 export {

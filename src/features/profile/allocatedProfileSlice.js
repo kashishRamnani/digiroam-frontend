@@ -3,10 +3,11 @@ import axiosInstance from "../../utils/axiosConfig";
 
 export const allocatedProfiles = createAsyncThunk(
   "allocatedProfiles/fetch",
-  async ({ orderNo }, { rejectWithValue }) => {
+  async ({ orderNo}, { rejectWithValue }) => {
     try {
       const response = await axiosInstance.post("/esim/allocatedProfiles", {
         orderNo,
+        
         pager: { pageNum: 1, pageSize: 10 },
       });
 
@@ -38,6 +39,7 @@ const allocatedProfileSlice = createSlice({
       .addCase(allocatedProfiles.fulfilled, (state, action) => {
         state.isLoading = false;
         state.esimList = action.payload; 
+        console.log("Allocated Profiles:", action.payload);
       })
       .addCase(allocatedProfiles.rejected, (state, action) => {
         state.isLoading = false;

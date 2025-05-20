@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axiosInstance from "../../utils/axiosConfig";
-
+import formatBalance from "../../utils/helpers/formateBalance";
 
 export const walletBalance = createAsyncThunk(
   "wallet/fetchBalance",
@@ -86,6 +86,21 @@ export const transactions = createAsyncThunk(
   }
 );
 
+export const cancelAndRefund = createAsyncThunk(
+  "wallet/cancelAndRefund",
+  async ({ esimTranNo, transactionId}, { rejectWithValue }) => {
+    try {
+      const response = await axiosInstance.post("wallet/cancel-and-refund", {
+        esimTranNo,
+        transactionId,
+        
+      });
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.response?.data );
+    }
+  }
+);
 const walletSlice = createSlice({
   name: "wallet",
   initialState: {
@@ -118,7 +133,7 @@ const walletSlice = createSlice({
       .addCase(walletBalance.fulfilled, (state, action) => {
         state.loading = false;
         state.balance = action.payload.balance;
-        // state.currency = action.payload.currency?;
+        
       })
       .addCase(walletBalance.rejected, (state, action) => {
         state.loading = false;
@@ -189,12 +204,27 @@ const walletSlice = createSlice({
         state.loading = false;
         state.transactions = action.payload.transactions;
 
-        console.log("Transaction successful:", action.payload);
+       
       })
       .addCase(transactions.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
       })
+      .addCase(cancelAndRefund.pending, (state) =>{
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(cancelAndRefund.fulfilled, (state, action) =>{
+        state.loading = false;
+        if(action.payload?.balance){
+          state.balance =action.payload.balance;
+        }
+        
+      })
+      .addCase(cancelAndRefund.rejected, (state,action) => {
+          state.loading = false;
+          state.error  = action.payload
+        })
 
   },
 });

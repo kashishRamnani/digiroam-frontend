@@ -2,7 +2,8 @@ import React, { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTimes, faShoppingCart, faPlusCircle, faSimCard, faChartBar } from "@fortawesome/free-solid-svg-icons";
 import DataPlan from "./DataPlan";
-import Coverage from "./Coverage"
+import Coverage from "./Coverage";
+import Action from "./Action";
 import getFormattedVolume from "../../utils/helpers/get.formatted.volume";
 import { formatBytesDetailed } from "../../utils/helpers/formatBytesDetailed";
 import formateDateTime from "../../utils/helpers/formte.date.time";
@@ -119,6 +120,7 @@ const Sidebar = ({ selectedEsim, onClose }) => {
           {/* Data Plan Tab */}
           {activeTab === "dataPlan" && <DataPlan selectedEsim={selectedEsim} />}
           {activeTab == "coverage" && <Coverage selectedEsim={selectedEsim} />}
+          {activeTab === "action" && <Action selectedEsim={selectedEsim} />}
         </div>
       </div>
     </div>
