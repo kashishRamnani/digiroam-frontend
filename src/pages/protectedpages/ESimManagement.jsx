@@ -20,10 +20,15 @@ const ESimManagement = () => {
   const { currentPage, itemsPerPage } = useSelector((state) => state.plans);
   const { esims, isLoading } = useSelector((state) => state.esims);
   const [selectedEsim, setSelectedEsim] = useState(null);
+  const [eSimCancelled, setESimCancelled] = useState(false);
+
+  const onCancelAndRefund = (v) => {
+    setESimCancelled(v); setSelectedEsim(null);
+  }
 
   useEffect(() => {
     dispatch(fetchEsims({ orderNo }));
-  }, [orderNo]);
+  }, [orderNo, eSimCancelled]);
 
   const handlePageChange = ({ selected }) => {
     dispatch(setCurrentPage(selected + 1));
@@ -138,7 +143,7 @@ const ESimManagement = () => {
               </tbody>
             </table>
           </div>
-          <Sidebar selectedEsim={selectedEsim} onClose={() => setSelectedEsim(null)} />
+          <Sidebar onCancelAndRefund={onCancelAndRefund} selectedEsim={selectedEsim} onClose={() => setSelectedEsim(null)} />
         </div>
 
         {esims.length > 0 && (

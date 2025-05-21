@@ -4,15 +4,21 @@ import DashboardSidebar from "../components/dashboard/DashboardSidebar";
 import { Outlet, useLocation } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { Helmet } from "react-helmet-async";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { toggleModal } from "../features";
+import { WalletModal } from "../components";
 
 
 
 const DashboardLayout = ({ children, title, description, hideSidebar }) => {
+  const dispatch = useDispatch();
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const location = useLocation();
   const { t } = useTranslation();
   const language = useSelector((state) => state.preferences.language);
+  const isModalOpen = useSelector((state) => state.wallet.isModalOpen);
+
+  const handleCloseModal = () => dispatch(toggleModal(false));
 
   return (
     <div className="flex h-screen bg-gray-100" key={location.pathname}>
@@ -21,6 +27,8 @@ const DashboardLayout = ({ children, title, description, hideSidebar }) => {
         <title>{t(title)}</title>
         <meta name="description" content={t(description)} />
       </Helmet>
+
+      <WalletModal isVisible={isModalOpen} onClose={handleCloseModal} />
 
       {/* Conditionally render Sidebar */}
       {!hideSidebar && (

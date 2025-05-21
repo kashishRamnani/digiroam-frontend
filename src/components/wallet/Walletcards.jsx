@@ -1,43 +1,43 @@
 import React, { useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
- faCoins,
+  faCoins,
   faHandHoldingUsd,
   faFileInvoiceDollar,
   faWallet,
 } from "@fortawesome/free-solid-svg-icons";
-import { WalletModal } from "../../components";
 import formatBalance from "../../utils/helpers/formateBalance";
+import { toggleModal } from "../../features";
 
 const WalletCards = () => {
-  const { balance, transactions } = useSelector((state) => state.wallet || {});
-  const [isModalVisible, setModalVisible] = useState(false);
-
-  const handleCloseModal = () => {
-    setModalVisible(false);
-  };
+  const dispatch = useDispatch();
+  const { balance, transactions } = useSelector((state) => state.wallet);
 
   const totalDeposit = transactions
-    .filter((txn) => txn.type == "DEPOSIT")
+    .filter((txn) => txn.type === "DEPOSIT")
     .reduce((acc, txn) => acc + txn.amount, 0);
 
   const totalPurchase = transactions
-    .filter((txn) => txn.type == "PURCHASE")
+    .filter((txn) => txn.type === "PURCHASE")
+    .reduce((acc, txn) => acc + txn.amount, 0);
+
+  const totalRefunds = transactions
+    .filter((txn) => txn.type === "REFUND")
     .reduce((acc, txn) => acc + txn.amount, 0);
 
   const cards = [
+    {
+      icon: faHandHoldingUsd,
+      title: "Total Refunds",
+      value: `$${formatBalance(totalRefunds)}`,
+      showButton: false,
+    },
     {
       icon: faCoins,
       title: "Current Balance",
       value: `$${formatBalance(balance)}`,
       showButton: true,
-    },
-    {
-      icon: faHandHoldingUsd,
-      title: "Total Deposit",
-      value: `$${formatBalance(totalDeposit)}`,
-      showButton: false,
     },
     {
       icon: faFileInvoiceDollar,
@@ -48,56 +48,57 @@ const WalletCards = () => {
   ];
 
   return (
-    <div className=" max--w-7x1 mx-auto px-4 sm:px-6 lg:px-8 py-10">
-      <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
-       {cards.map((card, index) => {
-  const isBalanceCard = card.title === "Balance";
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+      <div className="grid gap-6 sm:grid-cols-2 xl:grid-cols-3 items-start">
+        {cards.map((card, index) => {
+          const isBalanceCard = card.title === "Current Balance";
 
-  return (
-    <div
-      key={index}
-      className={`${isBalanceCard 
-        ? "md:col-span-2 xl:col-span-1 max-w-7xl scale-105 border p-6"
-        : "max-w-xs p-4"} bg-white rounded-md duration-300 flex flex-row justify-between items-center`}
-    >
-      <div className="flex items-center space-x-4">
-        <div className:p-3 rounded-xl 
-       
-        
-        >
-           <div className="p-3 mr-4 rounded-full"
-                            style={{
-                              backgroundColor: "var(--primary-color)",
-                              color: "white",
-                            }}>
-                             <FontAwesomeIcon icon={card.icon} className={`${card.iconColor} ${isBalanceCard ? "w-5 h-5" : "w-4 h-4"}`} />
-                          </div>
-          
-         
-        </div>
-        <div>
-          <p className={`${isBalanceCard ? "text-3xl font-bold text-blue-500" : "text-base font-semibold text-blue-600"}`}>
-            {card.value}
-          </p>
-          <p className="text-sm text-gray-600">{card.title}</p>
-        </div>
+          return (
+            <div
+              key={index}
+              className={`bg-white text-gray-600 rounded-xl shadow-sm hover:shadow-md transition-all duration-300 p-6 flex flex-col justify-between h-auto self-start ${isBalanceCard ? "sm:col-span-2 xl:col-span-1" : ""
+                }`}
+            >
+              <div className="flex items-center gap-4 mb-4">
+                <div
+                  className="p-4 rounded-full"
+                  style={{
+                    backgroundColor: "var(--primary-color)",
+                    color: "white",
+                  }}
+                >
+                  <FontAwesomeIcon icon={card.icon} className="w-5 h-5" />
+                </div>
+                <div>
+                  <p className="text-lg font-semibold">
+                    {card.title}
+                  </p>
+                  <p
+                    className={`${isBalanceCard
+                      ? "text-3xl font-bold text-blue-500"
+                      : "text-xl font-semibold text-gray-800"
+                      }`}
+                  >
+                    {card.value}
+                  </p>
+                </div>
+              </div>
+
+              {card.showButton && (
+                <div className="flex justify-end">
+                  <button
+                    onClick={() => dispatch(toggleModal(true))}
+                    className="border border-blue-500 text-blue-500 hover:bg-blue-50 transition px-4 py-2 rounded-lg text-sm font-medium"
+                  >
+                    <FontAwesomeIcon icon={faWallet} className="mr-2" />
+                    Top Up
+                  </button>
+                </div>
+              )}
+            </div>
+          );
+        })}
       </div>
-
-      {card.showButton && (
-        <button
-          onClick={() => setModalVisible(true)}
-          className="border border-blue-500 text-blue-500 hover:bg-blue-50 transition px-4 py-1 rounded-lg text-sm font-medium"
-        >
-          <FontAwesomeIcon icon={faWallet} className="mr-2" />
-          <span>Top Up</span>
-        </button>
-      )}
-    </div>
-  );
-})}
-
-      </div>
-      <WalletModal isVisible={isModalVisible} onClose={handleCloseModal} />
     </div>
   );
 };

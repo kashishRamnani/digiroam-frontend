@@ -1,13 +1,19 @@
 import React, { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTimes, faShoppingCart, faPlusCircle, faSimCard, faChartBar } from "@fortawesome/free-solid-svg-icons";
+import {
+  faTimes,
+  faShoppingCart,
+  faPlusCircle,
+  faSimCard,
+  faChartBar,
+} from "@fortawesome/free-solid-svg-icons";
 import DataPlan from "./DataPlan";
 import Coverage from "./Coverage";
 import Action from "./Action";
-import getFormattedVolume from "../../utils/helpers/get.formatted.volume";
 import { formatBytesDetailed } from "../../utils/helpers/formatBytesDetailed";
 import formateDateTime from "../../utils/helpers/formte.date.time";
-const Sidebar = ({ selectedEsim, onClose }) => {
+
+const Sidebar = ({ selectedEsim, onClose, onCancelAndRefund }) => {
   const [activeTab, setActiveTab] = useState("profile");
 
   if (!selectedEsim) return null;
@@ -29,81 +35,113 @@ const Sidebar = ({ selectedEsim, onClose }) => {
 
   return (
     <div className="fixed inset-0 flex items-center justify-end z-50">
+      {/* Overlay */}
+      <div
+        className="bg-gray-900 opacity-50 absolute inset-0 cursor-pointer"
+        onClick={onClose}
+      ></div>
 
-      <div className="bg-gray-900 opacity-50 absolute inset-0 cursor-pointer" onClick={onClose}></div>
-
-
-      <div className="relative w-[52rem] bg-white shadow-2xl h-full p-6 rounded-l-2xl transform transition duration-300 translate-x-0">
-
+      {/* Sidebar Panel */}
+      <div className="relative w-[52rem] bg-white shadow-2xl h-full p-6 rounded-l-2xl transform transition duration-300 translate-x-0 flex flex-col">
+        {/* Header */}
         <div className="flex justify-between items-center border-b pb-4">
-          {selectedEsim && (
-            <div className="flex items-center">
-              {(() => {
-                const statusDetails = getEsimStatusIcon(selectedEsim.esimStatus);
-                return (
-                  <>
-                    <FontAwesomeIcon icon={statusDetails.icon} style={{ color: statusDetails.color }} className="mr-2" />
-                    <span>{statusDetails.label}</span>
-                  </>
-                );
-              })()}
-            </div>
-          )}
+          <div className="flex items-center space-x-2 text-gray-700">
+            {(() => {
+              const statusDetails = getEsimStatusIcon(selectedEsim.esimStatus);
+              return (
+                <>
+                  <FontAwesomeIcon
+                    icon={statusDetails.icon}
+                    style={{ color: statusDetails.color }}
+                    className="mr-2"
+                  />
+                  <span>{statusDetails.label}</span>
+                </>
+              );
+            })()}
+          </div>
+
           <h2 className="text-2xl font-bold text-gray-800">eSIM Details</h2>
-          <button onClick={onClose} className="text-gray-600 hover:text-red-500 transition duration-300">
+
+          <button
+            onClick={onClose}
+            className="text-gray-600 hover:text-red-500 transition duration-300"
+            aria-label="Close sidebar"
+          >
             <FontAwesomeIcon icon={faTimes} />
           </button>
         </div>
 
-        {/* Tab Navigation */}
+        {/* Tabs */}
         <div className="flex space-x-4 mt-4 border-b">
-          {["profile", "dataPlan", "coverage", "action"].map((tab) => (
-            <button
-              key={tab}
-              onClick={() => setActiveTab(tab)}
-              className={`pb-2 text-sm font-medium transition duration-300 ${activeTab === tab ? "text-blue-500 border-b-2 border-blue-500" : "text-gray-500 hover:text-gray-700"
-                }`}
-            >
-              {tab.charAt(0).toUpperCase() + tab.slice(1)}
-            </button>
-          ))}
+          {["profile", "dataPlan", "coverage", "action"].map((tab) => {
+            if (tab === "action" && selectedEsim.esimStatus !== "GOT_RESOURCE") {
+              return null;
+            }
+            return (
+              <button
+                key={tab}
+                onClick={() => setActiveTab(tab)}
+                className={`pb-2 text-sm font-medium transition duration-300 ${activeTab === tab
+                    ? "text-blue-600 border-b-2 border-blue-600"
+                    : "text-gray-500 hover:text-gray-700"
+                  }`}
+              >
+                {tab.charAt(0).toUpperCase() + tab.slice(1)}
+              </button>
+            );
+          })}
         </div>
 
         {/* Content */}
-        <div className="mt-4 space-y-4 overflow-y-auto max-h-screen pr-2">
+        <div className="mt-4 space-y-6 overflow-y-auto max-h-[calc(100vh-160px)] pr-4">
           {/* Profile Tab */}
           {activeTab === "profile" && (
             <>
-              <div className="grid  grid-cols-2 gap-4">
-                {/* <p><strong>Order No:</strong> {selectedEsim.orderNo}</p> */}
-                {/* <p><strong>eSIM Status:</strong> {selectedEsim.esimStatus}</p>s */}
-                {/* <p><strong>eSIM Status:</strong>
-                  {(() => {
-                    const statusDetails = getEsimStatusIcon(selectedEsim.esimStatus);
-                    return (
-                      <>
-                        <FontAwesomeIcon icon={statusDetails.icon} style={{ color: statusDetails.color }} className="mr-2" />
-                        <span>{statusDetails.label}</span>
-                      </>
-                    );
-                  })()}</p> */}
-                <p><strong>Package Name:</strong> {selectedEsim.packageList?.[0]?.packageName || "N/A"}</p>
-                <p><strong>Data Left:</strong> {formatBytesDetailed(selectedEsim.totalVolume - selectedEsim.orderUsage, !selectedEsim.orderUsage > 0)}</p>
+              <div className="grid grid-cols-2 gap-6">
+                <p>
+                  <span className="text-gray-500">Package Name: </span>
+                  <span className="text-gray-900 font-semibold">
+                    {selectedEsim.packageList?.[0]?.packageName || "N/A"}
+                  </span>
+                </p>
+                <p>
+                  <span className="text-gray-500">Data Left: </span>
+                  <span className="text-gray-900 font-semibold">
+                    {formatBytesDetailed(
+                      selectedEsim.totalVolume - selectedEsim.orderUsage,
+                      !(selectedEsim.orderUsage > 0)
+                    )}
+                  </span>
+                </p>
               </div>
 
-              <div className="mt-4">
+              <div>
                 <p className="mb-4">
-                  <strong>Expired Time:</strong> {formateDateTime(selectedEsim.expiredTime)}
+                  <span className="text-gray-500">Expired Time: </span>
+                  <span className="text-gray-900 font-semibold">
+                    {formateDateTime(selectedEsim.expiredTime)}
+                  </span>
                 </p>
                 <p className="mb-2">
-                  <strong>QR Code URL:</strong>{" "}
-                  <a href={selectedEsim.qrCodeUrl} target="_blank" rel="noopener noreferrer" className="text-blue-600 underline hover:text-blue-800 transition duration-300">
+                  <span className="text-gray-500">QR Code URL: </span>
+                  <a
+                    href={selectedEsim.qrCodeUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-blue-600 underline hover:text-blue-800 transition duration-300"
+                  >
                     View QR Code
                   </a>
                 </p>
                 <p>
-                  <strong>Short URL:</strong>{" "}
-                  <a href={selectedEsim.shortUrl} target="_blank" rel="noopener noreferrer" className="text-blue-600 underline hover:text-blue-800 transition duration-300">
+                  <span className="text-gray-500">Short URL: </span>
+                  <a
+                    href={selectedEsim.shortUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-blue-600 underline hover:text-blue-800 transition duration-300"
+                  >
                     {selectedEsim.shortUrl || "N/A"}
                   </a>
                 </p>
@@ -111,7 +149,11 @@ const Sidebar = ({ selectedEsim, onClose }) => {
 
               {selectedEsim.qrCodeUrl && (
                 <div className="flex justify-center mt-4">
-                  <img src={selectedEsim.qrCodeUrl} alt="QR Code" className="w-48 h-48 shadow-sm border-2 rounded-lg" />
+                  <img
+                    src={selectedEsim.qrCodeUrl}
+                    alt="QR Code"
+                    className="w-48 h-48 shadow-sm border-2 rounded-lg"
+                  />
                 </div>
               )}
             </>
@@ -119,8 +161,15 @@ const Sidebar = ({ selectedEsim, onClose }) => {
 
           {/* Data Plan Tab */}
           {activeTab === "dataPlan" && <DataPlan selectedEsim={selectedEsim} />}
-          {activeTab == "coverage" && <Coverage selectedEsim={selectedEsim} />}
-          {activeTab === "action" && <Action selectedEsim={selectedEsim} />}
+
+          {/* Coverage Tab */}
+          {activeTab === "coverage" && <Coverage selectedEsim={selectedEsim} />}
+
+          {/* Action Tab */}
+          {activeTab === "action" &&
+            selectedEsim.esimStatus === "GOT_RESOURCE" && (
+              <Action onComplete={onCancelAndRefund} selectedEsim={selectedEsim} />
+            )}
         </div>
       </div>
     </div>

@@ -31,7 +31,6 @@ const WalletModel = ({ isVisible, onClose }) => {
   const [paymentMethod, setPaymentMethod] = useState(null);
   const [amountError, setAmountError] = useState("");
 
-
   const dispatch = useDispatch();
   useEffect(() => {
     return () => {

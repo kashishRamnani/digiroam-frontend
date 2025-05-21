@@ -1,16 +1,12 @@
 import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { fetchProducts } from "../../features/products/productSlice";
 import { fetchDataPlan } from "../../features/dataplan/dataPlanSlice";
 import getFormattedVolume from "../../utils/helpers/get.formatted.volume";
-import getPriceWithMarkup from "../../utils/helpers/get.price.with.markup";
-
 
 const DataPlan = ({ selectedEsim }) => {
   const dispatch = useDispatch();
   const {
     totalDays,
-    timeLeft,
     daysLeft,
     hoursLeft,
     minutesLeft,
@@ -20,33 +16,34 @@ const DataPlan = ({ selectedEsim }) => {
     dataUsagePercentage,
     error,
   } = useSelector((state) => state.dataPlan);
-  const { pricePercentage } = useSelector((state) => state.settings);
 
   useEffect(() => {
     if (selectedEsim?.iccid) {
       dispatch(fetchDataPlan(selectedEsim.iccid));
-      // dispatch(fetchDataPlan("8910300000023372752"));
     }
   }, [selectedEsim, dispatch]);
 
   if (error)
-    return <p className="text-red-500 text-center font-medium">Error: {error}</p>;
-
+    return (
+      <p className="text-red-500 text-center font-medium">Error: {error}</p>
+    );
 
   return (
-    <div className="p-4 bg-white shadow-md rounded-md">
-
-
+    <div className="p-5 bg-white rounded-xl shadow-md border border-gray-100">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         {/* Time Usage */}
         <div className="p-3 border rounded-md shadow-sm text-sm">
-          <p className="text-base font-semibold text-gray-700">Time Usage</p>
+          <p className="text-base font-semibold text-gray-700 mb-2">
+            Time Usage
+          </p>
           <p className="text-gray-600">
             <span className="font-medium">Total:</span> {totalDays} Days
           </p>
           <p className="text-gray-600">
             <span className="font-medium">Left:</span>{" "}
-            {totalDays ? `${totalDays} Days` : `${daysLeft}D ${hoursLeft}H ${minutesLeft}M`}
+            {totalDays
+              ? `${totalDays} Days`
+              : `${daysLeft}D ${hoursLeft}H ${minutesLeft}M`}
           </p>
 
           {/* Progress Bar */}
@@ -63,7 +60,9 @@ const DataPlan = ({ selectedEsim }) => {
 
         {/* Data Usage */}
         <div className="p-3 border rounded-md shadow-sm text-sm">
-          <p className="text-base font-semibold text-gray-700">Data Usage</p>
+          <p className="text-base font-semibold text-gray-700 mb-2">
+            Data Usage
+          </p>
           <p className="text-gray-600">
             <span className="font-medium">Total:</span> {totalData}
           </p>
@@ -83,55 +82,44 @@ const DataPlan = ({ selectedEsim }) => {
           </p>
         </div>
       </div>
-      {/* eSIM Details */}
 
-      {/* <div className="grid grid-cols-2 gap-4">
+      {/* eSIM Package Details */}
+      <div className="mt-6 grid grid-cols-1 md:grid-cols-2 gap-4">
         <p>
-          <strong>OrderNo:</strong> {selectedEsim?.orderNo || "N/A"}
+          <span className="text-gray-500">Package Name: </span>
+          <span className="text-gray-900 font-semibold">
+            {selectedEsim?.packageList[0].packageName ?? "N/A"}
+          </span>
         </p>
         <p>
-          <strong>ICCID:</strong> {selectedEsim?.iccid || "N/A"}
+          <span className="text-gray-500">Package Code: </span>
+          <span className="text-gray-900 font-semibold">
+            {selectedEsim?.packageList[0].packageCode ?? "N/A"}
+          </span>
         </p>
         <p>
-          <span className="font-medium">Total amount:</span>{" "}
-          {selectedEsim?.amount || "N/A"}
+          <span className="text-gray-500">Data: </span>
+          <span className="text-gray-900 font-semibold">
+            {selectedEsim
+              ? getFormattedVolume(selectedEsim?.packageList[0].volume)
+              : "N/A"}
+          </span>
         </p>
         <p>
-          <span className="font-medium">Billing starts:</span> First connection
+          <span className="text-gray-500">Duration: </span>
+          <span className="text-gray-900 font-semibold">
+            {selectedEsim
+              ? `${selectedEsim.totalDuration} ${selectedEsim.durationUnit}`
+              : "N/A"}
+          </span>
         </p>
-        <p>
-          <span className="font-medium">Region type:</span>{" "}
-          {selectedEsim?.regiontype || "N/A"}
+        <p className="md:col-span-2">
+          <span className="text-gray-500">Top-up Type: </span>
+          <span className="text-gray-900 font-semibold">
+            Data is reloadable for the same area within the validity time.
+          </span>
         </p>
-        <p>
-          <span className="font-medium">Region:</span> {selectedEsim?.region || "N/A"}
-        </p>
-        <p>
-          <span className="font-medium">Data type:</span> Fixed Data
-        </p>
-        <p>
-          <span className="font-medium">Top up type:</span> Data Reloadable for same area within validity
-        </p>
-        <p>
-          <span className="font-medium">IP Export:</span> UK/NO
-        </p>
-        <p>
-          <span className="font-medium">APN:</span> {selectedEsim?.apn || "N/A"}
-        </p>
-      </div> */}
-
-      <div className="grid grid-cols-2 gap-4 mt-4">
-        <p>Name: <strong>{selectedEsim?.packageList[0].packageName ?? "N/A"}</strong></p>
-        <p>Code: <strong>{selectedEsim?.packageList[0].packageCode ?? "N/A"}</strong></p>
-        <p>Data: <strong>{selectedEsim ? getFormattedVolume(selectedEsim?.packageList[0].volume) : "N/A"}</strong></p>
-        <p>Duration: <strong>{selectedEsim ? `${selectedEsim.totalDuration} ${selectedEsim.durationUnit}` : "N/A"}</strong></p>
-        {/* <p>Price: <strong>${selectedEsim ? getPriceWithMarkup(selectedEsim.price, pricePercentage) : "N/A"}</strong></p> */}
-        {/* <p>Region Type: <strong>{selectedEsim ? selectedEsim?.location.split(',').length >= 2 ? "Multiple" : "Single" : "N/A"}</strong></p>
-        <p>Region{selectedEsim?.location.split(',').length >= 2 && 's'}: <strong>{selectedEsim ? selectedEsim?.locationNetworkList?.map(loc => loc.locationName).join(", ") : "N/A"}</strong></p> */}
-        {/* <p>Speed: <strong>{selectedEsim?.speed ?? "N/A"}</strong></p> */}
-        <p>Top up type: <strong>{selectedEsim ? "Data is reloadable for the same area within the validity time." : "N/A"}</strong></p>
       </div>
-
     </div>
   );
 };

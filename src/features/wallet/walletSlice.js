@@ -88,16 +88,30 @@ export const transactions = createAsyncThunk(
 
 export const cancelAndRefund = createAsyncThunk(
   "wallet/cancelAndRefund",
-  async ({ esimTranNo, transactionId}, { rejectWithValue }) => {
+  async ({ esimTranNo, transactionId }, { rejectWithValue }) => {
     try {
       const response = await axiosInstance.post("wallet/cancel-and-refund", {
         esimTranNo,
         transactionId,
-        
+
       });
       return response.data;
     } catch (error) {
-      return rejectWithValue(error.response?.data );
+      return rejectWithValue(error.response?.data);
+    }
+  }
+);
+
+export const useFunds = createAsyncThunk(
+  "wallet/useFunds ",
+  async ({ transactionId, amount, currency }, { rejectWithValue }) => {
+    try {
+      const response = await axiosInstance.post("wallet/use-funds", {
+        transactionId, amount, currency
+      });
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.response?.data);
     }
   }
 );
@@ -112,6 +126,7 @@ const walletSlice = createSlice({
     loading: false,
     error: null,
 
+    isModalOpen: false,
   },
   reducers: {
     resetPaymentState: (state) => {
@@ -123,6 +138,13 @@ const walletSlice = createSlice({
       state.paymentStatus = null
     },
 
+    toggleModal: (state, { payload }) => {
+      state.isModalOpen = payload;
+    },
+
+    setLoading: (state, { payload }) => {
+      state.loading = payload;
+    }
   },
   extraReducers: (builder) => {
     builder
@@ -133,7 +155,7 @@ const walletSlice = createSlice({
       .addCase(walletBalance.fulfilled, (state, action) => {
         state.loading = false;
         state.balance = action.payload.balance;
-        
+
       })
       .addCase(walletBalance.rejected, (state, action) => {
         state.loading = false;
@@ -152,6 +174,7 @@ const walletSlice = createSlice({
         state.loading = false;
         state.error = action.payload;
       })
+
       .addCase(paypalGenerateOrder.pending, (state) => {
         state.loading = true;
         state.error = null;
@@ -159,13 +182,12 @@ const walletSlice = createSlice({
       .addCase(paypalGenerateOrder.fulfilled, (state, action) => {
         state.loading = false;
         state.paypalOrder = action.payload.orderId;
-
-
       })
       .addCase(paypalGenerateOrder.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
       })
+
       .addCase(paypalCaptureOrder.pending, (state) => {
         state.loading = true;
         state.error = null;
@@ -173,8 +195,6 @@ const walletSlice = createSlice({
       .addCase(paypalCaptureOrder.fulfilled, (state, action) => {
         state.loading = false;
         state.paypalOrder = null;
-
-
       })
       .addCase(paypalCaptureOrder.rejected, (state, action) => {
         state.loading = false;
@@ -188,8 +208,8 @@ const walletSlice = createSlice({
       .addCase(addFunds.fulfilled, (state, action) => {
         state.balance = action.payload.balance;
         state.loading = false;
+        state.isModalOpen = false;
         state.stripeClientSecret = null
-
       })
       .addCase(addFunds.rejected, (state, action) => {
         state.loading = false;
@@ -203,32 +223,43 @@ const walletSlice = createSlice({
       .addCase(transactions.fulfilled, (state, action) => {
         state.loading = false;
         state.transactions = action.payload.transactions;
-
-       
       })
       .addCase(transactions.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
       })
-      .addCase(cancelAndRefund.pending, (state) =>{
+
+      .addCase(cancelAndRefund.pending, (state) => {
         state.loading = true;
         state.error = null;
       })
-      .addCase(cancelAndRefund.fulfilled, (state, action) =>{
+      .addCase(cancelAndRefund.fulfilled, (state, action) => {
         state.loading = false;
-        if(action.payload?.balance){
-          state.balance =action.payload.balance;
+        if (action.payload?.balance) {
+          state.balance = action.payload.balance;
         }
-        
       })
-      .addCase(cancelAndRefund.rejected, (state,action) => {
-          state.loading = false;
-          state.error  = action.payload
-        })
+      .addCase(cancelAndRefund.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload
+      })
+
+      .addCase(useFunds.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(useFunds.fulfilled, (state, action) => {
+        state.loading = false;
+        state.balance = action.payload.balance;
+      })
+      .addCase(useFunds.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload
+      })
 
   },
 });
 
-export const { resetPaymentState } = walletSlice.actions;
+export const { resetPaymentState, toggleModal, setLoading } = walletSlice.actions;
 
 export default walletSlice.reducer;
