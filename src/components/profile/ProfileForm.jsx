@@ -86,7 +86,7 @@ const ProfileForm = ({ profile, onSubmit }) => {
           </p>
         </div>
         <div className="space-y-2">
-          <label className="text-sm font-medium text-gray-700">Country</label>
+          <label className="text-sm font-medium text-gray-700" >Country</label>
           <p className="text-lg font-semibold break-words">
             {countries.find((c) => c._id === profile?.countryID)?.countryName ||
               "Not provided"}
@@ -114,6 +114,7 @@ const ProfileForm = ({ profile, onSubmit }) => {
             </div>
             <input
               {...register("name")}
+              type="text"
               className={`pl-10 w-full rounded-md border bg-white py-2 text-sm outline-none focus:border-primary focus:ring-1 focus:ring-primary ${errors.name ? 'border-red-500' : 'border-gray-300'
                 }`}
             />
@@ -150,6 +151,7 @@ const ProfileForm = ({ profile, onSubmit }) => {
             </div>
             <input
               {...register("phoneNumber")}
+              type="number"
               className={`pl-10 w-full rounded-md border bg-white py-2 text-sm outline-none focus:border-primary focus:ring-1 focus:ring-primary ${errors.phoneNumber ? 'border-red-500' : 'border-gray-300'
                 }`}
             />

@@ -60,7 +60,7 @@ const CartModal = () => {
       aria-labelledby="cart-modal-title"
       aria-hidden={!isCartOpen}
     >
-      <div className="bg-white rounded-lg p-4  sm:p-6 w-full sm:w-3/4 lg:max-w-3xl ml-24 lg:left-[20%]shadow-lg">
+      <div className="bg-white rounded-lg p-4   w-full sm:w-3/4 lg:max-w-3xl md:ml-24 lg:left-[20%]shadow-lg">
         <div className="flex justify-between items-center mb-4">
           <h2 id="cart-modal-title" className="text-lg sm:text-xl font-semibold">Cart Details</h2>
           <button

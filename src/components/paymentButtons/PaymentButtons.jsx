@@ -149,12 +149,12 @@ const PaymentButtons = () => {
       );
 
       if (result.error) {
-        console.error("PayPal Order Generation Failed:", result.error);
+        // console.error("PayPal Order Generation Failed:", result.error);
         throw new Error(result.error.message ?? "Unknown error");
       }
 
       if (!result.payload || !result.payload.orderId) {
-        console.error("PayPal Order ID is missing:", result.payload);
+        // console.error("PayPal Order ID is missing:", result.payload);
         throw new Error("Failed to generate PayPal order ID");
       }
 
@@ -385,12 +385,12 @@ const PaymentButtons = () => {
             </Elements>
           )}
 
-          {/* Success Message */}
+          {/* Success Message
           {paymentStatus === "success" && (
             <div className="mt-4 p-4 bg-green-100 text-green-700 font-medium rounded-lg shadow">
               Payment successful! Thank you for your purchase.
             </div>
-          )}
+          )} */}
         </div>
       )}
     </>
@@ -489,7 +489,7 @@ const StripeCheckoutForm = ({ clientSecret, items, pricePercentage }) => {
         dispatch(setPaymentStatus("success"));
         await dispatch(clearFromCart());
         dispatch(resetPaymentState());
-        showSuccessToast("Payment Successful!");
+       
       }
     } catch (error) {
       console.error("Error handling Stripe payment:", error);

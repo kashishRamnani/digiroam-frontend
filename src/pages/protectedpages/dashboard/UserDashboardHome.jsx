@@ -63,13 +63,13 @@ const UserDashboardHome = () => {
           </div>
 
           {/* Table */}
-          <div className="table-container px-4">
+          <div className="table-container ">
             <table className="min-w-full bg-white table-auto max-w-full">
               <thead>
                 <tr className="text-xs font-semibold tracking-wide text-left text-gray-500 uppercase border-b bg-gray-50">
                   <th className="px-4 py-3">Order No</th>
-                  <th className="px-4 py-3">Amount</th>
-                  <th className="px-4 py-3">No. of eSIMs</th>
+                  <th className="px-4 py-3 ">Amount</th>
+                  <th className="px-4 py-3 whitespace-nowrap ">No. of eSIMs</th>
                   <th className="px-4 py-3">Currency</th>
                   <th className="px-4 py-3">Transaction ID</th>
                   <th className="px-4 py-3">Date</th>
@@ -90,7 +90,7 @@ const UserDashboardHome = () => {
                       </td>
                       <td className="px-4 py-3">{payment.currency}</td>
                       <td className="px-4 py-3">{payment.transactionId}</td>
-                      <td className="px-4 py-3">{new Date(payment.createdAt).toLocaleString()}</td>
+                      <td className="px-4 py-3 whitespace-nowrap ">{new Date(payment.createdAt).toLocaleString()}</td>
                     </tr>
                   ))
                 ) : (
