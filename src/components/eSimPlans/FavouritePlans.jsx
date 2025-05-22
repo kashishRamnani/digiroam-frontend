@@ -8,9 +8,9 @@ import Pagination from "../common/Pagination";
 import { faHeart, faShoppingCart } from "@fortawesome/free-solid-svg-icons";
 import Loader from "../common/Loader";
 
-const FavouriteList = ({ pricePercentage }) => {
+const FavouriteList = ({favouritePlans, pricePercentage }) => {
   const dispatch = useDispatch();
-  const { favouritePlans, loading } = useSelector((state) => state.favouritePlans);
+  const {  loading } = useSelector((state) => state.favouritePlans);
   const { currentPage, itemsPerPage } = useSelector((state) => state.plans);
 
   const [sortOrder, setSortOrder] = useState("price");

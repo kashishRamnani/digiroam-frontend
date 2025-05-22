@@ -32,6 +32,7 @@ import MarkupPriceForm from "./settings/MarkupForm";
 import ServiceLinks from "./settings/ServiceLinks";
 import WalletModal from "./wallet/WalletModel";
 import WalletCards from "./wallet/Walletcards";
+import FilterFavPlans from "./eSimPlans/Filterfavouriteplans";
 export {
   Footer,
   LoginButtons,
@@ -67,4 +68,5 @@ export {
   ServiceLinks,
   WalletModal,
   WalletCards,
+  FilterFavPlans,
 };
