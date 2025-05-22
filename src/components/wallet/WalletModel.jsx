@@ -19,19 +19,20 @@ import {
   paypalCaptureOrder,
   addFunds,
   resetPaymentState,
-
 } from "../../features";
 import { showErrorToast, showSuccessToast } from "../../utils/toast";
-const stripePromise = loadStripe(
-  "pk_test_51PtX1yP5I2dh2w2olaE2SXdVYWT056atlVJ3jVZKliMu6GQUa17xzEQHTrELjjJRWal7JwTySuFZLdeNJ7SGwrX700LCXKN0LP"
-);
+import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
+
+const stripePromise = loadStripe("pk_test_51PtX1yP5I2dh2w2olaE2SXdVYWT056atlVJ3jVZKliMu6GQUa17xzEQHTrELjjJRWal7JwTySuFZLdeNJ7SGwrX700LCXKN0LP");
 
 const WalletModel = ({ isVisible, onClose }) => {
   const [amount, setAmount] = useState("");
   const [paymentMethod, setPaymentMethod] = useState(null);
   const [amountError, setAmountError] = useState("");
+  const [showPaymentOptions, setShowPaymentOptions] = useState(false);
 
   const dispatch = useDispatch();
+
   useEffect(() => {
     return () => {
       dispatch(resetPaymentState());
@@ -42,8 +43,10 @@ const WalletModel = ({ isVisible, onClose }) => {
     if (!isVisible) {
       setAmount("");
       setPaymentMethod(null);
+      setShowPaymentOptions(false);
     }
   }, [isVisible]);
+
   const { stripeClientSecret, loading, error } = useSelector(
     (state) => state.wallet
   );
@@ -51,49 +54,22 @@ const WalletModel = ({ isVisible, onClose }) => {
   if (!isVisible) return null;
 
   const handleStripeClick = async () => {
-    if (!amount || Number(amount) <= 0) {
-      setAmountError("Please enter a your amount.");
-      return;
-    }
-    setAmountError("");
     setPaymentMethod("stripe");
-    await dispatch(
-      stripePayment({
-        amount: Number(amount),
-        currency: "USD",
-      })
-    );
+    await dispatch(stripePayment({ amount: Number(amount), currency: "USD" }));
   };
 
-  const handlePayPalClick = async () => {
-    if (!amount || Number(amount) <= 0) {
-      setAmountError("Please enter a your amount.");
-      return;
-    }
-    setAmountError("");
+  const handlePayPalClick = () => {
     setPaymentMethod("paypal");
   };
 
-
   const generatePayPalOrderIdHandler = async () => {
-    if (!amount || Number(amount) <= 0) {
-      return "";
-    }
+    if (!amount || Number(amount) <= 0) return "";
     try {
       const result = await dispatch(
-        paypalGenerateOrder({
-          amount: Number(amount),
-          currency: "USD",
-        })
+        paypalGenerateOrder({ amount: Number(amount), currency: "USD" })
       ).unwrap();
-
-      if (!result || !result.orderId) {
-        console.error("PayPal Order ID is missing:", result);
-        return "";
-      }
-      return result.orderId;
-    } catch (error) {
-      console.error("PayPal Order Generation Error:", error);
+      return result?.orderId || "";
+    } catch {
       return "";
     }
   };
@@ -103,115 +79,128 @@ const WalletModel = ({ isVisible, onClose }) => {
       const result = await dispatch(
         paypalCaptureOrder({ orderId: data.orderID })
       ).unwrap();
-
-      if (result && result.transactionId) {
+      if (result?.transactionId) {
         await handlePaymentSuccess(result.transactionId);
         onClose();
       }
-    } catch (error) {
-      console.error("PayPal Capture Error:", error);
-    }
+    } catch { }
   };
 
   const handlePaymentSuccess = async (transactionId) => {
     try {
       await dispatch(addFunds({ transactionId, amount, currency: "USD" }));
       showSuccessToast("Funds added successfully to your wallet!");
-    } catch (error) {
+    } catch {
       showErrorToast("Failed to add funds to wallet.");
     }
   };
 
-
   return (
     <div className="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50 p-4">
-      <div className="bg-white rounded-xl shadow-2xl max-w-md w-full p-8 relative">
+      <div className="bg-white rounded-2xl shadow-2xl max-w-md w-full p-8 relative">
         <button
           onClick={onClose}
           className="absolute top-4 right-4 text-gray-500 hover:text-gray-700 text-3xl font-bold"
-          aria-label="Close"
         >
           &times;
         </button>
 
-        <h2 className="text-2xl font-bold mb-6 text-center">
-          Top Up Your Wallet
-        </h2>
+        <h3 className="text-2xl font-semibold mb-6 text-center text-gray-800">Fund Your Wallet</h3>
 
+        {!showPaymentOptions ? (
+          <>
+            <label className="ms-1 font-semibold" htmlFor="amount">Amount</label>
+            <div className="flex items-center gap-2 mb-4">
+              <input
+                type="text"
+                placeholder="Enter Amount (min $5.00)"
+                value={amount}
+                id="amount"
+                onChange={(e) => setAmount(e.target.value)}
+                min="0"
+                step="0.01"
+                className="block w-full px-3 py-2 bg-white border rounded-md shadow-sm focus:outline-none focus:ring-[#FF7F5C] focus:border-[#FF7F5C] sm:text-sm"
+              />
+              <button
+                onClick={() => {
+                  if (!amount || Number(amount) < 5) {
+                    return setAmountError("Amount must be at least $5");
+                  } else if (Number(amount) >= 50001) {
+                    return setAmountError("Amount must not exceed $50,000");
+                  }
+                  setAmountError("");
+                  setShowPaymentOptions(true);
+                }}
+                disabled={Number(amount) < 5}
+                className="px-4 py-2 bg-primary text-white rounded-md hover:bg-[#ee643a] transition disabled:bg-[#ee643a8e] disabled:cursor-not-allowed"
+              >
+                Proceed
+              </button>
+            </div>
+            {amountError && (
+              <p className="text-red-600 text-sm mb-4 font-medium">{amountError}</p>
+            )}
+          </>
+        ) : (
+          <>
+            <div className="flex items-center justify-between mb-6">
+              <button
+                onClick={() => setShowPaymentOptions(false)}
+                className="text-blue-600 hover:text-blue-800 font-semibold text-lg"
+              >
+                <FontAwesomeIcon icon={faArrowLeft} /> Back
+              </button>
+              <div className="text-lg font-semibold">
+                Add <span className="text-blue-600">${parseFloat(amount).toFixed(2)}</span> to wallet
+              </div>
+            </div>
 
-        <label className="ms-1 font-semibold" htmlFor="amount">Amount</label>
-        <input
-          type="number"
-          placeholder="Enter Amount (USD)"
-          value={amount}
-          id="amount"
-          onChange={(e) => setAmount(e.target.value)}
-          min="0"
-          step="0.01"
-          className="w-full border border-gray-300 bg-white rounded-lg px-4 py-3 text-lg placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 mb-6"
-          required
-        />
-         {amountError && (
-          <p className="text-red-600 text-sm mb-4 font-medium">{amountError}</p>
-        )}
+            <div className="text-gray-600 text-sm mb-6 text-center">
+              Select a payment method to securely fund your wallet.
+            </div>
 
-       
+            <div className="flex justify-center gap-4 mb-8">
+              <button
+                onClick={handlePayPalClick}
+                disabled={loading}
+                className="flex items-center space-x-2 px-4 py-2 rounded-md bg-blue-600 hover:bg-blue-600 transition duration-300 text-base font-medium text-white"
+              >
+                <FontAwesomeIcon icon={faPaypal} size="lg" />
+                <span>PayPal</span>
+              </button>
 
-        <div className="flex justify-center gap-6 mb-8">
-          <button
-            onClick={handlePayPalClick}
-            disabled={loading}
-            className="flex items-center space-x-3 px-6 py-3 rounded-lg bg-blue-500 shadow-md hover:bg-blue-700   transition duration-300 text-lg font-semibold text-white"
-          >
-            <FontAwesomeIcon icon={faPaypal} size="2x" />
-            <span>PayPal</span>
-          </button>
+              <button
+                onClick={handleStripeClick}
+                disabled={loading}
+                className="flex items-center space-x-2 px-4 py-2 rounded-md bg-indigo-600 hover:bg-indigo-700 shadow-md transition duration-300 text-base font-medium text-white"
+              >
+                <FontAwesomeIcon icon={faCcMastercard} size="lg" />
+                <span>Credit Card</span>
+              </button>
+            </div>
 
-          <button
-            onClick={handleStripeClick}
-            disabled={loading}
-            className="flex items-center space-x-3 px-6 py-3 rounded-lg bg-indigo-600 hover:bg-indigo-700 shadow-md transition duration-300 text-lg font-semibold text-white"
-          >
-            <FontAwesomeIcon icon={faCcMastercard} size="2x" />
-            <span>Credit Card</span>
-          </button>
+            {paymentMethod === "paypal" && (
+              <PayPalScriptProvider options={{ "client-id": "ARQlumdLfObf_DPA-MuD7_hqMgREgD7YyTiUBEjKGrWbiW0ot9KpvRmlx8WrL9rmfGSi4-rLmsO8JOyW" }}>
+                <PayPalButtons
+                  createOrder={generatePayPalOrderIdHandler}
+                  onApprove={onApprovePayPalHandler}
+                  style={{ layout: "horizontal", shape: "pill", color: "gold", tagline: false }}
+                />
+              </PayPalScriptProvider>
+            )}
 
-        </div>
+            {paymentMethod === "stripe" && stripeClientSecret && (
+              <Elements stripe={stripePromise} options={{ clientSecret: stripeClientSecret }}>
+                <StripeCheckoutForm
+                  clientSecret={stripeClientSecret}
+                  onClose={onClose}
+                  onPaymentSuccess={handlePaymentSuccess}
+                />
+              </Elements>
+            )}
 
-        {paymentMethod === "paypal" && (
-          <PayPalScriptProvider
-            options={{
-              "client-id":
-                "ARQlumdLfObf_DPA-MuD7_hqMgREgD7YyTiUBEjKGrWbiW0ot9KpvRmlx8WrL9rmfGSi4-rLmsO8JOyW",
-            }}
-          >
-            <PayPalButtons
-              createOrder={generatePayPalOrderIdHandler}
-              onApprove={onApprovePayPalHandler}
-              style={{
-                layout: "horizontal",
-                shape: "pill",
-                color: "gold",
-                tagline: false,
-              }}
-            />
-          </PayPalScriptProvider>
-        )}
-
-        {paymentMethod === "stripe" && stripeClientSecret && (
-          <Elements stripe={stripePromise} options={{ clientSecret: stripeClientSecret }}>
-            <StripeCheckoutForm
-              clientSecret={stripeClientSecret}
-              onClose={onClose}
-              onPaymentSuccess={handlePaymentSuccess}
-            />
-          </Elements>
-
-        )}
-
-
-        {error && (
-          <p className="mt-6 text-center text-red-600 font-medium">{error}</p>
+            {error && <p className="mt-6 text-center text-red-600 font-medium">{error}</p>}
+          </>
         )}
       </div>
     </div>
@@ -228,71 +217,41 @@ const StripeCheckoutForm = ({ clientSecret, onClose, onPaymentSuccess }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!stripe || !elements) return;
-
     setPaymentLoading(true);
     setPaymentError(null);
-
     const cardElement = elements.getElement(CardElement);
-
-    const { error, paymentIntent } = await stripe.confirmCardPayment(
-      clientSecret,
-      {
-        payment_method: {
-          card: cardElement,
-        },
-      }
-    );
-
+    const { error, paymentIntent } = await stripe.confirmCardPayment(clientSecret, { payment_method: { card: cardElement } });
     setPaymentLoading(false);
-
-    if (error) {
-      setPaymentError(error.message);
-    } else if (paymentIntent && paymentIntent.status === "succeeded") {
+    if (error) setPaymentError(error.message);
+    else if (paymentIntent?.status === "succeeded") {
       setPaymentSuccess(true);
       await onPaymentSuccess(paymentIntent.id);
-      setTimeout(() => {
-        onClose();
-      }, 2000);
+      setTimeout(() => onClose(), 2000);
     }
   };
 
   return (
     <form onSubmit={handleSubmit} className="mt-6">
-      <div className="border border-gray-300 rounded-lg p-4 mb-4 shadow-sm">
+      <div className="border border-gray-300 rounded-lg px-3 py-2 mb-4 shadow-sm bg-white">
         <CardElement
           options={{
             style: {
               base: {
-                fontSize: "18px",
+                fontSize: "16px",
                 color: "#4B5563",
                 "::placeholder": { color: "#9CA3AF" },
                 fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
               },
-              invalid: {
-                color: "#EF4444",
-              },
+              invalid: { color: "#EF4444" },
             },
           }}
         />
       </div>
 
-      {paymentError && (
-        <p className="text-center text-red-500 mb-4 font-semibold">
-          {paymentError}
-        </p>
-      )}
-      {paymentSuccess && (
-        <p className="text-center text-green-600 mb-4 font-semibold">
-          Payment succeeded!
-        </p>
-      )}
-
-      <button
-        type="submit"
-        disabled={!stripe || paymentLoading}
-        className="w-full bg-indigo-600 text-white py-3 rounded-lg hover:bg-indigo-700 transition duration-300 text-xl font-semibold shadow-lg"
-      >
-        {paymentLoading ? "Processing..." : "Pay Now"}
+      {paymentError && <p className="text-center text-red-500 mb-4 font-semibold">{paymentError}</p>}
+      {paymentSuccess && <p className="text-center text-green-600 mb-4 font-semibold">Payment succeeded!</p>}
+      <button type="submit" disabled={!stripe || paymentLoading} className="w-full bg-indigo-600 text-white py-2 rounded-lg hover:bg-indigo-700 transition duration-300 text-sm font-semibold">
+        {paymentLoading ? "Processing..." : "Confirm"}
       </button>
     </form>
   );

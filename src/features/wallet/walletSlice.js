@@ -163,15 +163,15 @@ const walletSlice = createSlice({
       })
 
       .addCase(stripePayment.pending, (state) => {
-        state.loading = true;
+        // state.loading = true;
         state.error = null;
       })
       .addCase(stripePayment.fulfilled, (state, action) => {
-        state.loading = false;
+        // state.loading = false;
         state.stripeClientSecret = action.payload.clientSecret;
       })
       .addCase(stripePayment.rejected, (state, action) => {
-        state.loading = false;
+        // state.loading = false;
         state.error = action.payload;
       })
 
