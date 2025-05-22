@@ -113,6 +113,7 @@ const WalletModel = ({ isVisible, onClose }) => {
             <div className="flex items-center gap-2 mb-4">
               <input
                 type="text"
+
                 placeholder="Enter Amount (min $5.00)"
                 value={amount}
                 id="amount"
@@ -168,7 +169,6 @@ const WalletModel = ({ isVisible, onClose }) => {
                 <FontAwesomeIcon icon={faPaypal} size="lg" />
                 <span>PayPal</span>
               </button>
-
               <button
                 onClick={handleStripeClick}
                 disabled={loading}
