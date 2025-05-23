@@ -1,4 +1,3 @@
-// Helper function to format bytes into detailed human-readable format
 export const formatBytesDetailed = (bytes, useDefault = true) => {
     const GB = Math.floor(bytes / (1024 ** 3));
     const remainderAfterGB = bytes % (1024 ** 3);
@@ -6,6 +5,18 @@ export const formatBytesDetailed = (bytes, useDefault = true) => {
     const remainderAfterMB = remainderAfterGB % (1024 ** 2);
     const KB = Math.floor(remainderAfterMB / 1024);
 
-    if (useDefault) return `${GB}GB`;
-    return `${GB}GB ${MB}MB ${KB}KB`;
-}
+    if (useDefault) {
+        if (GB > 0) return `${GB}GB`;
+        if (MB > 0) return `${MB}MB`;
+        if (KB > 0) return `${KB}KB`;
+        return `${bytes}B`;
+    }
+
+    let parts = [];
+    if (GB > 0) parts.push(`${GB}GB`);
+    if (MB > 0) parts.push(`${MB}MB`);
+    if (KB > 0) parts.push(`${KB}KB`);
+    if (parts.length === 0) return `${bytes}B`;
+
+    return parts.join(' ');
+};

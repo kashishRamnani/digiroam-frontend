@@ -73,9 +73,10 @@ const Sidebar = ({ selectedEsim, onClose, onCancelAndRefund }) => {
                 <p>
                   <span className="text-gray-500">Data Left: </span>
                   <span className="text-gray-900 font-semibold">
+                    {console.log(selectedEsim?.totalVolume)}
                     {formatBytesDetailed(
-                      selectedEsim.totalVolume - selectedEsim.orderUsage,
-                      !(selectedEsim.orderUsage > 0)
+                      (selectedEsim?.totalVolume - selectedEsim?.orderUsage),
+                      !selectedEsim?.orderUsage
                     )}
                   </span>
                 </p>
