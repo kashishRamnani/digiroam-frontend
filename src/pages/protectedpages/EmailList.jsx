@@ -20,8 +20,6 @@ const EmailTemplateList = () => {
   (state) => state.email
 );
 
-
-
   const [showTemplateForm, setShowTemplateForm] = useState(false);
   const [showSendEmailForm, setShowSendEmailForm] = useState(false);
   const [selectedTemplate, setSelectedTemplate] = useState(null);
@@ -52,7 +50,17 @@ const EmailTemplateList = () => {
       alert("Failed to delete template.");
     }
   };
-
+const EventName = {
+  ON_PURCHASE: "Purchase",
+  ON_CANCEL: "Cancel",
+  ON_USAGE_80: "Usage",
+  ON_1D_VALIDITY: "1D Validity",
+  ON_PASSWORD_CHANGE:"Password Change",
+  ON_DISCOUNT:"Discount",
+  ON_LOGIN:"Login",
+  ON_EXPIRED:"Expired",
+  ON_ACTIVATION_REMINDER:"Activation Reminder",
+}
 const startIndex = (currentPage - 1) * itemsPerPage;
 const endIndex = startIndex + itemsPerPage;
 const currentItems = templates.slice(startIndex, endIndex);
@@ -63,16 +71,6 @@ const totalPages = Math.ceil(templates.length / itemsPerPage);
       {isLoading && <Loader />}
       <div className="relative px-4 py-6">
        <h2 className="text-2xl font-bold mb-4 text-gray-700">Email Templates</h2>
-        {/* <button
-          onClick={() => {
-            setSelectedTemplate(null);
-            setShowTemplateForm(true);
-          }}
-          className="fixed bottom-6 right-6 bg-blue-600 hover:bg-blue-700 text-white rounded-full p-4 shadow-lg z-50 transition-all duration-300"
-          title="Add Template"
-        >
-          <FontAwesomeIcon icon={faPlus} size="lg" />
-        </button> */}
          <div className="px-4 py-4">
         <div className="mb-2 flex justify-between items-center ">
           <button
@@ -96,7 +94,7 @@ const totalPages = Math.ceil(templates.length / itemsPerPage);
           ) : (
             currentItems.map((template) => (
               <div key={template._id} className="bg-white rounded-xl shadow-md p-4 hover:shadow-lg transition">
-                <h3 className="text-lg font-semibold text-gray-800 mb-2">{template.eventName}</h3>
+                <h3 className="text-lg font-semibold text-gray-800 mb-2"> {EventName[template.eventName]}</h3>
                 <p className="text-sm text-gray-600 truncate">
                   <span className="font-medium">Subject:</span> {template.subject}
                 </p>
