@@ -32,7 +32,7 @@ const Wallet = () => {
           <tbody>
             {transactions && transactions.length > 0 ? (
               [...transactions].reverse().map((txn) => (
-                <tr key={txn.transactionId || txn.id} className="text-gray-700 cursor-pointer hover:bg-gray-100">
+                <tr key={txn._id} className="text-gray-700 cursor-pointer hover:bg-gray-100">
                   <td className=" px-4 py-3">{txn.transactionId || txn.id}</td>
                   <td className=" px-4 py-3">{txn.amount}</td>
                   <td className="px-4 py-3">{txn.currency}</td>

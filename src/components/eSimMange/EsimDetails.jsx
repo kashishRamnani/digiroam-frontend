@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faTimes,
@@ -17,50 +17,15 @@ const Sidebar = ({ selectedEsim, onClose, onCancelAndRefund }) => {
   const [activeTab, setActiveTab] = useState("profile");
 
   if (!selectedEsim) return null;
-
-  const getEsimStatusIcon = (status) => {
-    switch (status) {
-      case "CANCEL":
-        return { icon: faTimes, color: "red", label: "Cancelled" };
-      case "GOT_RESOURCE":
-        return { icon: faShoppingCart, color: "blue", label: "Resource Received" };
-      case "NEW":
-        return { icon: faPlusCircle, color: "green", label: "New" };
-      case "IN_USE":
-        return { icon: faSimCard, color: "green", label: "In Use" };
-      default:
-        return { icon: faChartBar, color: "gray", label: status || "Unknown" };
-    }
-  };
-
   return (
     <div className="fixed inset-0 flex items-center justify-end z-50">
-      {/* Overlay */}
       <div
         className="bg-gray-900 opacity-50 absolute inset-0 cursor-pointer"
         onClick={onClose}
       ></div>
 
-      {/* Sidebar Panel */}
       <div className="relative w-[52rem] bg-white shadow-2xl h-full p-6 rounded-l-2xl transform transition duration-300 translate-x-0 flex flex-col">
-        {/* Header */}
         <div className="flex justify-between items-center border-b pb-4">
-          <div className="flex items-center space-x-2 text-gray-700">
-            {(() => {
-              const statusDetails = getEsimStatusIcon(selectedEsim.esimStatus);
-              return (
-                <>
-                  <FontAwesomeIcon
-                    icon={statusDetails.icon}
-                    style={{ color: statusDetails.color }}
-                    className="mr-2"
-                  />
-                  <span>{statusDetails.label}</span>
-                </>
-              );
-            })()}
-          </div>
-
           <h2 className="text-2xl font-bold text-gray-800">eSIM Details</h2>
 
           <button
@@ -75,7 +40,7 @@ const Sidebar = ({ selectedEsim, onClose, onCancelAndRefund }) => {
         {/* Tabs */}
         <div className="flex space-x-4 mt-4 border-b">
           {["profile", "dataPlan", "coverage", "action"].map((tab) => {
-            if (tab === "action" && selectedEsim.esimStatus !== "GOT_RESOURCE") {
+            if (tab == "action" && selectedEsim.esimStatus == "CANCEL") {
               return null;
             }
             return (
@@ -83,8 +48,8 @@ const Sidebar = ({ selectedEsim, onClose, onCancelAndRefund }) => {
                 key={tab}
                 onClick={() => setActiveTab(tab)}
                 className={`pb-2 text-sm font-medium transition duration-300 ${activeTab === tab
-                    ? "text-blue-600 border-b-2 border-blue-600"
-                    : "text-gray-500 hover:text-gray-700"
+                  ? "text-blue-600 border-b-2 border-blue-600"
+                  : "text-gray-500 hover:text-gray-700"
                   }`}
               >
                 {tab.charAt(0).toUpperCase() + tab.slice(1)}
@@ -166,10 +131,9 @@ const Sidebar = ({ selectedEsim, onClose, onCancelAndRefund }) => {
           {activeTab === "coverage" && <Coverage selectedEsim={selectedEsim} />}
 
           {/* Action Tab */}
-          {activeTab === "action" &&
-            selectedEsim.esimStatus === "GOT_RESOURCE" && (
-              <Action onComplete={onCancelAndRefund} selectedEsim={selectedEsim} />
-            )}
+          {activeTab === "action" && selectedEsim.esimStatus != "CANCEL" && (
+            <Action onComplete={onCancelAndRefund} selectedEsim={selectedEsim} />
+          )}
         </div>
       </div>
     </div>

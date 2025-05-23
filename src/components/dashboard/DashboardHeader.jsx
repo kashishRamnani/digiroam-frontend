@@ -46,7 +46,7 @@ const DashboardHeader = ({ toggleSidebar }) => {
             <Popover className="relative">
               <PopoverButton className="flex flex-col items-center focus:outline-none">
                 <p className="text-lg font-semibold text-blue-600">${formatBalance(balance)}</p>
-                <p className="text-sm text-gray-500 -mt-1">Wallet</p>
+                <p className="text-sm text-gray-500 -mt-1">Balance</p>
               </PopoverButton>
 
               {user.accountType === 1 && (

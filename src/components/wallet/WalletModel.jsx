@@ -8,7 +8,7 @@ import {
   useElements,
 } from "@stripe/react-stripe-js";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCcMastercard, faPaypal } from "@fortawesome/free-brands-svg-icons";
+import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import {
   PayPalScriptProvider,
   PayPalButtons,
@@ -19,9 +19,11 @@ import {
   paypalCaptureOrder,
   addFunds,
   resetPaymentState,
+  transactions,
 } from "../../features";
 import { showErrorToast, showSuccessToast } from "../../utils/toast";
-import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
+import calculateNetAmount from "../../utils/helpers/calculateNetAmount";
+import { faCcPaypal, faCcMastercard } from "@fortawesome/free-brands-svg-icons";
 
 const stripePromise = loadStripe("pk_test_51PtX1yP5I2dh2w2olaE2SXdVYWT056atlVJ3jVZKliMu6GQUa17xzEQHTrELjjJRWal7JwTySuFZLdeNJ7SGwrX700LCXKN0LP");
 
@@ -32,6 +34,7 @@ const WalletModel = ({ isVisible, onClose }) => {
   const [showPaymentOptions, setShowPaymentOptions] = useState(false);
 
   const dispatch = useDispatch();
+  const { stripeClientSecret, loading, error } = useSelector((state) => state.wallet);
 
   useEffect(() => {
     return () => {
@@ -46,12 +49,6 @@ const WalletModel = ({ isVisible, onClose }) => {
       setShowPaymentOptions(false);
     }
   }, [isVisible]);
-
-  const { stripeClientSecret, loading, error } = useSelector(
-    (state) => state.wallet
-  );
-
-  if (!isVisible) return null;
 
   const handleStripeClick = async () => {
     setPaymentMethod("stripe");
@@ -81,6 +78,7 @@ const WalletModel = ({ isVisible, onClose }) => {
       ).unwrap();
       if (result?.transactionId) {
         await handlePaymentSuccess(result.transactionId);
+        dispatch(transactions())
         onClose();
       }
     } catch { }
@@ -95,6 +93,8 @@ const WalletModel = ({ isVisible, onClose }) => {
     }
   };
 
+  if (!isVisible) return null;
+
   return (
     <div className="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50 p-4">
       <div className="bg-white rounded-2xl shadow-2xl max-w-md w-full p-8 relative">
@@ -105,7 +105,9 @@ const WalletModel = ({ isVisible, onClose }) => {
           &times;
         </button>
 
-        <h3 className="text-2xl font-semibold mb-6 text-center text-gray-800">Fund Your Wallet</h3>
+        <h3 className="text-2xl font-semibold mb-6 text-center text-gray-800">
+          Fund Your Wallet
+        </h3>
 
         {!showPaymentOptions ? (
           <>
@@ -113,21 +115,18 @@ const WalletModel = ({ isVisible, onClose }) => {
             <div className="flex items-center gap-2 mb-4">
               <input
                 type="text"
-
                 placeholder="Enter Amount (min $5.00)"
                 value={amount}
                 id="amount"
                 onChange={(e) => setAmount(e.target.value)}
-                min="0"
-                step="0.01"
                 className="block w-full px-3 py-2 bg-white border rounded-md shadow-sm focus:outline-none focus:ring-[#FF7F5C] focus:border-[#FF7F5C] sm:text-sm"
               />
               <button
                 onClick={() => {
                   if (!amount || Number(amount) < 5) {
                     return setAmountError("Amount must be at least $5");
-                  } else if (Number(amount) >= 50001) {
-                    return setAmountError("Amount must not exceed $50,000");
+                  } else if (Number(amount) >= 10001) {
+                    return setAmountError("Amount must not exceed $10,000");
                   }
                   setAmountError("");
                   setShowPaymentOptions(true);
@@ -156,29 +155,53 @@ const WalletModel = ({ isVisible, onClose }) => {
               </div>
             </div>
 
-            <div className="text-gray-600 text-sm mb-6 text-center">
-              Select a payment method to securely fund your wallet.
-            </div>
+            {/* Receipt Summary */}
+            {amount && (() => {
+              const { fee, net } = calculateNetAmount(Number(amount));
+              return (
+                <div className="mb-6 bg-white border border-gray-200 rounded-xl shadow-sm p-4 text-sm text-gray-700">
+                  <h4 className="text-base font-semibold mb-3 text-gray-800 text-center">Transaction Summary</h4>
+                  <div className="flex justify-between mb-2">
+                    <span>Deposit Amount</span>
+                    <span className="font-medium text-gray-900">${Number(amount).toFixed(2)}</span>
+                  </div>
+                  <div className="flex justify-between mb-2">
+                    <span>Processing Fee</span>
+                    <span className="text-red-500 font-medium">-${fee}</span>
+                  </div>
+                  <div className="border-t border-gray-200 my-2"></div>
+                  <div className="flex justify-between text-base font-semibold">
+                    <span>Wallet Credit</span>
+                    <span className="text-green-600">${net}</span>
+                  </div>
+                  <p className="mt-3 text-xs text-gray-500 text-center">
+                    💡 Fees are ~3.5% + $0.30, charged by secure gateways (Stripe/PayPal).
+                  </p>
+                </div>
+              );
+            })()}
 
+            {/* Payment Options */}
             <div className="flex justify-center gap-4 mb-8">
               <button
                 onClick={handlePayPalClick}
                 disabled={loading}
-                className="flex items-center space-x-2 px-4 py-2 rounded-md bg-blue-600 hover:bg-blue-600 transition duration-300 text-base font-medium text-white"
+                className="flex items-center space-x-2 px-4 py-2 rounded-md bg-blue-600 hover:bg-blue-600 text-white text-base font-medium"
               >
-                <FontAwesomeIcon icon={faPaypal} size="lg" />
+                <FontAwesomeIcon icon={faCcPaypal} size="lg" />
                 <span>PayPal</span>
               </button>
               <button
                 onClick={handleStripeClick}
                 disabled={loading}
-                className="flex items-center space-x-2 px-4 py-2 rounded-md bg-indigo-600 hover:bg-indigo-700 shadow-md transition duration-300 text-base font-medium text-white"
+                className="flex items-center space-x-2 px-4 py-2 rounded-md bg-indigo-600 hover:bg-indigo-700 text-white text-base font-medium"
               >
                 <FontAwesomeIcon icon={faCcMastercard} size="lg" />
                 <span>Credit Card</span>
               </button>
             </div>
 
+            {/* PayPal */}
             {paymentMethod === "paypal" && (
               <PayPalScriptProvider options={{ "client-id": "ARQlumdLfObf_DPA-MuD7_hqMgREgD7YyTiUBEjKGrWbiW0ot9KpvRmlx8WrL9rmfGSi4-rLmsO8JOyW" }}>
                 <PayPalButtons
@@ -189,6 +212,7 @@ const WalletModel = ({ isVisible, onClose }) => {
               </PayPalScriptProvider>
             )}
 
+            {/* Stripe */}
             {paymentMethod === "stripe" && stripeClientSecret && (
               <Elements stripe={stripePromise} options={{ clientSecret: stripeClientSecret }}>
                 <StripeCheckoutForm
@@ -217,13 +241,18 @@ const StripeCheckoutForm = ({ clientSecret, onClose, onPaymentSuccess }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!stripe || !elements) return;
+
     setPaymentLoading(true);
     setPaymentError(null);
     const cardElement = elements.getElement(CardElement);
-    const { error, paymentIntent } = await stripe.confirmCardPayment(clientSecret, { payment_method: { card: cardElement } });
+    const { error, paymentIntent } = await stripe.confirmCardPayment(clientSecret, {
+      payment_method: { card: cardElement },
+    });
     setPaymentLoading(false);
-    if (error) setPaymentError(error.message);
-    else if (paymentIntent?.status === "succeeded") {
+
+    if (error) {
+      setPaymentError(error.message);
+    } else if (paymentIntent?.status === "succeeded") {
       setPaymentSuccess(true);
       await onPaymentSuccess(paymentIntent.id);
       setTimeout(() => onClose(), 2000);
@@ -247,10 +276,13 @@ const StripeCheckoutForm = ({ clientSecret, onClose, onPaymentSuccess }) => {
           }}
         />
       </div>
-
       {paymentError && <p className="text-center text-red-500 mb-4 font-semibold">{paymentError}</p>}
       {paymentSuccess && <p className="text-center text-green-600 mb-4 font-semibold">Payment succeeded!</p>}
-      <button type="submit" disabled={!stripe || paymentLoading} className="w-full bg-indigo-600 text-white py-2 rounded-lg hover:bg-indigo-700 transition duration-300 text-sm font-semibold">
+      <button
+        type="submit"
+        disabled={!stripe || paymentLoading}
+        className="w-full bg-indigo-600 text-white py-2 rounded-lg hover:bg-indigo-700 transition duration-300 text-sm font-semibold"
+      >
         {paymentLoading ? "Processing..." : "Confirm"}
       </button>
     </form>

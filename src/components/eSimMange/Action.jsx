@@ -6,8 +6,10 @@ import { showErrorToast, showSuccessToast } from "../../utils/toast";
 
 const Action = ({ selectedEsim, onComplete }) => {
   const dispatch = useDispatch();
-  const { esimDetails, error, } = useSelector((state) => state.dataPlan);
+  const { esimDetails, error } = useSelector((state) => state.dataPlan);
   const { loading: isLoading } = useSelector((state) => state.wallet);
+
+  const isRefundable = esimDetails.smdpStatus === "RELEASED" && esimDetails.esimStatus === "GOT_RESOURCE";
 
   useEffect(() => {
     if (selectedEsim?.iccid) {
@@ -16,7 +18,7 @@ const Action = ({ selectedEsim, onComplete }) => {
   }, [dispatch, selectedEsim]);
 
   const handleCancelAndRefund = async () => {
-    if (!esimDetails?.esimTranNo || !esimDetails?.transactionId || false) {
+    if (!esimDetails?.esimTranNo || !esimDetails?.transactionId) {
       return showErrorToast("Missing required transaction details.");
     }
 
@@ -24,13 +26,15 @@ const Action = ({ selectedEsim, onComplete }) => {
       cancelAndRefund({
         esimTranNo: esimDetails.esimTranNo,
         transactionId: esimDetails.transactionId,
+        refund: isRefundable,
       })
     );
 
     if (cancelAndRefund.fulfilled.match(result)) {
-      showSuccessToast(
-        "Your eSIM has been cancelled and the refund has been processed."
-      );
+      const toastMessage = isRefundable
+        ? "Your eSIM has been cancelled and the refund has been processed."
+        : "Your eSIM has been cancelled";
+      showSuccessToast(toastMessage);
       onComplete(true);
     }
   };
@@ -38,11 +42,13 @@ const Action = ({ selectedEsim, onComplete }) => {
   return (
     <div className="bg-white p-6 rounded-xl border border-gray-200 shadow-sm">
       <h3 className="text-lg font-semibold text-gray-800 mb-1">
-        Cancel eSIM & Refund
+        {isRefundable ? "Cancel and Refund" : "Cancel eSIM"}
       </h3>
+
       <p className="text-sm text-gray-500 mb-4 leading-relaxed">
-        This action will cancel the selected eSIM and refund the amount back to your wallet.
-        Once cancelled, the eSIM will be permanently deactivated and cannot be recovered.
+        This action will cancel the selected eSIM
+        {isRefundable ? " and refund the amount back to your wallet." : " and refund is not applicable."} Once cancelled,
+        the eSIM will be permanently deactivated and cannot be recovered.
       </p>
 
       <button
@@ -77,7 +83,7 @@ const Action = ({ selectedEsim, onComplete }) => {
             Processing...
           </>
         ) : (
-          "Cancel and Refund"
+          isRefundable ? "Cancel and Refund" : "Cancel"
         )}
       </button>
 

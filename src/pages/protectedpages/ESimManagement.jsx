@@ -1,16 +1,17 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { fetchEsims } from "../../features/user/allEsimSlice";
 import DashboardLayout from "../../layouts/DashboardLayout";
 import { Loader } from "../../components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faQrcode, faBan, faFileAlt, faClock, faMicrochip, faQuestionCircle } from "@fortawesome/free-solid-svg-icons";
+import { faQrcode } from "@fortawesome/free-solid-svg-icons";
 import { showSuccessToast, showErrorToast } from "../../utils/toast";
 import Sidebar from "../../components/eSimMange/EsimDetails";
 import { useSearchParams } from "react-router-dom";
 import Pagination from "../../components/common/Pagination";
 import { setCurrentPage } from "../../features";
 import formateDateTime from "../../utils/helpers/formte.date.time";
+import getEsimStatus from "../../utils/helpers/getEsimStatus";
 
 const ESimManagement = () => {
   const dispatch = useDispatch();
@@ -54,22 +55,6 @@ const ESimManagement = () => {
     setSelectedEsim(esim);
   };
 
-
-  const getEsimStatus = (status) => {
-    switch (status) {
-      case "CANCEL":
-        return { icon: faBan, color: "red", label: "Cancelled" };
-      case "GOT_RESOURCE":
-        return { icon: faFileAlt, color: "purple", label: "Provisioned" };
-      case "NEW":
-        return { icon: faClock, color: "orange", label: "Awaiting Activation" };
-      case "IN_USE":
-        return { icon: faMicrochip, color: "teal", label: "Activated" };
-      default:
-        return { icon: faQuestionCircle, color: "gray", label: "Unknown State" };
-    }
-  };
-
   return (
     <DashboardLayout>
       {isLoading && <Loader />}
@@ -89,7 +74,7 @@ const ESimManagement = () => {
               <tbody className="bg-white divide-y">
                 {Array.isArray(esims) && esims.length > 0 ? (
                   currentItems.map((esim, index) => {
-                    const { icon, color, label } = getEsimStatus(esim.esimStatus);
+                    const { icon, color, label } = getEsimStatus(esim.esimStatus, esim.smdpStatus);
                     return (
                       <tr key={index} className="text-gray-700">
                         <td className="px-4 py-3 text-sm flex items-center gap-2">
@@ -113,8 +98,7 @@ const ESimManagement = () => {
                         </td>
                         <td className="px-4 py-3 text-xs">
                           <span
-                            className="px-2 py-1 font-semibold leading-tight rounded-full"
-                            style={{ backgroundColor: color, color: "white" }}
+                            className={`px-2 py-1 font-semibold leading-tight rounded-full text-white bg-${color}`}
                           >
                             <FontAwesomeIcon icon={icon} className="mr-2" />
                             {label}

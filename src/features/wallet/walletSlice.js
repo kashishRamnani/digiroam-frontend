@@ -88,12 +88,12 @@ export const transactions = createAsyncThunk(
 
 export const cancelAndRefund = createAsyncThunk(
   "wallet/cancelAndRefund",
-  async ({ esimTranNo, transactionId }, { rejectWithValue }) => {
+  async ({ esimTranNo, transactionId, refund }, { rejectWithValue }) => {
     try {
       const response = await axiosInstance.post("wallet/cancel-and-refund", {
         esimTranNo,
         transactionId,
-
+        refund
       });
       return response.data;
     } catch (error) {
