@@ -59,7 +59,7 @@ const DashboardSidebar = ({ isOpen, toggleSidebar }) => {
       },
       {
         icon: faListCheck,
-        text: "Manage User's eSim",
+        text: "My eSims",
         href: "/esims",
       },
       {
