@@ -59,7 +59,7 @@ const PaymentButtons = () => {
       }));
 
       if (!esimOrderResult.payload?.success) {
-        return showErrorToast("eSim Order Failed: " + esimOrderResult.payload?.message);
+        throw new Error("eSim Order Failed: " + esimOrderResult.payload);
       }
 
       const amount = items.reduce((total, { productPrice, productQuantity }) => total + Number(getPriceWithMarkup(productPrice, pricePercentage) * 10000).toFixed(2) * productQuantity, 0);
@@ -74,8 +74,7 @@ const PaymentButtons = () => {
       );
 
       if (!saveResult?.payload?.success) {
-        // TODO: cancel esim and refund payment
-        return showErrorToast("Failed to save payment data");
+        throw new Error("Failed to save payment data");
       }
       const result = await dispatch(useFunds({ transactionId, amount, currency: "USD" }))
       if (useFunds.fulfilled.match(result)) {
@@ -190,8 +189,7 @@ const PaymentButtons = () => {
       );
 
       if (!esimOrderResult.payload?.success) {
-        showErrorToast("eSim Order Failed: " + esimOrderResult.payload?.message);
-        return;
+        throw new Error("eSim Order Failed: " + esimOrderResult.payload);
       }
 
       amount = items.reduce((total, { productPrice, productQuantity }) => total + Number(getPriceWithMarkup(productPrice, pricePercentage) * 10000).toFixed(2) * productQuantity, 0);
@@ -213,10 +211,10 @@ const PaymentButtons = () => {
           window.location.href = '/dashboard';
         }, 1000);
       } else {
-        showErrorToast("Failed to save payment data");
+        throw new Error("Failed to save payment data");
       }
     } catch (error) {
-      showErrorToast("Error capturing PayPal payment");
+      showErrorToast(error.message);
     }
   };
 
@@ -325,13 +323,6 @@ const PaymentButtons = () => {
               />
             </Elements>
           )}
-
-          {/* Success Message
-          {paymentStatus === "success" && (
-            <div className="mt-4 p-4 bg-green-100 text-green-700 font-medium rounded-lg shadow">
-              Payment successful! Thank you for your purchase.
-            </div>
-          )} */}
         </div>
       )}
     </>
@@ -398,7 +389,7 @@ const StripeCheckoutForm = ({ clientSecret, items, pricePercentage }) => {
         );
 
         if (!esimOrderResult.payload?.success) {
-          showErrorToast("eSim Order Failed: " + esimOrderResult.payload?.message);
+          showErrorToast("eSim Order Failed: " + esimOrderResult.payload);
           return;
         }
 
@@ -433,7 +424,6 @@ const StripeCheckoutForm = ({ clientSecret, items, pricePercentage }) => {
 
       }
     } catch (error) {
-      console.error("Error handling Stripe payment:", error);
       showErrorToast("Error processing payment.");
     } finally {
       setProcessing(false);
