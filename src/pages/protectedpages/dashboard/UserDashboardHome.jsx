@@ -11,12 +11,14 @@ import Loader from "../../../components/common/Loader";
 const UserDashboardHome = () => {
   const dispatch = useDispatch();
   const { paymentData, loading } = useSelector((state) => state.payment);
-
+ const { user } = useSelector((state) => state.auth);
   useEffect(() => {
     dispatch(paymentInfo());
+    console.log("paymentinfo")
   }, [dispatch]);
 
-  const simOwner = paymentData?.[0]?.payer?.name?.surname || "N/A";
+  const simOwner = user.name
+  // const simOwner = paymentData?.[0]?.payer?.name?.surname || "N/A";
   const totalOrder = paymentData.length;
   const totalPackages =
     paymentData.reduce(
@@ -56,7 +58,7 @@ const UserDashboardHome = () => {
                 </div>
                 <div>
                   <p className="text-sm font-medium text-gray-600">{card.title}</p>
-                  <p className="text-lg font-semibold text-gray-700">{card.value}</p>
+                  <p className="text-lg font-semibold text-gray-700 whitespace-nowrap">{card.value}</p>
                 </div>
               </div>
             ))}
