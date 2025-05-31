@@ -41,7 +41,7 @@ const AddToCartModal = () => {
       aria-labelledby="add-to-cart-title"
       aria-hidden={!isAddToCartOpen}
     >
-      <div className="bg-white rounded-lg p-6 w-full max-w-sm">
+      <div className="bg-white rounded-lg p-6 w-full max-w-sm md:ml-40">
         <div className="flex justify-between items-center mb-4">
           <h2 id="add-to-cart-title" className="text-xl font-semibold">
             Add to cart

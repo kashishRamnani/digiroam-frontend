@@ -47,6 +47,7 @@ const WalletModel = ({ isVisible, onClose }) => {
       setAmount("");
       setPaymentMethod(null);
       setShowPaymentOptions(false);
+
     }
   }, [isVisible]);
 
@@ -96,8 +97,9 @@ const WalletModel = ({ isVisible, onClose }) => {
   if (!isVisible) return null;
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50 p-4">
-      <div className="bg-white rounded-2xl shadow-2xl max-w-md w-full p-8 relative">
+    
+   <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+      <div className="bg-white rounded-2xl shadow-2xl items-center md:ml-40 max-w-md w-full p-8 relative">
         <button
           onClick={onClose}
           className="absolute top-4 right-4 text-gray-500 hover:text-gray-700 text-3xl font-bold"

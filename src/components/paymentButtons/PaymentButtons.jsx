@@ -24,7 +24,7 @@ import getPriceWithMarkup from "../../utils/helpers/get.price.with.markup";
 import { faWallet } from "@fortawesome/free-solid-svg-icons";
 import { setLoading } from "../../features/wallet/walletSlice";
 import generaterandomTransactionId from "../../utils/helpers/generaterandomTransactionId";
-
+import { toggleModal } from "../../features";
 const stripePromise = loadStripe("pk_test_51PtX1yP5I2dh2w2olaE2SXdVYWT056atlVJ3jVZKliMu6GQUa17xzEQHTrELjjJRWal7JwTySuFZLdeNJ7SGwrX700LCXKN0LP");
 
 const PaymentButtons = () => {
@@ -35,7 +35,7 @@ const PaymentButtons = () => {
   const { pricePercentage } = useSelector((state) => state.settings);
   const { balance, loading: walletLoading } = useSelector((state) => state.wallet);
   const [paymentMethod, setPaymentMethod] = useState(null);
-
+  
   const totalAmountForWallet = items.reduce(
     (total, item) => total + (Number(item.productPrice * 10000).toFixed(0) * item.productQuantity),
     0
@@ -235,36 +235,40 @@ const PaymentButtons = () => {
           )}
 
           <h2 className="text-2xl font-bold mb-6 text-center text-gray-800">
-            Choose Payment Method
+             Payment 
           </h2>
 
-          <div className="flex justify-center space-x-4 mb-6">
+          <div className="flex items-center justify-center space-x-4 mb-6">
             {(parseInt(balance) < getPriceWithMarkup(totalAmountForWallet / 10000, pricePercentage)) ? (
               <div className="relative">
                 <span className="absolute -top-2 -left-2 bg-red-100 text-red-600 text-[10px] font-medium px-2 py-[1px] rounded rotate-[-12deg] shadow-sm border border-red-300">
                   Low Balance
                 </span>
                 <button
-                  disabled={true}
-                  className="flex items-center px-4 py-2 rounded-lg text-white bg-[#ee643a86] cursor-not-allowed"
+                  onClick={() => dispatch(toggleModal(true))}
+                  
+                  className="text-white hover:bg-blue-50 transition px-4 py-2 rounded-lg text-sm font-medium shadow"
+                   style={{ backgroundColor: 'var(--secondary-color)' }}
                 >
                   <FontAwesomeIcon icon={faWallet} className="mr-2" />
-                  Wallet
+                  Top Up Wallet
                 </button>
               </div>
+
             ) : (
               <button
                 onClick={handleWalletClick}
                 disabled={walletLoading}
-                className="flex items-center px-4 py-2 rounded-lg text-white bg-primary hover:bg-[#ee643a] disabled:bg-[#ee643a86] disabled:cursor-not-allowed shadow transition duration-300"
+                 className="w-full  py-2 px-4 text-white rounded-md bg-primary hover:bg-primary-dark"
               >
                 <FontAwesomeIcon icon={faWallet} className="mr-2" />
                 Wallet
               </button>
-            )}
+            )} 
+            
 
-            {/* PayPal Button */}
-            <button
+
+            {/* <button
               onClick={handlePayPalClick}
               className="flex items-center px-4 py-2 rounded-lg text-white bg-blue-500 hover:bg-blue-600 shadow transition duration-300"
               disabled={loading}
@@ -273,7 +277,7 @@ const PaymentButtons = () => {
               PayPal
             </button>
 
-            {/* Stripe Button */}
+           
             <button
               onClick={handleStripeClick}
               className="flex items-center px-4 py-2 rounded-lg text-white bg-purple-500 hover:bg-purple-600 shadow transition duration-300"
@@ -281,7 +285,7 @@ const PaymentButtons = () => {
             >
               <FontAwesomeIcon icon={faCcMastercard} className="mr-2" />
               Credit Card
-            </button>
+            </button> */}
           </div>
 
           {/* Loading/Error */}

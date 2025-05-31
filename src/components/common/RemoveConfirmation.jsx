@@ -2,7 +2,7 @@ const RemoveConfirmationModal = ({ isVisible, onCancel, onConfirm }) => {
     if (!isVisible) return null;
   
     return (
-      <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+      <div className="fixed inset-0 z-50 flex items-center md:ml-40 justify-center bg-black bg-opacity-50">
         <div className="bg-white rounded-lg shadow-lg w-full max-w-sm p-6">
           <h2 className="text-lg font-semibold mb-4">Confirm Remove</h2>
           <p className="text-sm text-gray-700 mb-6">Are you sure you want to remove this item from the cart?</p>

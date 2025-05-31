@@ -55,13 +55,13 @@ const CartModal = () => {
 
   return (
     <div
-      className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 px-4 sm:px-8"
+      className=" fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-40 px-4 sm:px-8"
       role="dialog"
       aria-labelledby="cart-modal-title"
       aria-hidden={!isCartOpen}
     >
-      <div className="bg-white rounded-lg p-4   w-full sm:w-3/4 lg:max-w-3xl md:ml-24 lg:left-[20%]shadow-lg">
-        <div className="flex justify-between items-center mb-4">
+      <div className="bg-white rounded-lg lg:max-w-3xl shadow-2xl items-center md:ml-40 max-w-md w-full p-8 relative">
+       <div className="flex justify-between items-center mb-4">
           <h2 id="cart-modal-title" className="text-lg sm:text-xl font-semibold">Cart Details</h2>
           <button
             onClick={() => dispatch(setCartOpen(false))}
@@ -75,7 +75,7 @@ const CartModal = () => {
         {items.length === 0 ? (
           <div className="text-center text-gray-500 py-4">Your cart is empty.</div>
         ) : (
-          <div className="overflow-x-auto max-h-40 border rounded-md">
+          <div className="table-container max-h-40 border rounded-md">
             <table className="w-full border-collapse text-sm sm:text-base">
               <thead className="bg-gray-100 sticky top-0">
                 <tr className="border-b">
@@ -89,7 +89,7 @@ const CartModal = () => {
               <tbody>
                 {items.map((item) => (
                   <tr key={item.productId} className="border-b">
-                    <td className="py-1 px-3 whitespace-nowrap">{item.productName}</td>
+                    <td className="py-1 px-3 ">{item.productName}</td>
                     <td className="py-1 px-3 hidden sm:table-cell">
                       ${getPriceWithMarkup(item.productPrice, pricePercentage)}
                     </td>
