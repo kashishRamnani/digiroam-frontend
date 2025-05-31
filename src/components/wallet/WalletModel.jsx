@@ -99,7 +99,7 @@ const WalletModel = ({ isVisible, onClose }) => {
   return (
     
    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
-      <div className="bg-white rounded-2xl shadow-2xl items-center md:ml-40 max-w-md w-full p-8 relative">
+      <div className="bg-white rounded-lg items-center max-w-md w-full p-8 relative">
         <button
           onClick={onClose}
           className="absolute top-4 right-4 text-gray-500 hover:text-gray-700 text-3xl font-bold"
@@ -107,7 +107,7 @@ const WalletModel = ({ isVisible, onClose }) => {
           &times;
         </button>
 
-        <h3 className="text-2xl font-semibold mb-6 text-center text-gray-800">
+        <h3 className="text-2xl font-semibold mb-6 text-gray-800">
           Fund Your Wallet
         </h3>
 

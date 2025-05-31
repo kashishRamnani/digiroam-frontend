@@ -41,7 +41,7 @@ const AddToCartModal = () => {
       aria-labelledby="add-to-cart-title"
       aria-hidden={!isAddToCartOpen}
     >
-      <div className="bg-white rounded-lg p-6 w-full max-w-sm md:ml-40">
+      {/* <div className="bg-white rounded-lg p-6 w-full max-w-sm">
         <div className="flex justify-between items-center mb-4">
           <h2 id="add-to-cart-title" className="text-xl font-semibold">
             Add to cart
@@ -53,7 +53,19 @@ const AddToCartModal = () => {
           >
             ×
           </button>
-        </div>
+        </div> */}
+
+      <div className="bg-white rounded-lg items-center max-w-md w-full p-8 relative">
+        <button
+          onClick={handleClose}
+          className="absolute top-4 right-4 text-gray-500 hover:text-gray-700 text-3xl font-bold"
+        >
+          &times;
+        </button>
+
+        <h3 className="text-2xl font-semibold mb-6 text-gray-800">
+          Add to cart
+        </h3>
 
         <div className="space-y-4">
           <div className="flex justify-between">

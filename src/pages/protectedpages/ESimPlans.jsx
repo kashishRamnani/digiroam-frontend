@@ -6,7 +6,7 @@ import {
   CartModal,
   AddToCartModal,
   Loader,
- FilterFavPlans
+  FilterFavPlans
 } from "../../components";
 import DashboardLayout from "../../layouts/DashboardLayout";
 import FilterPlans from "../../components/eSimPlans/FilterPlans";
@@ -21,8 +21,8 @@ const ESimPlans = () => {
   const { pricePercentage } = useSelector((state) => state.settings);
   const [filteredPlans, setFilteredPlans] = useState([]);
   const [showFavourites, setShowFavourites] = useState(false);
-  const { favouritePlans =[] } = useSelector((state) => state.favouritePlans);
- const [filteredFavPlans, setFilteredFavPlans] = useState([]);
+  const { favouritePlans = [] } = useSelector((state) => state.favouritePlans);
+  const [filteredFavPlans, setFilteredFavPlans] = useState([]);
 
   useEffect(() => {
     dispatch(retrieveSettings());
@@ -32,13 +32,13 @@ const ESimPlans = () => {
   const handleFilter = (filteredItems) => {
     setFilteredPlans(filteredItems);
   };
-   useEffect(() => {
+  useEffect(() => {
     setFilteredFavPlans(favouritePlans);
   }, [favouritePlans]);
 
-const handleFavFilter = (filteredItems) => {
-  setFilteredFavPlans(filteredItems);
-};
+  const handleFavFilter = (filteredItems) => {
+    setFilteredFavPlans(filteredItems);
+  };
 
 
   return (
@@ -80,22 +80,22 @@ const handleFavFilter = (filteredItems) => {
             pricePercentage={pricePercentage}
             onFilter={handleFilter}
           /> */}
-          {!showFavourites ? (
+        {!showFavourites ? (
           <FilterPlans
             plans={items}
             pricePercentage={pricePercentage}
             onFilter={handleFilter}
           />
         ) : (
-         <FilterFavPlans
-  favouritePlans={favouritePlans}
-  pricePercentage={pricePercentage}
-  onFilter={handleFavFilter}
-/>
+          <FilterFavPlans
+            favouritePlans={favouritePlans}
+            pricePercentage={pricePercentage}
+            onFilter={handleFavFilter}
+          />
 
         )}
         {!!showFavourites ? (<FavouritePlans pricePercentage={pricePercentage} favouritePlans={filteredFavPlans} />
-) : (<ProductList items={filteredPlans} />)}
+        ) : (<ProductList items={filteredPlans} />)}
         <AddToCartModal />
         <CartModal />
       </div>

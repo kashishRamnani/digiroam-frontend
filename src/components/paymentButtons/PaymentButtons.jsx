@@ -21,7 +21,7 @@ import { faPaypal, faCcMastercard } from "@fortawesome/free-brands-svg-icons";
 import { clearFromCart } from "../../features/carts/cartSlice";
 import { showErrorToast, showSuccessToast } from "../../utils/toast";
 import getPriceWithMarkup from "../../utils/helpers/get.price.with.markup";
-import { faWallet } from "@fortawesome/free-solid-svg-icons";
+import { faArrowUp, faWallet } from "@fortawesome/free-solid-svg-icons";
 import { setLoading } from "../../features/wallet/walletSlice";
 import generaterandomTransactionId from "../../utils/helpers/generaterandomTransactionId";
 import { toggleModal } from "../../features";
@@ -35,7 +35,7 @@ const PaymentButtons = () => {
   const { pricePercentage } = useSelector((state) => state.settings);
   const { balance, loading: walletLoading } = useSelector((state) => state.wallet);
   const [paymentMethod, setPaymentMethod] = useState(null);
-  
+
   const totalAmountForWallet = items.reduce(
     (total, item) => total + (Number(item.productPrice * 10000).toFixed(0) * item.productQuantity),
     0
@@ -221,7 +221,7 @@ const PaymentButtons = () => {
   return (
     <>
       {items && items.length > 0 && (
-        <div className="relative max-w-md mx-auto mt-10 p-6 bg-white">
+        <div className="relative max-w-md mx-auto bg-white">
           {walletLoading && (
             <div className="absolute inset-0 bg-white/80 backdrop-blur-sm flex items-center justify-center z-10 rounded-2xl">
               <div className="text-center space-y-2">
@@ -232,38 +232,43 @@ const PaymentButtons = () => {
             </div>
           )}
 
-          <h2 className="text-2xl font-bold mb-6 text-center text-gray-800">
-             Payment 
-          </h2>
+          {(parseInt(balance) < getPriceWithMarkup(totalAmountForWallet / 10000, pricePercentage)) && (
+            <>
+              <h3 className="text-lg sm:text-xl font-semibold text-center text-gray-800 mb-1">
+                Insufficient Funds
+              </h3>
+              <p className="text-sm text-center text-gray-600 mb-4">
+                Please top up your wallet to proceed with your eSIM purchase.
+              </p>
+            </>
+          )}
+          {!(parseInt(balance) < getPriceWithMarkup(totalAmountForWallet / 10000, pricePercentage)) && (
+
+            <h2 className="text-2xl font-bold text-center text-gray-800">Pay Now</h2>
+          )}
 
           <div className="flex items-center justify-center space-x-4 mb-6">
             {(parseInt(balance) < getPriceWithMarkup(totalAmountForWallet / 10000, pricePercentage)) ? (
-              <div className="relative">
-                <span className="absolute -top-2 -left-2 bg-red-100 text-red-600 text-[10px] font-medium px-2 py-[1px] rounded rotate-[-12deg] shadow-sm border border-red-300">
-                  Low Balance
-                </span>
-                <button
-                  onClick={() => dispatch(toggleModal(true))}
-                  
-                  className="text-white hover:bg-blue-50 transition px-4 py-2 rounded-lg text-sm font-medium shadow"
-                   style={{ backgroundColor: 'var(--secondary-color)' }}
-                >
-                  <FontAwesomeIcon icon={faWallet} className="mr-2" />
-                  Top Up Wallet
-                </button>
-              </div>
+              <button
+                onClick={() => dispatch(toggleModal(true))}
 
+                className="w-full text-white hover:bg-blue-50 transition px-4 py-2 rounded-lg text-sm font-medium shadow"
+                style={{ backgroundColor: 'var(--secondary-color)' }}
+              >
+                <FontAwesomeIcon icon={faWallet} className="mr-2" />
+                Top Up Wallet
+              </button>
             ) : (
               <button
                 onClick={handleWalletClick}
                 disabled={walletLoading}
-                 className="w-full  py-2 px-4 text-white rounded-md bg-primary hover:bg-primary-dark"
+                className="w-full py-2 px-4 text-white rounded-md bg-primary hover:bg-primary-dark"
               >
                 <FontAwesomeIcon icon={faWallet} className="mr-2" />
-                Wallet
+                Pay with Wallet
               </button>
-            )} 
-            
+            )}
+
 
 
             {/* <button
@@ -318,7 +323,7 @@ const PaymentButtons = () => {
           )}
 
           {/* Stripe Section */}
-          {paymentMethod === "stripe" && stripeClientSecret && (
+          {/* {paymentMethod === "stripe" && stripeClientSecret && (
             <Elements stripe={stripePromise}>
               <StripeCheckoutForm
                 clientSecret={stripeClientSecret}
@@ -326,7 +331,7 @@ const PaymentButtons = () => {
                 pricePercentage={pricePercentage}
               />
             </Elements>
-          )}
+          )} */}
         </div>
       )}
     </>

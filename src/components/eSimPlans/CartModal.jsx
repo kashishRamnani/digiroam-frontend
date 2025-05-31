@@ -14,7 +14,6 @@ const CartModal = () => {
   const dispatch = useDispatch();
   const { items, isCartOpen } = useSelector((state) => state.cart);
   const { pricePercentage } = useSelector((state) => state.settings);
-  // const [email, setEmail] = useState("");
   const [showConfirm, setShowConfirm] = useState(false);
   const [itemToRemove, setItemToRemove] = useState(null);
 
@@ -60,17 +59,17 @@ const CartModal = () => {
       aria-labelledby="cart-modal-title"
       aria-hidden={!isCartOpen}
     >
-      <div className="bg-white rounded-lg lg:max-w-3xl shadow-2xl items-center md:ml-40 max-w-md w-full p-8 relative">
-       <div className="flex justify-between items-center mb-4">
-          <h2 id="cart-modal-title" className="text-lg sm:text-xl font-semibold">Cart Details</h2>
-          <button
-            onClick={() => dispatch(setCartOpen(false))}
-            aria-label="Close cart modal"
-            className="text-gray-500 hover:text-gray-700 text-2xl"
-          >
-            &times;
-          </button>
-        </div>
+      <div className="bg-white rounded-lg lg:max-w-3xl shadow-2xl items-center max-w-md w-full p-8 relative">
+        <button
+          onClick={() => dispatch(setCartOpen(false))}
+          className="absolute top-4 right-4 text-gray-500 hover:text-gray-700 text-3xl font-bold"
+        >
+          &times;
+        </button>
+
+        <h3 className="text-2xl font-semibold mb-6 text-gray-800">
+          Cart Details
+        </h3>
 
         {items.length === 0 ? (
           <div className="text-center text-gray-500 py-4">Your cart is empty.</div>
@@ -115,15 +114,6 @@ const CartModal = () => {
         )}
 
         <div className="mt-4 space-y-3">
-          {/* <input
-            type="email"
-            placeholder="Email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            className="w-full bg-white text-gray-800 border rounded-md p-2 text-sm"
-            aria-label="Email for checkout"
-          /> */}
-
           <div className="flex justify-between text-sm">
             <span className="font-medium">Total:</span>
             <span className="font-bold">${total.toFixed(2)}</span>
