@@ -13,6 +13,7 @@ import Action from "./Action";
 import { formatBytesDetailed } from "../../utils/helpers/formatBytesDetailed";
 import formateDateTime from "../../utils/helpers/formte.date.time";
 
+
 const Sidebar = ({ selectedEsim, onClose, onCancelAndRefund }) => {
   const [activeTab, setActiveTab] = useState("profile");
 
@@ -122,6 +123,8 @@ const Sidebar = ({ selectedEsim, onClose, onCancelAndRefund }) => {
                   />
                 </div>
               )}
+
+              
             </>
           )}
 

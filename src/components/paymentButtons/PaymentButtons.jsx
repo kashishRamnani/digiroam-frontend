@@ -242,10 +242,7 @@ const PaymentButtons = () => {
               </p>
             </>
           )}
-          {!(parseInt(balance) < getPriceWithMarkup(totalAmountForWallet / 10000, pricePercentage)) && (
-
-            <h2 className="text-2xl font-bold text-center text-gray-800">Pay Now</h2>
-          )}
+          {!(parseInt(balance) < getPriceWithMarkup(totalAmountForWallet / 10000, pricePercentage))}
 
           <div className="flex items-center justify-center space-x-4 mb-6">
             {(parseInt(balance) < getPriceWithMarkup(totalAmountForWallet / 10000, pricePercentage)) ? (

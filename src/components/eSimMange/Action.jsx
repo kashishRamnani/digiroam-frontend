@@ -1,15 +1,19 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { cancelAndRefund } from "../../features";
 import { fetchDataPlan } from "../../features/dataplan/dataPlanSlice";
 import { showErrorToast, showSuccessToast } from "../../utils/toast";
+import RemoveConfirmationModal from "../common/RemoveConfirmation";
 
 const Action = ({ selectedEsim, onComplete }) => {
   const dispatch = useDispatch();
   const { esimDetails, error } = useSelector((state) => state.dataPlan);
   const { loading: isLoading } = useSelector((state) => state.wallet);
 
-  const isRefundable = esimDetails.smdpStatus === "RELEASED" && esimDetails.esimStatus === "GOT_RESOURCE";
+  const [showConfirm, setShowConfirm] = useState(false);
+  const isRefundable =
+    esimDetails.smdpStatus === "RELEASED" &&
+    esimDetails.esimStatus === "GOT_RESOURCE";
 
   useEffect(() => {
     if (selectedEsim?.iccid) {
@@ -17,7 +21,16 @@ const Action = ({ selectedEsim, onComplete }) => {
     }
   }, [dispatch, selectedEsim]);
 
-  const handleCancelAndRefund = async () => {
+
+  const handleCancelClick = () => {
+    setShowConfirm(true);
+  };
+
+
+  const confirmCancel = async () => {
+    setShowConfirm(false);
+
+
     if (!esimDetails?.esimTranNo || !esimDetails?.transactionId) {
       return showErrorToast("Missing required transaction details.");
     }
@@ -47,15 +60,23 @@ const Action = ({ selectedEsim, onComplete }) => {
 
       <p className="text-sm text-gray-500 mb-4 leading-relaxed">
         This action will cancel the selected eSIM
-        {isRefundable ? " and refund the amount back to your wallet." : " and refund is not applicable."} Once cancelled,
-        the eSIM will be permanently deactivated and cannot be recovered.
+        {isRefundable
+          ? " and refund the amount back to your wallet."
+          : " and refund is not applicable."}{" "}
+        Once cancelled, the eSIM will be permanently deactivated and cannot be
+        recovered.
+
       </p>
 
       <button
-        onClick={handleCancelAndRefund}
+        onClick={handleCancelClick}
         disabled={isLoading}
         className={`inline-flex items-center justify-center px-5 py-2.5 rounded-lg text-sm font-medium transition duration-200
-          ${isLoading ? "bg-red-400 cursor-not-allowed" : "bg-red-500 hover:bg-red-600"}
+          ${isLoading
+            ? "bg-red-400 cursor-not-allowed"
+            : "bg-red-500 hover:bg-red-600"
+          }
+           Cancel {isRefundable ? "and Refund" : ""}
           text-white focus:outline-none focus:ring-2 focus:ring-red-300 shadow-sm`}
       >
         {isLoading ? (
@@ -82,8 +103,10 @@ const Action = ({ selectedEsim, onComplete }) => {
             </svg>
             Processing...
           </>
+        ) : isRefundable ? (
+          "Cancel and Refund"
         ) : (
-          isRefundable ? "Cancel and Refund" : "Cancel"
+          "Cancel"
         )}
       </button>
 
@@ -92,7 +115,22 @@ const Action = ({ selectedEsim, onComplete }) => {
           {error}
         </p>
       )}
+
+
+      <RemoveConfirmationModal
+        isVisible={showConfirm}
+        onCancel={() => setShowConfirm(false)}
+        onConfirm={confirmCancel}
+        title="eSIM Cancellation"
+        message="Do you want to cancel your eSIM? This action cannot be undone."
+        confirmLabel="Yes & Confirm"
+        className="md:right-[30%] "
+
+      />
+
     </div>
+
+
   );
 };
 
