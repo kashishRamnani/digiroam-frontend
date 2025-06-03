@@ -66,15 +66,14 @@ const BuyNowModal = () => {
         </div>
       </div>
 
-      <div className="flex justify-between items-center pt-4 border-t">
-        <span className="font-semibold">Total</span>
-        <span className="text-xl font-bold">${total}</span>
+      <div className="flex justify-between items-center m-3 border-t">
+        
       </div>
 
-      {/* Make sure PaymentButtons is inside the white box container */}
-      <div className="mt-6">
+      
+     
         <PaymentButtons label="Buy Now" />
-      </div>
+     
     </div>
   </div>
 );

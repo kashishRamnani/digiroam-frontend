@@ -3,116 +3,155 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTimesCircle } from "@fortawesome/free-solid-svg-icons";
 import getPriceWithMarkup from "../../utils/helpers/get.price.with.markup";
 import getFormattedVolume from "../../utils/helpers/get.formatted.volume";
+import { faArrowDownWideShort, faArrowUpWideShort } from "@fortawesome/free-solid-svg-icons";
 
-const FilterFavPlans = ({ favouritePlans = [], pricePercentage = 0, onFilter } = {}) => {
-    const [filterText, setFilterText] = useState("");
-    const [selectedField, setSelectedField] = useState("all");
-    const [sortOrder, setSortOrder] = useState("asc");
+const FilterFavPlans = ({ favouritePlans = [], pricePercentage = 0, onFilter }) => {
+  const [filterText, setFilterText] = useState("");
+  const [selectedField, setSelectedField] = useState("all");
+  const [sortOrder, setSortOrder] = useState(""); 
+  const handleInputChange = (e) => {
+    const value = e.target.value;
+    setFilterText(value);
+    applyFilter(value, selectedField, sortOrder);
+  };
 
-    const handleInputChange = (e) => {
-        const value = e.target.value;
-        setFilterText(value);
-        applyFilter(value, selectedField, sortOrder);
-    };
+  const handleFieldChange = (e) => {
+    const field = e.target.value;
+    setSelectedField(field);
+    applyFilter(filterText, field, sortOrder);
+  };
 
-    const handleFieldChange = (e) => {
-        const field = e.target.value;
-        setSelectedField(field);
-        applyFilter(filterText, field, sortOrder);
-    };
+  const applyFilter = (query, field, algo) => {
+    let filteredPlans = favouritePlans;
 
-    const applyFilter = (query, field, algo) => {
-        if (!query) {
-            onFilter(sort(algo, favouritePlans));
-            return;
+    if (query) {
+      const lowerQuery = query.toLowerCase();
+
+      filteredPlans = favouritePlans.filter((product) => {
+        const formattedPrice = getPriceWithMarkup(product.price, pricePercentage).toLowerCase();
+        const formattedVolume = getFormattedVolume(product.volume).toLowerCase();
+        const formattedDuration = `${product.duration} ${product.durationUnit}`.toLowerCase();
+
+        if (field === "all") {
+          return (
+            product.name.toLowerCase().includes(lowerQuery) ||
+            formattedPrice.includes(lowerQuery) ||
+            formattedVolume.includes(lowerQuery) ||
+            formattedDuration.includes(lowerQuery)
+          );
         }
 
-        const lowerQuery = query.toLowerCase();
+        switch (field) {
+          case "name":
+            return product.name.toLowerCase().includes(lowerQuery);
+          case "price":
+            return formattedPrice.includes(lowerQuery);
+          case "data":
+            return formattedVolume.includes(lowerQuery);
+          case "duration":
+            return formattedDuration.includes(lowerQuery);
+          default:
+            return false;
+        }
+      });
+    }
 
-        const filteredResults = favouritePlans.filter((product) => {
-            const formattedPrice = getPriceWithMarkup(product.price, pricePercentage).toLowerCase();
-            const formattedVolume = getFormattedVolume(product.volume).toLowerCase();
-            const formattedDuration = `${product.duration} ${product.durationUnit}`.toLowerCase();
+   
+    if (algo === "asc" || algo === "desc") {
+      filteredPlans = sort(algo, filteredPlans);
+    }
 
-            if (field === "all") {
-                return (
-                    product.name.toLowerCase().includes(lowerQuery) ||
-                    formattedPrice.includes(lowerQuery) ||
-                    formattedVolume.includes(lowerQuery) ||
-                    formattedDuration.includes(lowerQuery)
-                );
-            }
+    onFilter(filteredPlans);
+  };
 
-            switch (field) {
-                case "name":
-                    return product.name.toLowerCase().includes(lowerQuery);
-                case "price":
-                    return formattedPrice.includes(lowerQuery);
-                case "data":
-                    return formattedVolume.includes(lowerQuery);
-                case "duration":
-                    return formattedDuration.includes(lowerQuery);
-                default:
-                    return false;
-            }
-        });
+  const clearFilter = () => {
+    setFilterText("");
+    setSelectedField("all");
+    setSortOrder("");
+    onFilter(plans);  
+  };
 
-        onFilter(sort(algo, filteredResults));
-    };
+  const sort = (algo, favouritePlans) => {
+    return [...favouritePlans].sort((a, b) => {
+      const priceA = getPriceWithMarkup(a.price, pricePercentage);
+      const priceB = getPriceWithMarkup(b.price, pricePercentage);
+      return algo === "asc" ? priceA - priceB : priceB - priceA;
+    });
+  };
 
-    const clearFilter = () => {
-        setFilterText("");
-        setSelectedField("all");
-        onFilter(sort(sortOrder, favouritePlans));
-    };
+  const handleSortChange = (e) => {
+    const newSortOrder = e.target.value;
+    setSortOrder(newSortOrder);
+   setFilterText("");
+    setSelectedField("all");
 
-    const sort = (algo, plans) => [...plans].sort((a, b) =>
-        algo === "asc" ? a.price - b.price : b.price - a.price
-    );
+    applyFilter("", "all", newSortOrder);
+  };
 
-    const handleSortChange = (e) => {
-        setSortOrder(e.target.value);
-        applyFilter(filterText, selectedField, e.target.value);
-    };
+  return (
+    <div className="flex gap-3 items-center mb-5">
+      <select
+        value={selectedField}
+        onChange={handleFieldChange}
+        className="bg-white border px-3 py-2 rounded-md focus:ring-2 focus:ring-blue-500"
+      >
+        <option className="bg-white" value="all">All Fields</option>
+        <option className="bg-white" value="name">Name</option>
+        <option className="bg-white" value="price">Price</option>
+        <option className="bg-white" value="data">Data</option>
+        <option className="bg-white" value="duration">Duration</option>
+      </select>
 
-    return (
-        <div className="flex gap-3 items-center mb-5">
-            <select
-                value={selectedField}
-                onChange={handleFieldChange}
-                className="bg-white border px-3 py-2 rounded-md focus:ring-2 focus:ring-blue-500"
-            >
-                <option value="all">All Fields</option>
-                <option value="name">Name</option>
-                <option value="price">Price</option>
-                <option value="data">Data</option>
-                <option value="duration">Duration</option>
-            </select>
+      <div className="relative w-full">
+        <input
+          type="text"
+          placeholder="Search plans..."
+          value={filterText}
+          onChange={handleInputChange}
+          className="bg-white w-full border px-3 py-2 pr-10 rounded-md focus:ring-2 focus:ring-blue-500"
+        />
+        {filterText && (
+          <FontAwesomeIcon
+            icon={faTimesCircle}
+            className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 cursor-pointer hover:text-red-500"
+            onClick={clearFilter}
+            size="lg"
+          />
+        )}
+      </div>
 
-            <div className="relative w-full">
-                <input
-                    type="text"
-                    placeholder="Search plans..."
-                    value={filterText}
-                    onChange={handleInputChange}
-                    className="bg-white w-full border px-3 py-2 pr-10 rounded-md focus:ring-2 focus:ring-blue-500"
-                />
-                {filterText && (
-                    <FontAwesomeIcon
-                        icon={faTimesCircle}
-                        className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 cursor-pointer hover:text-red-500"
-                        onClick={clearFilter}
-                        size="lg"
-                    />
-                )}
-            </div>
-
-            <select onChange={handleSortChange} value={sortOrder} className="p-2 border rounded-md bg-white">
-                <option value="asc">Price: Low to High</option>
-                <option value="desc">Price: High to Low</option>
-            </select>
-        </div>
-    );
+      {/* <select onChange={handleSortChange} value={sortOrder} className="p-2 border rounded-md bg-white">
+        <option value="">Price</option> 
+        <option value="asc"> Low </option>
+        <option value="desc"> High </option>
+      </select> */}
+      <div className="relative">
+    <select
+      onChange={handleSortChange}
+      value={sortOrder}
+     className="bg-white border px-3 py-2 rounded-md focus:ring-2 focus:ring-blue-500"
+    >
+      <option value="">Price</option>
+      <option value="asc">Low </option>
+      <option value="desc">High</option>
+    </select>
+    {sortOrder === "asc" && (
+      <FontAwesomeIcon
+        icon={faArrowDownWideShort}
+        className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-600"
+      />
+    )}
+    {sortOrder === "desc" && (
+      <FontAwesomeIcon
+        icon={faArrowUpWideShort}
+        className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-600"
+      />
+    )}
+   
+ 
+  </div>
+    </div>
+  );
 };
 
 export default FilterFavPlans;

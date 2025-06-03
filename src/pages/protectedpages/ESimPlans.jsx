@@ -28,17 +28,17 @@ const ESimPlans = () => {
   useEffect(() => {
     dispatch(retrieveSettings());
     setFilteredPlans(items);
-  }, [dispatch, items]);
+  }, [dispatch, items,]);
 
   const handleFilter = (filteredItems) => {
     setFilteredPlans(filteredItems);
   };
   useEffect(() => {
     setFilteredFavPlans(favouritePlans);
-  }, [favouritePlans]);
+  }, [dispatch,favouritePlans]);
 
-  const handleFavFilter = (filteredItems) => {
-    setFilteredFavPlans(filteredItems);
+  const handleFavFilter = (filteredFavPlans) => {
+    setFilteredFavPlans(filteredFavPlans);
   };
 
 
@@ -96,7 +96,7 @@ const ESimPlans = () => {
 
         )}
         {!!showFavourites ? (<FavouritePlans pricePercentage={pricePercentage} favouritePlans={filteredFavPlans} />
-        ) : (<ProductList items={filteredPlans} />)}
+        ) : (<ProductList items={filteredPlans} favouritePlans={filteredFavPlans} />)}
         <AddToCartModal />
         <CartModal />
         <BuyNowModal />
