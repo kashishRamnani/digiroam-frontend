@@ -35,6 +35,7 @@ export {
   setAddToCartOpen,
   setSelectedProduct,
   resetCart,
+  setBuyNow
 } from "./carts/cartSlice";
 export { resetProfileState } from "./user/userSlice";
 export { resetPaymentState, setPaymentStatus } from "./payment/paymentSlice";

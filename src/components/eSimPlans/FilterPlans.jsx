@@ -66,9 +66,14 @@ const FilterPlans = ({ plans = [], pricePercentage = 0, onFilter }) => {
         onFilter(sort(sortOrder, plans));
     };
 
-    const sort = (algo, plans) => ([...plans].sort((a, b) => {
-        return algo === "asc" ? a.price - b.price : b.price - a.price;
-    }))
+  
+const sort = (algo, plans) => {
+  return [...plans].sort((a, b) => {
+    const priceA = getPriceWithMarkup(a.price, pricePercentage);
+    const priceB = getPriceWithMarkup(b.price, pricePercentage);
+    return algo === "asc" ? priceA - priceB : priceB - priceA;
+  });
+};
 
     const handleSortChange = (e) => {
         setSortOrder(e.target.value);

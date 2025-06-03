@@ -6,7 +6,8 @@ import {
   CartModal,
   AddToCartModal,
   Loader,
-  FilterFavPlans
+  FilterFavPlans,
+  BuyNowModal
 } from "../../components";
 import DashboardLayout from "../../layouts/DashboardLayout";
 import FilterPlans from "../../components/eSimPlans/FilterPlans";
@@ -98,6 +99,7 @@ const ESimPlans = () => {
         ) : (<ProductList items={filteredPlans} />)}
         <AddToCartModal />
         <CartModal />
+        <BuyNowModal />
       </div>
     </DashboardLayout>
   );

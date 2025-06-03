@@ -27,7 +27,7 @@ import generaterandomTransactionId from "../../utils/helpers/generaterandomTrans
 import { toggleModal } from "../../features";
 const stripePromise = loadStripe("pk_test_51PtX1yP5I2dh2w2olaE2SXdVYWT056atlVJ3jVZKliMu6GQUa17xzEQHTrELjjJRWal7JwTySuFZLdeNJ7SGwrX700LCXKN0LP");
 
-const PaymentButtons = () => {
+const PaymentButtons = ({label="Pay Now", onClick}) => {
   const dispatch = useDispatch();
   const { stripeClientSecret, loading, error, paymentStatus, paypalOrderId } =
     useSelector((state) => state.payment);
@@ -256,14 +256,17 @@ const PaymentButtons = () => {
                 Top Up Wallet
               </button>
             ) : (
-              <button
-                onClick={handleWalletClick}
-                disabled={walletLoading}
-                className="w-full py-2 px-4 text-white rounded-md bg-primary hover:bg-primary-dark"
-              >
-                <FontAwesomeIcon icon={faWallet} className="mr-2" />
-                Pay with Wallet
-              </button>
+            
+                <button
+                  onClick={onClick}
+                  disabled={loading}
+                  className="w-full py-2 px-4 text-white rounded-md bg-primary hover:bg-primary-dark"
+                >
+                  <FontAwesomeIcon icon={faWallet} className="mr-2" />
+                  {label}
+                </button>
+             
+
             )}
 
 

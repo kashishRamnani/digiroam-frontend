@@ -33,6 +33,7 @@ import ServiceLinks from "./settings/ServiceLinks";
 import WalletModal from "./wallet/WalletModel";
 import WalletCards from "./wallet/Walletcards";
 import FilterFavPlans from "./eSimPlans/Filterfavouriteplans";
+import BuyNowModal from "./eSimPlans/BuyNow";
 export {
   Footer,
   LoginButtons,
@@ -69,4 +70,5 @@ export {
   WalletModal,
   WalletCards,
   FilterFavPlans,
+  BuyNowModal,
 };
