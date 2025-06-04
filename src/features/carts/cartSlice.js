@@ -88,7 +88,7 @@ const cartSlice = createSlice({
     selectedProduct: null,
     loading: false,
     error: null,
-    isBuyNow:false
+    isBuyNow:[]
   },
   reducers: {
     updateQuantity: (state, action) => {

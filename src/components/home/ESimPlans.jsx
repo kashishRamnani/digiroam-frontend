@@ -15,6 +15,7 @@ export default function ESimPlans() {
   const [showProduct, setShowProduct] = useState(false);
   const { isLoading } = useSelector((state) => state.plans);
   const [ShowAllCountries, setShowCountries] = useState(false)
+  
   const onSubmit = async (id) => {
     setShowCountries(false)
     if (id === "local") {

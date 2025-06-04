@@ -18,15 +18,32 @@ import Pagination from "../common/Pagination";
 import getPriceWithMarkup from "../../utils/helpers/get.price.with.markup";
 import getFormattedVolume from "../../utils/helpers/get.formatted.volume";
 
+import { useLocation } from "react-router-dom";
 
 const ProductList = ({ items, locationCode = "", noAction }) => {
   const dispatch = useDispatch();
   const { currentPage, itemsPerPage } = useSelector((state) => state.plans);
-
+const { user } = useSelector((state) => state.auth);
+ const location = useLocation();
   const { pricePercentage } = useSelector((state) => state.settings);
   const { favouritePlans } = useSelector((state) => state.favouritePlans);
 
   const [selectedEsim, setSelectedEsim] = useState(null);
+
+ useEffect(() => {
+    if (!user) return;
+
+    const pendingPackageCode = localStorage.getItem("pendingPackageCode");
+    if (!pendingPackageCode) return;
+
+    const productToOpen = items.find(p => p.packageCode === pendingPackageCode);
+    if (productToOpen) {
+      dispatch(setSelectedProduct(productToOpen)); 
+      dispatch(setBuyNow(true));
+      localStorage.removeItem("pendingPackageCode")                    
+     
+    }
+  }, [items,user]);
 
   const fetchData = useCallback(() => {
     dispatch(retrieveFavouritePlans());

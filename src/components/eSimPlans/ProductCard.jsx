@@ -10,7 +10,8 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import getFormattedVolume from "../../utils/helpers/get.formatted.volume";
 import getPriceWithMarkup from "../../utils/helpers/get.price.with.markup";
-
+import BuyNowModal from "./BuyNow";
+import { useNavigate } from "react-router-dom";
 export default function ProductList() {
   const dispatch = useDispatch();
    
@@ -20,7 +21,7 @@ export default function ProductList() {
   const { user } = useSelector((state) => state.auth);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedPackage, setSelectedPackage] = useState(null);
-
+  const navigate = useNavigate();
   useEffect(() => {
     if (items.length === 0) {
         
@@ -28,6 +29,8 @@ export default function ProductList() {
     }
   }, [dispatch, items]);
 
+
+  
   const productsWithIds = useMemo(
     () =>
       items.map((product) => ({
@@ -54,11 +57,13 @@ export default function ProductList() {
   const lowestPricePackages = useMemo(() => getLowestPricePackages(productsWithIds), [productsWithIds, getLowestPricePackages]);
 
   const handleBuyNow = useCallback(() => {
+    if(!selectedPackage) return;
+    localStorage.setItem("pendingPackageCode",selectedPackage.packageCode)
     if (!user) {
-      window.location.href = "/login";
+       window.location.href = "/login";
       return;
     }
-    if (selectedPackage) {
+    if (selectedPackage) { 
       dispatch(addToCart({ product: selectedPackage, quantity: 1 }));
       window.location.href = "/eSim-plans";
     }
