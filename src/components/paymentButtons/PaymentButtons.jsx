@@ -262,7 +262,7 @@ const PaymentButtons = () => {
                 className="w-full py-2 px-4 text-white rounded-md bg-primary hover:bg-primary-dark"
               >
                 <FontAwesomeIcon icon={faWallet} className="mr-2" />
-                Pay with Wallet
+                Pay Now
               </button>
             )}
 

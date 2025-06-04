@@ -1,4 +1,4 @@
-export { default as authSlice } from "./auth/authSlice";
+export { default as authSlice ,setPendingPackage} from "./auth/authSlice";
 export { default as preferencesSlice } from "./preferences/preferenceSlice";
 export { default as uiSlice } from "./ui/uiSlice";
 export { default as productSlice } from "./products/productSlice";
