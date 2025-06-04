@@ -14,7 +14,7 @@ const UserDashboardHome = () => {
  const { user } = useSelector((state) => state.auth);
   useEffect(() => {
     dispatch(paymentInfo());
-    console.log("paymentinfo")
+   
   }, [dispatch]);
 
   const simOwner = user.name

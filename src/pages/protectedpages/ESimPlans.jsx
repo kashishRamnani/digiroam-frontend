@@ -15,7 +15,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faShoppingCart, faHeart } from "@fortawesome/free-solid-svg-icons";
 import FavouritePlans from "../../components/eSimPlans/FavouritePlans";
 
-const ESimPlans = () => {
+const ESimPlans =() => {
   const dispatch = useDispatch();
   const cart = useSelector((state) => state.cart.items);
   const { isLoading, items = [] } = useSelector((state) => state.plans);
@@ -40,7 +40,7 @@ const ESimPlans = () => {
   const handleFavFilter = (filteredFavPlans) => {
     setFilteredFavPlans(filteredFavPlans);
   };
-
+ 
 
   return (
     <DashboardLayout>
@@ -96,7 +96,7 @@ const ESimPlans = () => {
 
         )}
         {!!showFavourites ? (<FavouritePlans pricePercentage={pricePercentage} favouritePlans={filteredFavPlans} />
-        ) : (<ProductList items={filteredPlans} favouritePlans={filteredFavPlans} />)}
+        ) : (<ProductList items={filteredPlans}  />)}
         <AddToCartModal />
         <CartModal />
         <BuyNowModal />

@@ -56,18 +56,19 @@ export default function ProductList() {
   
   const lowestPricePackages = useMemo(() => getLowestPricePackages(productsWithIds), [productsWithIds, getLowestPricePackages]);
 
-  const handleBuyNow = useCallback(() => {
-    if(!selectedPackage) return;
-    localStorage.setItem("pendingPackageCode",selectedPackage.packageCode)
-    if (!user) {
-       window.location.href = "/login";
-      return;
-    }
-    if (selectedPackage) { 
-      dispatch(addToCart({ product: selectedPackage, quantity: 1 }));
-      window.location.href = "/eSim-plans";
-    }
-  }, [user, selectedPackage, dispatch]);
+ const handleBuyNow = useCallback(() => {
+  if (!selectedPackage) return;
+
+  localStorage.setItem("pendingPackageCode", selectedPackage.packageCode);
+
+  if (!user) {
+    window.location.href = "/login";
+    return;
+  }
+
+  window.location.href = "/eSim-plans";
+}, [user, selectedPackage]);
+
 
   useEffect(() => {
     document.body.classList.toggle("overflow-hidden", isModalOpen);

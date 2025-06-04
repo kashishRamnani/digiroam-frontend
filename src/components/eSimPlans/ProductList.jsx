@@ -34,13 +34,15 @@ const { user } = useSelector((state) => state.auth);
     if (!user) return;
 
     const pendingPackageCode = localStorage.getItem("pendingPackageCode");
+     
     if (!pendingPackageCode) return;
 
     const productToOpen = items.find(p => p.packageCode === pendingPackageCode);
     if (productToOpen) {
       dispatch(setSelectedProduct(productToOpen)); 
       dispatch(setBuyNow(true));
-      localStorage.removeItem("pendingPackageCode")                    
+      localStorage.removeItem("pendingPackageCode")     
+      
      
     }
   }, [items,user]);
