@@ -60,12 +60,22 @@ const ESimPlans = () => {
   }, []);
 
   const handleFilter = (filteredItems) => {
+    
     setFilteredPlans(filteredItems);
   };
 
+
   const handleFavFilter = (filteredFavItems) => {
+    console.log("Filtered Favourite Plans:", filteredFavItems);
     setFilteredFavPlans(filteredFavItems);
   };
+
+  useEffect(() => {
+  if (!showFavourites) {
+    setFilteredPlans(items); 
+  }
+}, [showFavourites, items]);
+
 
   return (
     <DashboardLayout>
@@ -107,7 +117,7 @@ const ESimPlans = () => {
         ) : (
           <FilterFavPlans
         
-            favouritePlans={filteredFavPlans}
+            favouritePlans={favouritePlans}
             pricePercentage={pricePercentage}
             onFilter={handleFavFilter}
           

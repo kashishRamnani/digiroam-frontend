@@ -14,12 +14,12 @@ const FilterFavPlans = ({ favouritePlans = [], pricePercentage = 0, onFilter }) 
   const [sortOrder, setSortOrder] = useState("");
 
   const applyFilter = (query, field, algo) => {
-    let filteredPlans = favouritePlans;
+    let filteredfavPlans = [...favouritePlans]
 
     if (query) {
       const lowerQuery = query.toLowerCase();
 
-      filteredPlans = favouritePlans.filter((product) => {
+      filteredfavPlans = favouritePlans.filter((product) => {
         const formattedPrice = getPriceWithMarkup(product.price, pricePercentage).toLowerCase();
         const formattedVolume = getFormattedVolume(product.volume).toLowerCase();
         const formattedDuration = `${product.duration} ${product.durationUnit}`.toLowerCase();
@@ -49,26 +49,29 @@ const FilterFavPlans = ({ favouritePlans = [], pricePercentage = 0, onFilter }) 
     }
 
     if (algo === "asc" || algo === "desc") {
-      filteredPlans = sortPlans(algo, filteredPlans);
+      filteredfavPlans = sortPlans(algo, filteredfavPlans);
     }
-
-    onFilter(filteredPlans);
+console.log("Sorted Plans:", filteredfavPlans);
+    onFilter(filteredfavPlans);
   };
 
   const clearFilter = () => {
     setFilterText("");
     setSelectedField("all");
     setSortOrder("");
-    onFilter(favouritePlans); // reset to original favourites list
+    
+    onFilter(favouritePlans); 
   };
 
-  const sortPlans = (algo, plansToSort) => {
-    return [...plansToSort].sort((a, b) => {
+const sortPlans = (algo, favouritePlans) => {
+    return [...favouritePlans].sort((a, b) => {
       const priceA = getPriceWithMarkup(a.price, pricePercentage);
       const priceB = getPriceWithMarkup(b.price, pricePercentage);
       return algo === "asc" ? priceA - priceB : priceB - priceA;
     });
   };
+
+
 
   const handleInputChange = (e) => {
     const text = e.target.value;
@@ -87,6 +90,7 @@ const FilterFavPlans = ({ favouritePlans = [], pricePercentage = 0, onFilter }) 
     setSortOrder(newSortOrder);
     setFilterText("");
     setSelectedField("all");
+    console.log("Sort triggered with:", newSortOrder);
     applyFilter("", "all", newSortOrder);
   };
 

@@ -8,7 +8,7 @@ const FilterPlans = forwardRef(({ plans = [], pricePercentage = 0, onFilter, val
   const [filterText, setFilterText] = useState("");
   const [selectedField, setSelectedField] = useState("all");
   const [sortOrder, setSortOrder] = useState("");
-
+  
   const applyFilter = (query, field, algo) => {
     let filteredPlans = plans;
 
@@ -65,6 +65,7 @@ const FilterPlans = forwardRef(({ plans = [], pricePercentage = 0, onFilter, val
     setSelectedField("all");
     setSortOrder("");
     onFilter(plans);
+   
   };
 
   const sort = (algo, plans) => {
@@ -115,6 +116,8 @@ const FilterPlans = forwardRef(({ plans = [], pricePercentage = 0, onFilter, val
           placeholder="Search plans..."
           value={filterText}
           onChange={handleInputChange}
+      
+
           className="bg-white w-full border px-3 py-2 pr-10 rounded-md focus:ring-2 focus:ring-blue-500"
         />
         {filterText && (
