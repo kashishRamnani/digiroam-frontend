@@ -65,6 +65,7 @@ const favouritePlanSlice = createSlice({
 
             .addCase(upsertFavouritePlan.pending, (state, action) => {
                 state.loading = true;
+                
                 state.favouritePlans = [...state.favouritePlans, { packageCode: action.meta.arg.packageCode }]
             })
             .addCase(upsertFavouritePlan.fulfilled, (state) => {

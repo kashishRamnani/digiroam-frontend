@@ -1,25 +1,17 @@
 import { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTimesCircle } from "@fortawesome/free-solid-svg-icons";
+import {
+  faTimesCircle,
+  faArrowDownWideShort,
+  faArrowUpWideShort,
+} from "@fortawesome/free-solid-svg-icons";
 import getPriceWithMarkup from "../../utils/helpers/get.price.with.markup";
 import getFormattedVolume from "../../utils/helpers/get.formatted.volume";
-import { faArrowDownWideShort, faArrowUpWideShort } from "@fortawesome/free-solid-svg-icons";
 
 const FilterFavPlans = ({ favouritePlans = [], pricePercentage = 0, onFilter }) => {
   const [filterText, setFilterText] = useState("");
   const [selectedField, setSelectedField] = useState("all");
-  const [sortOrder, setSortOrder] = useState(""); 
-  const handleInputChange = (e) => {
-    const value = e.target.value;
-    setFilterText(value);
-    applyFilter(value, selectedField, sortOrder);
-  };
-
-  const handleFieldChange = (e) => {
-    const field = e.target.value;
-    setSelectedField(field);
-    applyFilter(filterText, field, sortOrder);
-  };
+  const [sortOrder, setSortOrder] = useState("");
 
   const applyFilter = (query, field, algo) => {
     let filteredPlans = favouritePlans;
@@ -56,9 +48,8 @@ const FilterFavPlans = ({ favouritePlans = [], pricePercentage = 0, onFilter }) 
       });
     }
 
-   
     if (algo === "asc" || algo === "desc") {
-      filteredPlans = sort(algo, filteredPlans);
+      filteredPlans = sortPlans(algo, filteredPlans);
     }
 
     onFilter(filteredPlans);
@@ -68,23 +59,34 @@ const FilterFavPlans = ({ favouritePlans = [], pricePercentage = 0, onFilter }) 
     setFilterText("");
     setSelectedField("all");
     setSortOrder("");
-    onFilter(plans);  
+    onFilter(favouritePlans); // reset to original favourites list
   };
 
-  const sort = (algo, favouritePlans) => {
-    return [...favouritePlans].sort((a, b) => {
+  const sortPlans = (algo, plansToSort) => {
+    return [...plansToSort].sort((a, b) => {
       const priceA = getPriceWithMarkup(a.price, pricePercentage);
       const priceB = getPriceWithMarkup(b.price, pricePercentage);
       return algo === "asc" ? priceA - priceB : priceB - priceA;
     });
   };
 
+  const handleInputChange = (e) => {
+    const text = e.target.value;
+    setFilterText(text);
+    applyFilter(text, selectedField, sortOrder);
+  };
+
+  const handleFieldChange = (e) => {
+    const field = e.target.value;
+    setSelectedField(field);
+    applyFilter(filterText, field, sortOrder);
+  };
+
   const handleSortChange = (e) => {
     const newSortOrder = e.target.value;
     setSortOrder(newSortOrder);
-   setFilterText("");
+    setFilterText("");
     setSelectedField("all");
-
     applyFilter("", "all", newSortOrder);
   };
 
@@ -95,17 +97,17 @@ const FilterFavPlans = ({ favouritePlans = [], pricePercentage = 0, onFilter }) 
         onChange={handleFieldChange}
         className="bg-white border px-3 py-2 rounded-md focus:ring-2 focus:ring-blue-500"
       >
-        <option className="bg-white" value="all">All Fields</option>
-        <option className="bg-white" value="name">Name</option>
-        <option className="bg-white" value="price">Price</option>
-        <option className="bg-white" value="data">Data</option>
-        <option className="bg-white" value="duration">Duration</option>
+        <option value="all">All Fields</option>
+        <option value="name">Name</option>
+        <option value="price">Price</option>
+        <option value="data">Data</option>
+        <option value="duration">Duration</option>
       </select>
 
       <div className="relative w-full">
         <input
           type="text"
-          placeholder="Search plans..."
+          placeholder="Search favourite plans..."
           value={filterText}
           onChange={handleInputChange}
           className="bg-white w-full border px-3 py-2 pr-10 rounded-md focus:ring-2 focus:ring-blue-500"
@@ -120,36 +122,29 @@ const FilterFavPlans = ({ favouritePlans = [], pricePercentage = 0, onFilter }) 
         )}
       </div>
 
-      {/* <select onChange={handleSortChange} value={sortOrder} className="p-2 border rounded-md bg-white">
-        <option value="">Price</option> 
-        <option value="asc"> Low </option>
-        <option value="desc"> High </option>
-      </select> */}
       <div className="relative">
-    <select
-      onChange={handleSortChange}
-      value={sortOrder}
-     className="bg-white border px-3 py-2 rounded-md focus:ring-2 focus:ring-blue-500"
-    >
-      <option value="">Price</option>
-      <option value="asc">Low </option>
-      <option value="desc">High</option>
-    </select>
-    {sortOrder === "asc" && (
-      <FontAwesomeIcon
-        icon={faArrowDownWideShort}
-        className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-600"
-      />
-    )}
-    {sortOrder === "desc" && (
-      <FontAwesomeIcon
-        icon={faArrowUpWideShort}
-        className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-600"
-      />
-    )}
-   
- 
-  </div>
+        <select
+          onChange={handleSortChange}
+          value={sortOrder}
+          className="bg-white border px-3 py-2 rounded-md focus:ring-2 focus:ring-blue-500"
+        >
+          <option value="">Price</option>
+          <option value="asc">Low</option>
+          <option value="desc">High</option>
+        </select>
+        {sortOrder === "asc" && (
+          <FontAwesomeIcon
+            icon={faArrowDownWideShort}
+            className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-600"
+          />
+        )}
+        {sortOrder === "desc" && (
+          <FontAwesomeIcon
+            icon={faArrowUpWideShort}
+            className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-600"
+          />
+        )}
+      </div>
     </div>
   );
 };

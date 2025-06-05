@@ -22,7 +22,7 @@ import FavouritePlans from "../../components/eSimPlans/FavouritePlans";
 
 const ESimPlans = () => {
   const dispatch = useDispatch();
-  const filterRef = useRef(); // NEW
+  const filterRef = useRef();
   const cart = useSelector((state) => state.cart.items);
   const { isLoading, items = [] } = useSelector((state) => state.plans);
   const { pricePercentage } = useSelector((state) => state.settings);
@@ -49,6 +49,8 @@ const ESimPlans = () => {
   useEffect(() => {
     setFilteredFavPlans(favouritePlans);
   }, [favouritePlans]);
+
+
 
   useEffect(() => {
     if (purchasePending) {
@@ -104,9 +106,11 @@ const ESimPlans = () => {
           />
         ) : (
           <FilterFavPlans
-            favouritePlans={favouritePlans}
+        
+            favouritePlans={filteredFavPlans}
             pricePercentage={pricePercentage}
             onFilter={handleFavFilter}
+          
           />
         )}
 
