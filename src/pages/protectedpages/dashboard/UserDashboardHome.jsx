@@ -1,20 +1,21 @@
 import DashboardLayout from "../../../layouts/DashboardLayout";
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { paymentInfo } from "../../../features/payment/paymentSlice";
 import { Link } from "react-router-dom";
 import { faSimCard, faCreditCard, faUser } from "@fortawesome/free-solid-svg-icons";
 import { useDispatch, useSelector } from "react-redux";
-import { retrieveSettings } from "../../../features";
 import Loader from "../../../components/common/Loader";
+import getCurrencySymbol from '../../../utils/helpers/getCurrencySymbol';
+import formateDateTime from "../../../utils/helpers/formte.date.time";
 
 const UserDashboardHome = () => {
   const dispatch = useDispatch();
   const { paymentData, loading } = useSelector((state) => state.payment);
- const { user } = useSelector((state) => state.auth);
+  const { user } = useSelector((state) => state.auth);
   useEffect(() => {
     dispatch(paymentInfo());
-   
+
   }, [dispatch]);
 
   const simOwner = user.name
@@ -72,7 +73,6 @@ const UserDashboardHome = () => {
                   <th className="px-4 py-3">Order No</th>
                   <th className="px-4 py-3 ">Amount</th>
                   <th className="px-4 py-3 whitespace-nowrap ">No. of eSIMs</th>
-                  <th className="px-4 py-3">Currency</th>
                   <th className="px-4 py-3">Transaction ID</th>
                   <th className="px-4 py-3">Date</th>
                 </tr>
@@ -86,13 +86,12 @@ const UserDashboardHome = () => {
                           {payment.orderNo}
                         </Link>
                       </td>
-                      <td className="px-4 py-3">${(payment.amount / 10000).toFixed(2)}</td>
+                      <td className="px-4 py-3">{getCurrencySymbol(payment.currency)}{(payment.amount / 10000).toFixed(2)}</td>
                       <td className="px-4 py-3">
                         {Array.isArray(payment?.packageInfoList) ? payment.packageInfoList.length : 0}
                       </td>
-                      <td className="px-4 py-3">{payment.currency}</td>
                       <td className="px-4 py-3">{payment.transactionId}</td>
-                      <td className="px-4 py-3 whitespace-nowrap ">{new Date(payment.createdAt).toLocaleString()}</td>
+                      <td className="px-4 py-3 whitespace-nowrap ">{formateDateTime(payment.createdAt)}</td>
                     </tr>
                   ))
                 ) : (

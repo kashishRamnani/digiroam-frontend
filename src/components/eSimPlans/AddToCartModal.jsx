@@ -15,11 +15,9 @@ const AddToCartModal = () => {
     setQuantity(1);
   };
 
-
   const handleAddToCart = async () => {
     try {
       const result = await dispatch(addToCart({ product: selectedProduct, quantity }));
-
       if (addToCart.fulfilled.match(result)) {
         await dispatch(fetchCartFromServer());
       }

@@ -28,42 +28,28 @@ const Login = () => {
     resolver: zodResolver(mode === "login" ? loginSchema : forgotSchema),
   });
 
-  // const onSubmit = async (data) => {
-  //   try {
-  //     if (mode === "login") {
-  //       await dispatch(loginUser(data)).unwrap();
-  //       dispatch(walletBalance());
-  //       navigate("/dashboard");
-  //     } else {
-  //       await dispatch(requestPasswordReset(data.email)).inwrap();
-  //       // navigate("/login");
-  //     }
-  //   } catch (error) {
-  //     (error.message);
-  //   }
-  // };
- const onSubmit = async (data) => {
-  try {
-    if (mode === "login") {
-      await dispatch(loginUser(data)).unwrap();
-      dispatch(walletBalance());
+  const onSubmit = async (data) => {
+    try {
+      if (mode === "login") {
+        const result = await dispatch(loginUser(data));
+        if (loginUser.fulfilled.match(result)) {
+          dispatch(walletBalance());
 
-     
+          if (JSON.parse(localStorage.getItem("purchasePending") || "null")) {
+            navigate("/eSim-plans", { replace: true });
+          }
+          else {
+            navigate("/dashboard", { replace: true });
+          }
+        }
 
-      if (pendingPackageCode) {
-        console.log("Redirecting to /eSim-plans");
-        navigate("/eSim-plans");
       } else {
-        console.log("Redirecting to /dashboard");
-        navigate("/dashboard");
+        await dispatch(requestPasswordReset(data.email)).unwrap();
       }
-    } else {
-      await dispatch(requestPasswordReset(data.email)).unwrap();
+    } catch (error) {
+      console.error("Login Error:", error.message);
     }
-  } catch (error) {
-    console.error("Login Error:", error.message);
-  }
-};
+  };
 
   return (
     <MainLayout title={t("login.title")} description={t("login.title")}>

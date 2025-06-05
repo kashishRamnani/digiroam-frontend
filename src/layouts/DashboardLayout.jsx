@@ -1,14 +1,12 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import DashboardHeader from "../components/dashboard/DashboardHeader";
 import DashboardSidebar from "../components/dashboard/DashboardSidebar";
-import { Outlet, useLocation } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { Helmet } from "react-helmet-async";
 import { useDispatch, useSelector } from "react-redux";
 import { toggleModal } from "../features";
 import { WalletModal } from "../components";
-
-
 
 const DashboardLayout = ({ children, title, description, hideSidebar }) => {
   const dispatch = useDispatch();
@@ -44,7 +42,7 @@ const DashboardLayout = ({ children, title, description, hideSidebar }) => {
 
         <main className="flex-1 overflow-x-hidden overflow-y-auto bg-gray-100">
           {children}
-          <Outlet />
+          {/* <Outlet /> */}
         </main>
       </div>
     </div>

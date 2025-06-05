@@ -79,7 +79,13 @@ const SocialCallback = () => {
         localStorage.setItem("user", JSON.stringify(userObject));
 
         dispatch(setUserAndToken({ user: userObject, token }));
-        navigate("/dashboard");
+
+        if (JSON.parse(localStorage.getItem("purchasePending") || "null")) {
+          navigate("/eSim-plans", { replace: true });
+        }
+        else {
+          navigate("/dashboard", { replace: true });
+        }
       } else {
         navigate("/login");
       }

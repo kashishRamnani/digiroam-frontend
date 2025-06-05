@@ -5,7 +5,7 @@ import { showErrorToast, showSuccessToast } from "../../utils/toast";
 const initialState = {
   user: localStorage.getItem("user") ? JSON.parse(localStorage.getItem("user")) : null,
   token: localStorage.getItem("token") || null,
- 
+
   loading: false,
   error: null,
   otpRequested: false,
@@ -81,7 +81,7 @@ export const signupUser = createAsyncThunk(
 
 export const loginUser = createAsyncThunk(
   "auth/loginUser",
-  async ({ email, password , pendingPackage}, { rejectWithValue }) => {
+  async ({ email, password }, { rejectWithValue }) => {
     try {
       const response = await axiosInstance.post("/user/login", {
         email, password,
@@ -91,7 +91,6 @@ export const loginUser = createAsyncThunk(
 
       localStorage.setItem("token", accessToken);
       localStorage.setItem("user", JSON.stringify(user));
-      localStorage.setItem("pendingPackageCode",pendingPackage)
 
       showSuccessToast("Login successful!");
 
@@ -200,7 +199,7 @@ const authSlice = createSlice({
       state.user = action.payload.user;
       state.token = action.payload.token;
     },
-    
+
   },
   extraReducers: (builder) => {
     builder
@@ -329,5 +328,5 @@ const authSlice = createSlice({
   },
 });
 
-export const { resetOTPState, setUserAndToken,setPendingPackage } = authSlice.actions;
+export const { resetOTPState, setUserAndToken, setPendingPackage } = authSlice.actions;
 export default authSlice.reducer;

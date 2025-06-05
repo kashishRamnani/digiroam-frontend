@@ -1,13 +1,18 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { retrieveSettings, setCartOpen } from "../../features";
+import {
+  retrieveSettings,
+  setBuyNow,
+  setCartOpen,
+  setSelectedProduct,
+} from "../../features";
 import {
   ProductList,
   CartModal,
   AddToCartModal,
   Loader,
   FilterFavPlans,
-  BuyNowModal
+  BuyNowModal,
 } from "../../components";
 import DashboardLayout from "../../layouts/DashboardLayout";
 import FilterPlans from "../../components/eSimPlans/FilterPlans";
@@ -15,32 +20,50 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faShoppingCart, faHeart } from "@fortawesome/free-solid-svg-icons";
 import FavouritePlans from "../../components/eSimPlans/FavouritePlans";
 
-const ESimPlans =() => {
+const ESimPlans = () => {
   const dispatch = useDispatch();
+  const filterRef = useRef(); // NEW
   const cart = useSelector((state) => state.cart.items);
   const { isLoading, items = [] } = useSelector((state) => state.plans);
   const { pricePercentage } = useSelector((state) => state.settings);
-  const [filteredPlans, setFilteredPlans] = useState([]);
-  const [showFavourites, setShowFavourites] = useState(false);
   const { favouritePlans = [] } = useSelector((state) => state.favouritePlans);
+
+  const [filteredPlans, setFilteredPlans] = useState([]);
   const [filteredFavPlans, setFilteredFavPlans] = useState([]);
+  const [showFavourites, setShowFavourites] = useState(false);
+  const [purchasePending] = useState(() =>
+    JSON.parse(localStorage.getItem("purchasePending") || "null")
+  );
 
   useEffect(() => {
     dispatch(retrieveSettings());
+  }, [dispatch]);
+
+  useEffect(() => {
     setFilteredPlans(items);
-  }, [dispatch, items,]);
+    if (filterRef.current?.applyInitialFilter) {
+      filterRef.current.applyInitialFilter();
+    }
+  }, [items]);
+
+  useEffect(() => {
+    setFilteredFavPlans(favouritePlans);
+  }, [favouritePlans]);
+
+  useEffect(() => {
+    if (purchasePending) {
+      dispatch(setSelectedProduct(purchasePending));
+      dispatch(setBuyNow(true));
+    }
+  }, []);
 
   const handleFilter = (filteredItems) => {
     setFilteredPlans(filteredItems);
   };
-  useEffect(() => {
-    setFilteredFavPlans(favouritePlans);
-  }, [dispatch,favouritePlans]);
 
-  const handleFavFilter = (filteredFavPlans) => {
-    setFilteredFavPlans(filteredFavPlans);
+  const handleFavFilter = (filteredFavItems) => {
+    setFilteredFavPlans(filteredFavItems);
   };
- 
 
   return (
     <DashboardLayout>
@@ -58,34 +81,26 @@ const ESimPlans =() => {
 
           <button
             onClick={() => setShowFavourites(!showFavourites)}
-            className="flex items-center  space-x-2 text-white px-4 py-2 rounded-md"
+            className="flex items-center space-x-2 text-white px-4 py-2 rounded-md"
             style={{ backgroundColor: "var(--secondary-color)" }}
           >
-            {!showFavourites && (
+            {!showFavourites ? (
               <span className="mx-4">
                 <FontAwesomeIcon icon={faHeart} /> Show Favourite Plans ({favouritePlans.length})
               </span>
-            )}
-
-            {!!showFavourites && (
-              <span className="mx-4">
-                Show All Plans ({items.length})
-              </span>
+            ) : (
+              <span className="mx-4">Show All Plans ({items.length})</span>
             )}
           </button>
         </div>
 
-        {/* <FilterPlans plans={items} pricePercentage={pricePercentage} onFilter={handleFilter} />
-         <FilterFavPlans
-            favouritePlans={filteredFavPlans}
-            pricePercentage={pricePercentage}
-            onFilter={handleFilter}
-          /> */}
         {!showFavourites ? (
           <FilterPlans
+            ref={filterRef}
             plans={items}
             pricePercentage={pricePercentage}
             onFilter={handleFilter}
+            value={purchasePending?.name ?? ""}
           />
         ) : (
           <FilterFavPlans
@@ -93,10 +108,17 @@ const ESimPlans =() => {
             pricePercentage={pricePercentage}
             onFilter={handleFavFilter}
           />
-
         )}
-        {!!showFavourites ? (<FavouritePlans pricePercentage={pricePercentage} favouritePlans={filteredFavPlans} />
-        ) : (<ProductList items={filteredPlans}  />)}
+
+        {!showFavourites ? (
+          <ProductList items={filteredPlans} />
+        ) : (
+          <FavouritePlans
+            pricePercentage={pricePercentage}
+            favouritePlans={filteredFavPlans}
+          />
+        )}
+
         <AddToCartModal />
         <CartModal />
         <BuyNowModal />

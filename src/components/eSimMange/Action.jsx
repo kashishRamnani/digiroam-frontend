@@ -116,7 +116,6 @@ const Action = ({ selectedEsim, onComplete }) => {
         </p>
       )}
 
-
       <RemoveConfirmationModal
         isVisible={showConfirm}
         onCancel={() => setShowConfirm(false)}
@@ -125,7 +124,6 @@ const Action = ({ selectedEsim, onComplete }) => {
         message="Do you want to cancel your eSIM? This action cannot be undone."
         confirmLabel="Yes & Confirm"
         className="md:right-[30%] "
-
       />
 
     </div>

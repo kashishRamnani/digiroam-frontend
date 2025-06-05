@@ -1,17 +1,21 @@
 import { Helmet } from "react-helmet-async";
 import { useLocation } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { useSelector } from "react-redux";
-import { Navbar, Footer } from "../components";
+import { useDispatch, useSelector } from "react-redux";
+import { Navbar, Footer, WalletModal } from "../components";
+import { toggleModal } from "../features";
 
 const MainLayout = ({ children, title, description }) => {
+  const dispatch = useDispatch();
   const location = useLocation();
   const { t } = useTranslation();
   const isAuthPage = ["/login", "/signup", "/verify-otp"].includes(
     location.pathname.split("?")[0]
   );
+  const isModalOpen = useSelector((state) => state.wallet.isModalOpen);
 
   const language = useSelector((state) => state.preferences.language);
+  const handleCloseModal = () => dispatch(toggleModal(false));
 
   return (
     <div
@@ -25,6 +29,8 @@ const MainLayout = ({ children, title, description }) => {
       </Helmet>
       {/* Navbar */}
       {!isAuthPage && <Navbar />}
+
+      <WalletModal isVisible={isModalOpen} onClose={handleCloseModal} />
       <main className="flex-grow">{children}</main>
       {/* Footer */}
       {!isAuthPage && <Footer />}

@@ -4,11 +4,11 @@ const formateDateTime = (date) => {
         year: 'numeric',
         month: 'short',
         day: 'numeric',
-        hour: 'numeric',
-        minute: 'numeric',
-        second: 'numeric',
-        hour12: true,
-        timeZone: 'UTC'
+        // hour: 'numeric',
+        // minute: 'numeric',
+        // second: 'numeric',
+        // hour12: true,
+        // timeZone: 'UTC'
     };
 
     const formatDate = new Date(date);

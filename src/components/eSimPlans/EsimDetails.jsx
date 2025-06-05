@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTimes, faShoppingCart, faHeart } from "@fortawesome/free-solid-svg-icons";
@@ -9,17 +9,33 @@ import {
     setAddToCartOpen,
     setSelectedProduct,
     removeFavouritePlan,
-    upsertFavouritePlan
+    upsertFavouritePlan,
+    setBuyNow
 } from "../../features";
 
 const Sidebar = ({ selectedEsim, onClose }) => {
     const dispatch = useDispatch();
     const { pricePercentage } = useSelector((state) => state.settings);
     const { favouritePlans } = useSelector((state) => state.favouritePlans);
+    const { isAddToCartOpen } = useSelector((state) => state.cart);
+    const hasMounted = useRef(false);
+
+    useEffect(() => {
+        if (hasMounted.current && isAddToCartOpen === false) {
+            onClose();
+        } else {
+            hasMounted.current = true;
+        }
+    }, [isAddToCartOpen]);
 
     const handleAddToCart = (product) => {
         dispatch(setSelectedProduct(product));
         dispatch(setAddToCartOpen(true));
+    };
+
+    const handleBuyNow = (product) => {
+        dispatch(setSelectedProduct(product));
+        dispatch(setBuyNow(true));
     };
 
     const toggleFavorite = (product) => {
@@ -39,7 +55,7 @@ const Sidebar = ({ selectedEsim, onClose }) => {
     const isFavourite = favouritePlans.some((item) => item.packageCode === selectedEsim.packageCode);
 
     return (
-        <div className="fixed inset-0 flex items-center justify-end z-50">
+        <div className="fixed inset-0 flex items-center justify-end z-20">
             <div className="bg-gray-900 opacity-50 absolute inset-0 cursor-pointer" onClick={onClose}></div>
 
             <div className="relative w-[52rem] bg-white shadow-2xl h-full p-6 rounded-l-2xl transform transition-transform duration-300 ease-in-out animate-slide-in">
@@ -50,7 +66,7 @@ const Sidebar = ({ selectedEsim, onClose }) => {
                     </button>
                 </div>
 
-                <div className="grid grid-cols-2 gap-4 mt-4">
+                <div className="grid grid-cols-2 gap-4 mt-4 overflow-y-auto max-h-[70vh] pr-2">
                     <p><strong>Name:</strong> {selectedEsim.name || "N/A"}</p>
                     <p><strong>Package Code:</strong> {selectedEsim.packageCode || "N/A"}</p>
                     <p><strong>Speed:</strong> {selectedEsim.speed || "N/A"}</p>
@@ -59,13 +75,20 @@ const Sidebar = ({ selectedEsim, onClose }) => {
                     <p><strong>Duration:</strong> {selectedEsim.duration} {selectedEsim.durationUnit}</p>
                     <p><strong>Top up type:</strong> {selectedEsim ? (<>Data is reloadable for the <br />same area within the validity time.</>) : "N/A"}</p>
                     <p><strong>CurrencyCode:</strong> {selectedEsim.currencyCode || "N/A"}</p>
-                    <p><strong>Location Name:</strong>
-                        {selectedEsim.locationNetworkList?.map(loc => loc.locationName).join(" ,") || "N/A"}
-                    </p>
+                    <p><strong>Location Name:</strong> {selectedEsim.locationNetworkList?.map(loc => loc.locationName).join(", ") || "N/A"}</p>
                     <p><strong>Price:</strong> ${getPriceWithMarkup(selectedEsim.price, pricePercentage)}</p>
-
                 </div>
                 <div className="flex space-x-3 mt-6">
+                    <button
+                        onClick={(e) => {
+                            e.stopPropagation();
+                            handleBuyNow(selectedEsim);
+                        }}
+                        className="text-white px-3 py-1 rounded-md"
+                        style={{ backgroundColor: "var(--primary-color)" }}
+                    >
+                        Buy Now
+                    </button>
                     <button
                         onClick={(e) => {
                             e.stopPropagation();

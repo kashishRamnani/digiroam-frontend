@@ -88,7 +88,7 @@ const cartSlice = createSlice({
     selectedProduct: null,
     loading: false,
     error: null,
-    isBuyNow:[]
+    isBuyNow: false
   },
   reducers: {
     updateQuantity: (state, action) => {
@@ -103,7 +103,7 @@ const cartSlice = createSlice({
     setCartOpen: (state, action) => {
       state.isCartOpen = action.payload;
     },
-    setBuyNow:(state,action) =>{
+    setBuyNow: (state, action) => {
       state.isBuyNow = action.payload
     },
     setAddToCartOpen: (state, action) => {

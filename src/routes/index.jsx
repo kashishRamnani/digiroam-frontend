@@ -100,56 +100,33 @@ const Routes = () => {
       element: <QueriedEsimPlans />,
     },
 
-    // protect routes for both user type
-    {
-      path: '/',
-      element: <ProtectedRoute />,
-      children: [
-        {
-          path: "/dashboard",
-          element: <Dashboard />,
-        },
-        {
-          path: "/profile",
-          element: <ProfileSettings />,
-        },
-      ]
-    },
-
-    // regualar user routes
-    {
-      path: '/',
-      element: <RoleGuard userRole={1} />,
-      children: [
-        {
-          path: "/eSim-plans",
-          element: <ESimPlans />,
-        },
-        {
-          path: "/esims",
-          element: <ESimManagement />,
-        },
-        {
-          path: "/wallet",
-          element: <Wallet/>
-        }
-      ]
-    },
-
-    // admin routes
+    // protected routes (all authenticated users)
     {
       path: "/",
-      element: <RoleGuard userRole={2} />,
+      element: <ProtectedRoute />,
       children: [
+        { path: "dashboard", element: <Dashboard /> },
+        { path: "profile", element: <ProfileSettings /> },
+
+        // user-only routes
         {
-          path: "/email-list",
-          element: <EmailTemplateList />,
+          element: <RoleGuard userRole={1} />,
+          children: [
+            { path: "eSim-plans", element: <ESimPlans /> },
+            { path: "esims", element: <ESimManagement /> },
+            { path: "wallet", element: <Wallet /> },
+          ],
         },
+
+        // admin-only routes
         {
-          path: "/app-cms",
-          element: <Settings />,
+          element: <RoleGuard userRole={2} />,
+          children: [
+            { path: "email-list", element: <EmailTemplateList /> },
+            { path: "app-cms", element: <Settings /> },
+          ],
         },
-      ]
+      ],
     },
 
     // unknown routes

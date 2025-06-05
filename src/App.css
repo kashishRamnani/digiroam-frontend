@@ -24,7 +24,7 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  
+
 }
 
 body {
@@ -37,6 +37,21 @@ body {
   -moz-osx-font-smoothing: grayscale;
   color: var(--text-color);
   background-color: var(--background-color);
+}
+
+/* Thin white scrollbar for the entire site */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #fff;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #ccc;
+  border-radius: 10px;
 }
 
 /* ============================================= */
@@ -286,21 +301,22 @@ ol li {
 .custom-shadow {
   box-shadow: 0 8px 18px -4px rgba(128, 0, 128, 0.4);
 }
+
 /* Custom CSS to hide the horizontal scrollbar while still allowing scrolling */
 .table-container {
-  overflow-x: scroll; 
-  -webkit-overflow-scrolling: touch; 
- 
+  overflow-x: scroll;
+  -webkit-overflow-scrolling: touch;
+
 }
 
 .table-container::-webkit-scrollbar {
-  display: none; 
+  display: none;
 }
 
 .table-container {
-  -ms-overflow-style: none;  
-  scrollbar-width: none; 
-   
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+
 }
 
 .table {
@@ -308,15 +324,17 @@ ol li {
   table-layout: fixed;
 }
 
-th, td {
-  word-wrap: break-word; 
-  max-width: 200px; 
+th,
+td {
+  word-wrap: break-word;
+  max-width: 200px;
   text-overflow: ellipsis;
 }
+
 .quill-wrapper {
-  height: 200px; 
-  overflow-y: auto; 
-  
+  height: 200px;
+  overflow-y: auto;
+
   border-radius: 5px;
 }
 
@@ -333,7 +351,9 @@ th, td {
 
 @media (max-width: 768px) {
 
-  th, td {
-    font-size: 14px; /* Smaller text for readability */
+  th,
+  td {
+    font-size: 14px;
+    /* Smaller text for readability */
   }
 }

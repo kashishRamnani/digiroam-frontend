@@ -62,7 +62,8 @@ const PaymentButtons = () => {
         throw new Error("eSim Order Failed: " + esimOrderResult.payload);
       }
 
-      const amount = items.reduce((total, { productPrice, productQuantity }) => total + Number(getPriceWithMarkup(productPrice, pricePercentage) * 10000).toFixed(2) * productQuantity, 0);
+      // const amount = items.reduce((total, { productPrice, productQuantity }) => total + Number(getPriceWithMarkup(productPrice, pricePercentage) * 10000).toFixed(2) * productQuantity, 0);
+      const amount = esimOrderResult.payload.amount;
       const saveResult = await dispatch(
         savePaymentData({
           transactionId,

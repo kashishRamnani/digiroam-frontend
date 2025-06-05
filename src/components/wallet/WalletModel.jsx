@@ -97,8 +97,8 @@ const WalletModel = ({ isVisible, onClose }) => {
   if (!isVisible) return null;
 
   return (
-    
-   <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
       <div className="bg-white rounded-lg items-center max-w-md w-full p-8 relative">
         <button
           onClick={onClose}
