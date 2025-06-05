@@ -66,7 +66,7 @@ const ESimPlans = () => {
 
 
   const handleFavFilter = (filteredFavItems) => {
-    console.log("Filtered Favourite Plans:", filteredFavItems);
+   
     setFilteredFavPlans(filteredFavItems);
   };
 

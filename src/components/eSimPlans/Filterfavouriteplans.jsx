@@ -51,7 +51,6 @@ const FilterFavPlans = ({ favouritePlans = [], pricePercentage = 0, onFilter }) 
     if (algo === "asc" || algo === "desc") {
       filteredfavPlans = sortPlans(algo, filteredfavPlans);
     }
-console.log("Sorted Plans:", filteredfavPlans);
     onFilter(filteredfavPlans);
   };
 
