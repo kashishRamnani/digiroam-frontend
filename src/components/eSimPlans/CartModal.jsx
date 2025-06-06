@@ -120,13 +120,13 @@ const CartModal = () => {
           </div>
 
           <PaymentButtons />
-          <RemoveConfirmationModal
-            isVisible={showConfirm}
-            onCancel={() => setShowConfirm(false)}
-            onConfirm={confirmRemoveItem}
-          />
-
         </div>
+
+        <RemoveConfirmationModal
+          isVisible={showConfirm}
+          onCancel={() => setShowConfirm(false)}
+          onConfirm={confirmRemoveItem}
+        />
       </div>
     </div>
   );

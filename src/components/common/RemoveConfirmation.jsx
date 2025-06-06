@@ -5,27 +5,32 @@ const RemoveConfirmationModal = ({
   title = "Confirm Remove",
   message = "Are you sure you want to remove this item from the cart?",
   confirmLabel = "Remove",
-  className = ""
+  className = "",
+  children,
+  isLoading = true
 }) => {
   if (!isVisible) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
-      <div className={`bg-white rounded-lg w-full max-w-md p-8 shadow-lg relative ${className}`}>
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-gray-900 bg-opacity-50">
+      <div className={`bg-white rounded-2xl w-full max-w-md px-6 py-7 md:p-8 shadow-lg relative ${className}`}>
         <h2 className="text-lg font-semibold mb-4">{title}</h2>
         <p className="text-sm text-gray-700 mb-6">{message}</p>
+        {children}
         <div className="flex justify-end space-x-3">
           <button
+            disabled={isLoading}
             onClick={onCancel}
-            className="px-4 py-2 text-sm bg-gray-200 hover:bg-gray-300 rounded"
+            className={`px-4 py-2 text-sm bg-gray-300 hover:bg-gray-300 rounded-lg disabled:bg-gray-100 ${isLoading && 'cursor-not-allowed'}`}
           >
             Cancel
           </button>
           <button
+            disabled={isLoading}
             onClick={onConfirm}
-            className="px-4 py-2 text-sm bg-red-500 hover:bg-red-600 text-white rounded"
+            className={`px-4 py-2 text-sm bg-red-500 hover:bg-red-600 text-white rounded-lg disabled:bg-red-300 ${isLoading && 'cursor-wait'}`}
           >
-            {confirmLabel}
+            {isLoading ? 'Loading...' : confirmLabel}
           </button>
         </div>
       </div>

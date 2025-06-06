@@ -35,14 +35,15 @@ const Login = () => {
         if (loginUser.fulfilled.match(result)) {
           dispatch(walletBalance());
 
-          if (JSON.parse(localStorage.getItem("purchasePending") || "null")) {
-            navigate("/eSim-plans", { replace: true });
-          }
-          else {
-            navigate("/dashboard", { replace: true });
+          const planRaw = localStorage.getItem("purchasePending");
+          const plan = planRaw ? JSON.parse(planRaw) : null;
+
+          if (plan?.name && result.payload.user.userRole != 2) {
+            window.location.href = `/eSim-plans`;
+          } else {
+            navigate("/dashboard");
           }
         }
-
       } else {
         await dispatch(requestPasswordReset(data.email)).unwrap();
       }

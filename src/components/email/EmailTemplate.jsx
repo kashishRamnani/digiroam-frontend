@@ -36,7 +36,7 @@ const EmailTemplate = ({ initialData, onClose }) => {
       attachments: [],
     },
   });
-  const allEvents = ["ON_LOGIN", "ON_PASSWORD_CHANGE", "ON_PURCHASE", "ON_CANCEL", "ON_USAGE_80", "ON_1D_VALIDITY", "ON_EXPIRED", "ON_DISCOUNT", "ON_ACTIVATION_REMINDER"];
+  const allEvents = ["ON_SEND_OTP", "ON_LOGIN", "ON_PASSWORD_CHANGE", "ON_PURCHASE", "ON_CANCEL", "ON_USAGE_80", "ON_1D_VALIDITY", "ON_EXPIRED", "ON_DISCOUNT", "ON_ACTIVATION_REMINDER"];
 
   const existingEventNames = templates.map((template) => template.eventName);
   const availableEvents = allEvents.filter(
@@ -71,26 +71,26 @@ const EmailTemplate = ({ initialData, onClose }) => {
     navigate("/email-list");
   };
 
- return(
-       <div
+  return (
+    <div
       className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-40 px-8 sm:px-8"
       role="dialog"
       aria-labelledby="cart-modal-title"
       aria-hidden={!initialData}
     >
       <div className="bg-white rounded-lg p-3   w-full sm:w-3/4 lg:max-w-3xl md:ml-[15%] lg:left-[20%]shadow-lg">
-              <div className="flex justify-between items-center mb-4">
-                <h2 id="cart-modal-title" className="text-lg pt-3 sm:text-xl font-semibold">
-                    {initialData ? "Edit Template" : "Create Template"}
-                </h2>
-                <button
-                  onClick={onClose}
-                  aria-label="Close cart modal"
-                  className="text-gray-500 hover:text-gray-700 text-2xl"
-                >
-                  &times;
-                </button>
-              </div>
+        <div className="flex justify-between items-center mb-4">
+          <h2 id="cart-modal-title" className="text-lg pt-3 sm:text-xl font-semibold">
+            {initialData ? "Edit Template" : "Create Template"}
+          </h2>
+          <button
+            onClick={onClose}
+            aria-label="Close cart modal"
+            className="text-gray-500 hover:text-gray-700 text-2xl"
+          >
+            &times;
+          </button>
+        </div>
 
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-0">
           {!initialData ? (
@@ -144,9 +144,9 @@ const EmailTemplate = ({ initialData, onClose }) => {
           <div className="relative">
             <label className="block text-sm font-medium text-gray-700">Body  <span className="text-red-500">*</span></label>
             <div className="quill-wrapper">
-              
+
               <CKEditor
-              className="border p-2 rounded-md w-full mt-1 focus:ring-blue-500 focus:border-blue-500"
+                className="border p-2 rounded-md w-full mt-1 focus:ring-blue-500 focus:border-blue-500"
                 editor={ClassicEditor}
                 data={watch("body")}
                 onChange={(event, editor) => {

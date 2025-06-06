@@ -11,9 +11,11 @@ import { showErrorToast, showSuccessToast } from "../../utils/toast";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faWallet } from "@fortawesome/free-solid-svg-icons";
 import formatBalance from "../../utils/helpers/formateBalance";
+import { useNavigate } from "react-router-dom";
 
 const BuyNowModal = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const { isBuyNow, selectedProduct } = useSelector((state) => state.cart);
   const { pricePercentage } = useSelector((state) => state.settings);
   const { balance, loading: walletLoading } = useSelector((state) => state.wallet);
@@ -74,7 +76,7 @@ const BuyNowModal = () => {
         dispatch(setBuyNow(false));
         dispatch(setSelectedProduct(null));
         showSuccessToast("eSIM issued to you, enjoy roaming!");
-        window.location.href = "/esims";
+        navigate("/esims", { replace: true });
       } else {
         throw new Error("You don't have enough funds in your wallet to make this purchase.");
       }

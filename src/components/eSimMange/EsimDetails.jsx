@@ -25,7 +25,7 @@ const Sidebar = ({ selectedEsim, onClose, onCancelAndRefund }) => {
         onClick={onClose}
       ></div>
 
-      <div className="relative w-[52rem] bg-white shadow-2xl h-full p-6 rounded-l-2xl transform transition duration-300 translate-x-0 flex flex-col">
+      <div className="relative w-[52rem] bg-white h-full p-6 rounded-l-2xl transform transition duration-300 translate-x-0 flex flex-col">
         <div className="flex justify-between items-center border-b pb-4">
           <h2 className="text-2xl font-bold text-gray-800">eSIM Details</h2>
 
