@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { showErrorToast, showSuccessToast } from "../utils/toast";
+import { showErrorToast } from "../utils/toast";
 import { setUserAndToken } from "../features/auth/authSlice";
 import { LoadingScreen } from "../components";
 
@@ -36,16 +36,19 @@ const SocialCallback = () => {
         }
       }
 
+      console.log(userParam);
       if (token && userObject) {
         localStorage.setItem("token", token);
         localStorage.setItem("user", JSON.stringify(userObject));
 
+        console.log(userObject, token);
         await dispatch(setUserAndToken({ user: userObject, token }));
 
         const planRaw = localStorage.getItem("purchasePending");
         const plan = planRaw ? JSON.parse(planRaw) : null;
 
-        if (plan?.name) {
+        console.log(planRaw, plan);
+        if (plan != null) {
           window.location.href = `/eSim-plans`;
         } else {
           navigate("/dashboard");
