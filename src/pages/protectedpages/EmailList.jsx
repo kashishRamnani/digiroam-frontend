@@ -60,6 +60,7 @@ const EventName = {
   ON_LOGIN:"Login",
   ON_EXPIRED:"Expired",
   ON_ACTIVATION_REMINDER:"Activation Reminder",
+  ON_SEND_OTP: "ON SENT OTP"
 }
 const startIndex = (currentPage - 1) * itemsPerPage;
 const endIndex = startIndex + itemsPerPage;
