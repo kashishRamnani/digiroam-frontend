@@ -30,7 +30,7 @@ const SocialCallback = () => {
 
       if (userParam) {
         try {
-          userObject = JSON.parse(userParam);
+          userObject = JSON.parse(decodeURIComponent(userParam));
         } catch (error) {
           console.error("Error parsing user object:", error);
         }
@@ -42,14 +42,20 @@ const SocialCallback = () => {
 
         await dispatch(setUserAndToken({ user: userObject, token }));
 
-        // const planRaw = localStorage.getItem("purchasePending");
-        // const plan = planRaw ? JSON.parse(planRaw) : null;
+        let plan = null;
+        try {
+          const planRaw = localStorage.getItem("purchasePending");
+          plan = planRaw ? JSON.parse(planRaw) : null;
+        } catch (err) {
+          window.location.href = "/dashboard";
+          console.warn("Invalid purchasePending data", err);
+        }
 
-        // if (plan != null && userObject.accountType == 1) {
-        //   window.location.href = `/eSim-plans`;
-        // } else {
-         navigate("/dashboard");
-        // }
+        if (plan !== null && userObject.accountType == 1) {
+          window.location.href = `/eSim-plans`;
+        } else {
+          window.location.href = "/dashboard";
+        }
       } else {
         navigate("/login");
       }
