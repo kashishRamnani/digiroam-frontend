@@ -7,13 +7,13 @@ const RemoveConfirmationModal = ({
   confirmLabel = "Remove",
   className = "",
   children,
-  isLoading = true
+  isLoading 
 }) => {
   if (!isVisible) return null;
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-gray-900 bg-opacity-50">
-      <div className={`bg-white rounded-2xl w-full max-w-md px-6 py-7 md:p-8 shadow-lg relative ${className}`}>
+      <div className={`bg-white rounded-2xl w-full md:max-w-md max-w-sm px-6 py-7 md:p-8 shadow-lg relative ${className}`}>
         <h2 className="text-lg font-semibold mb-4">{title}</h2>
         <p className="text-sm text-gray-700 mb-6">{message}</p>
         {children}

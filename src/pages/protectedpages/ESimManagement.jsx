@@ -58,17 +58,17 @@ const ESimManagement = () => {
   return (
     <DashboardLayout>
       {isLoading && <Loader />}
-      <div className="container mx-auto px-6 py-8">
+      <div className=" mx-auto px-6 py-8">
         <h3 className="text-3xl font-medium text-gray-700">Manage your eSIM Effectively!!</h3>
         <div className="mt-8 w-full overflow-hidden rounded-lg shadow-xs">
-          <div className="w-full overflow-x-auto">
+          <div className=" table-container w-full ">
             <table className="w-full whitespace-no-wrap">
               <thead>
                 <tr className="text-xs font-semibold tracking-wide text-left text-gray-500 uppercase border-b bg-gray-50">
-                  <th className="px-4 py-3">Plan Name</th>
-                  <th className="px-4 py-3">Expiry Date</th>
-                  <th className="px-4 py-3">Status</th>
-                  <th className="px-4 py-3">Action</th>
+                  <th className="px-4 py-3 whitespace-nowrap" >Plan Name</th>
+                  <th className="px-4 py-3 whitespace-nowrap">Expiry Date</th>
+                  <th className="px-4 py-3 whitespace-nowrap">Status</th>
+                  <th className="px-4 py-3 whitespace-nowrap">Action</th>
                 </tr>
               </thead>
               <tbody className="bg-white divide-y">
@@ -76,7 +76,7 @@ const ESimManagement = () => {
                   currentItems.map((esim, index) => {
                     const { icon, color, label } = getEsimStatus(esim.esimStatus, esim.smdpStatus);
                     return (
-                      <tr key={index} className="text-gray-700">
+                      <tr key={index} className="text-gray-700 whitespace-nowrap">
                         <td className="px-4 py-3 text-sm flex items-center gap-2">
                           {esim.packageList?.[0]?.locationCode && (
                             <img
