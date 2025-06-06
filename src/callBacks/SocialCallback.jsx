@@ -45,10 +45,10 @@ const SocialCallback = () => {
         const planRaw = localStorage.getItem("purchasePending");
         const plan = planRaw ? JSON.parse(planRaw) : null;
 
-        if (plan?.name && userObject.userRole != 2) {
+        if (plan?.name) {
           window.location.href = `/eSim-plans`;
         } else {
-         navigate("/dashboard");
+          navigate("/dashboard");
         }
       } else {
         navigate("/login");
