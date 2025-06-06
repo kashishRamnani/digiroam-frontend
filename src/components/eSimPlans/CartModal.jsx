@@ -10,9 +10,10 @@ import PaymentButtons from "../paymentButtons/PaymentButtons";
 import getPriceWithMarkup from "../../utils/helpers/get.price.with.markup";
 import RemoveConfirmationModal from '../common/RemoveConfirmation';
 
+
 const CartModal = () => {
   const dispatch = useDispatch();
-  const { items, isCartOpen } = useSelector((state) => state.cart);
+  const { items, isCartOpen,loading:isLoading } = useSelector((state) => state.cart);
   const { pricePercentage } = useSelector((state) => state.settings);
   const [showConfirm, setShowConfirm] = useState(false);
   const [itemToRemove, setItemToRemove] = useState(null);
@@ -126,6 +127,7 @@ const CartModal = () => {
           isVisible={showConfirm}
           onCancel={() => setShowConfirm(false)}
           onConfirm={confirmRemoveItem}
+          isLoading={isLoading}
         />
       </div>
     </div>
