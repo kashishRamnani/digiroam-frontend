@@ -36,22 +36,19 @@ const SocialCallback = () => {
         }
       }
 
-      console.log(userParam);
       if (token && userObject) {
         localStorage.setItem("token", token);
         localStorage.setItem("user", JSON.stringify(userObject));
 
-        console.log(userObject, token);
         await dispatch(setUserAndToken({ user: userObject, token }));
 
         const planRaw = localStorage.getItem("purchasePending");
         const plan = planRaw ? JSON.parse(planRaw) : null;
 
-        console.log(planRaw, plan);
-        if (plan != null) {
+        if (plan != null && userObject.accountType == 1) {
           window.location.href = `/eSim-plans`;
         } else {
-          navigate("/dashboard");
+          window.location.href = "/dashboard";
         }
       } else {
         navigate("/login");
