@@ -42,14 +42,14 @@ const SocialCallback = () => {
 
         await dispatch(setUserAndToken({ user: userObject, token }));
 
-        const planRaw = localStorage.getItem("purchasePending");
-        const plan = planRaw ? JSON.parse(planRaw) : null;
+        // const planRaw = localStorage.getItem("purchasePending");
+        // const plan = planRaw ? JSON.parse(planRaw) : null;
 
-        if (plan != null && userObject.accountType == 1) {
-          window.location.href = `/eSim-plans`;
-        } else {
-          window.location.href = "/dashboard";
-        }
+        // if (plan != null && userObject.accountType == 1) {
+        //   window.location.href = `/eSim-plans`;
+        // } else {
+         navigate("/dashboard");
+        // }
       } else {
         navigate("/login");
       }
