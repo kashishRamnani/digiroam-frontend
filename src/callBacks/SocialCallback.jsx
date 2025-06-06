@@ -41,21 +41,21 @@ const SocialCallback = () => {
         localStorage.setItem("user", JSON.stringify(userObject));
 
         await dispatch(setUserAndToken({ user: userObject, token }));
+        window.location.href = "/dashboard";
+        // let plan = null;
+        // try {
+        //   const planRaw = localStorage.getItem("purchasePending");
+        //   plan = planRaw ? JSON.parse(planRaw) : null;
+        // } catch (err) {
+        //   window.location.href = "/dashboard";
+        //   console.warn("Invalid purchasePending data", err);
+        // }
 
-        let plan = null;
-        try {
-          const planRaw = localStorage.getItem("purchasePending");
-          plan = planRaw ? JSON.parse(planRaw) : null;
-        } catch (err) {
-          window.location.href = "/dashboard";
-          console.warn("Invalid purchasePending data", err);
-        }
-
-        if (plan !== null && userObject.accountType == 1) {
-          window.location.href = `/eSim-plans`;
-        } else {
-          window.location.href = "/dashboard";
-        }
+        // if (plan !== null && userObject.accountType == 1) {
+        //   window.location.href = `/eSim-plans`;
+        // } else {
+        //   window.location.href = "/dashboard";
+        // }
       } else {
         navigate("/login");
       }
