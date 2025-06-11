@@ -23,7 +23,7 @@ const Navbar = () => {
     { text: t("navbar.home"), href: "/" },
     { text: t("navbar.aboutus"), href: "/about-us" },
     { text: t("navbar.faq"), href: "/faqs" },
-     { text: t("Blog"), href: "https://blog.roamdigi.com/" },
+     { text: t("Blog's"), href: "https://blog.roamdigi.com/" },
     { text: t("navbar.login"), href: "/login" },
     { text: t("navbar.signup"), href: "/signup" },
   ];
