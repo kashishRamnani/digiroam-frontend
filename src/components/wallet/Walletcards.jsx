@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -10,9 +10,11 @@ import {
 import formatBalance from "../../utils/helpers/formateBalance";
 import { toggleModal } from "../../features";
 
+
 const WalletCards = () => {
   const dispatch = useDispatch();
-  const { balance, transactions } = useSelector((state) => state.wallet);
+  const { balance,transactions } = useSelector((state) => state.wallet);
+
 
   const totalDeposit = transactions
     .filter((txn) => txn.type === "DEPOSIT")
@@ -44,12 +46,17 @@ const WalletCards = () => {
       title: "Total Purchases",
       value: `$${formatBalance(totalPurchase)}`,
       showButton: false,
+      
+
     },
+    
   ];
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+
       <div className="grid gap-6 sm:grid-cols-2 xl:grid-cols-3 items-start">
+        
         {cards.map((card, index) => {
           const isBalanceCard = card.title === "Current Balance";
 
@@ -80,9 +87,13 @@ const WalletCards = () => {
                       }`}
                   >
                     {card.value}
+                    
                   </p>
+                    
                 </div>
+                
               </div>
+              
 
               {card.showButton && (
                 <div className="flex justify-end">

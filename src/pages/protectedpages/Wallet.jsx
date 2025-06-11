@@ -1,6 +1,6 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import DashboardLayout from '../../layouts/DashboardLayout';
-import { Loader, WalletCards } from '../../components';
+import { Loader, WalletCards ,FilterTranscation} from '../../components';
 import { useDispatch, useSelector } from "react-redux";
 import { transactions as fetchTransactions } from '../../features';
 import getCurrencySymbol from '../../utils/helpers/getCurrencySymbol';
@@ -10,10 +10,15 @@ import formateDateTime from '../../utils/helpers/formte.date.time';
 const Wallet = () => {
   const dispatch = useDispatch();
   const { transactions, balance, loading } = useSelector((state) => state.wallet);
+  const [filteredTxns, setFilteredTxns] = useState([]);
+
 
   useEffect(() => {
     dispatch(fetchTransactions());
   }, [dispatch, balance]);
+  useEffect(() => {
+  setFilteredTxns(transactions);
+}, [transactions]);
 
   return (
     <DashboardLayout>
@@ -21,6 +26,11 @@ const Wallet = () => {
 
       {loading && <Loader />}
       <div className="table-container px-4">
+       
+         <FilterTranscation 
+        transactions={transactions}
+        onFilter={setFilteredTxns}
+        />
         <table className="min-w-full bg-white table-auto max-w-full">
           <thead>
             <tr className="text-xs font-semibold tracking-wide text-left text-gray-500 uppercase border-b bg-gray-50">
@@ -32,8 +42,8 @@ const Wallet = () => {
             </tr>
           </thead>
           <tbody>
-            {transactions && transactions.length > 0 ? (
-              [...transactions].reverse().map((txn) => (
+            {filteredTxns && filteredTxns.length > 0 ? (
+              [...filteredTxns].reverse().map((txn) => (
                 <tr key={txn._id} className="text-gray-700 cursor-pointer hover:bg-gray-100">
                   <td className=" px-4 py-3">{txn.transactionId || txn.id}</td>
                   <td className=" px-4 py-3">{getCurrencySymbol(txn.currency)}{formatBalance(txn.amount)}</td>

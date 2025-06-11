@@ -34,7 +34,7 @@ import WalletModal from "./wallet/WalletModel";
 import WalletCards from "./wallet/Walletcards";
 import FilterFavPlans from "./eSimPlans/Filterfavouriteplans";
 import BuyNowModal from "./eSimPlans/BuyNow";
-
+import FilterTranscation from "./wallet/FilterTranscation";
 export {
   Footer,
   LoginButtons,
@@ -72,5 +72,6 @@ export {
   WalletCards,
   FilterFavPlans,
   BuyNowModal,
+  FilterTranscation
   
 };
