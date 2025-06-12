@@ -4,13 +4,9 @@ import React, {
     useImperativeHandle,
     forwardRef,
 } from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-    faArrowDownWideShort,
-    faArrowUpWideShort,
-} from "@fortawesome/free-solid-svg-icons";
+
 import getPriceWithMarkup from "../../utils/helpers/get.price.with.markup";
-import getFormattedVolume from "../../utils/helpers/get.formatted.volume";
+
 const ApplyFilter = forwardRef(({ plans = [], show, onClose, onFilter }, ref) => {
     const [filter, setFilter] = useState({ duration: "" });
     const [sortOrder, setSortOrder] = useState("all");
@@ -116,12 +112,12 @@ const ApplyFilter = forwardRef(({ plans = [], show, onClose, onFilter }, ref) =>
                 <div className="grid grid-cols-1 md:grid-rows-2 gap-4">
                     {/* Duration Filter */}
                     <div>
-                        <label className="block mb-2 font-medium text-gray-700">Sort By Duration</label>
+                        <label className="block mb-2 font-medium text-gray-700">Filter By Duration</label>
                         <select
                             name="duration"
                             value={filter.duration}
                             onChange={handleChange}
-                            className="w-full border bg-white rounded-md p-2 focus:ring-2 focus:ring-blue-500"
+                            className="w-full border bg-white rounded-md p-2  focus:ring-2 focus:ring-blue-500"
                         >
                             <option value="" >All</option>
                             {durationOptions.map((d, idx) => (
@@ -134,29 +130,18 @@ const ApplyFilter = forwardRef(({ plans = [], show, onClose, onFilter }, ref) =>
 
                     {/* Sort by Price */}
                     <div className="relative">
-                        <label className="block mb-2 font-medium text-gray-700">Sort by Price</label>
+                        <label className="block mb-2 font-medium text-gray-700">Sort By Price</label>
                         <select
                             value={sortOrder}
                             onChange={handleSortChange}
                             className="w-full border  bg-white rounded-md p-2 focus:ring-2 focus:ring-blue-500"
                         >
-                            <option value="all">All</option>
+                            <option value="all">Default</option>
                             <option value="asc">Low to High</option>
                             <option value="desc">High to Low</option>
                         </select>
 
-                        {sortOrder === "asc" && (
-                            <FontAwesomeIcon
-                                icon={faArrowDownWideShort}
-                                className="absolute right-3 top-[38px] text-gray-500 pointer-events-none"
-                            />
-                        )}
-                        {sortOrder === "desc" && (
-                            <FontAwesomeIcon
-                                icon={faArrowUpWideShort}
-                                className="absolute right-3 top-[38px] text-gray-500 pointer-events-none"
-                            />
-                        )}
+                      
                     </div>
                     <div>
                         <label className="block mb-2 font-medium text-gray-700">Sort By Data</label>
@@ -166,7 +151,7 @@ const ApplyFilter = forwardRef(({ plans = [], show, onClose, onFilter }, ref) =>
                             className="w-full border  bg-white rounded-md p-2 focus:ring-2 focus:ring-blue-500"
 
                         >
-                            <option value="all">All</option>
+                            <option value="all">Default</option>
                             <option value="asc">Low to High</option>
                             <option value="desc">High to Low</option>
                         </select>
@@ -177,16 +162,18 @@ const ApplyFilter = forwardRef(({ plans = [], show, onClose, onFilter }, ref) =>
                 <div className="flex justify-end mt-8 space-x-4">
                     <button
                         onClick={onClose}
-                        className="px-4 py-2 bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300 transition"
+                         
+                        className="mt-6 px-4 py-2 bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300 transition"
                     >
                         Cancel
                     </button>
                     <button
                         onClick={handleApply}
-                        className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition"
+                        className=" mt-6 py-2 px-4 text-white rounded-md bg-primary hover:bg-primary-dark"
                     >
-                        Apply
+                        Apply Filter
                     </button>
+                    
                 </div>
             </div>
         </div>

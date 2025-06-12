@@ -9,7 +9,7 @@ import {
 const Pagination = ({ pageCount, currentPage, onPageChange }) => {
   return (
     <div className="flex items-center justify-between px-4 py-3 sm:px-6">
-      <div className="hidden sm:flex sm:flex-1 sm:items-center sm:justify-between">
+      <div className=" sm:flex sm:flex-1 sm:items-center sm:justify-between">
         <div>
           <p className="text-sm text-gray-700">
             Page <span className="font-medium">{currentPage + 1}</span> of{" "}

@@ -1,7 +1,7 @@
 import { forwardRef, useImperativeHandle, useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 ;
-import { faTimesCircle, faArrowDownWideShort, faArrowUpWideShort } from "@fortawesome/free-solid-svg-icons";
+import { faTimesCircle, faFilter } from "@fortawesome/free-solid-svg-icons";
 import getPriceWithMarkup from "../../utils/helpers/get.price.with.markup";
 import getFormattedVolume from "../../utils/helpers/get.formatted.volume";
 import ApplyFilter from "./ApplyFilterPlans";
@@ -134,8 +134,10 @@ const FilterPlans = forwardRef(({ plans = [], pricePercentage = 0, onFilter, val
      
       <button
         onClick={handleOpenFilter}
-        className="bg-blue-600 text-white px-4 py-2 rounded"
+         className="flex items-center space-x-2 text-white px-4 py-2 rounded-md"
+            style={{ backgroundColor: "var(--secondary-color)" }}
       >
+        <FontAwesomeIcon icon={faFilter} className=" mr-2" />
         Filter
       </button>
 
