@@ -1,14 +1,20 @@
 import { forwardRef, useImperativeHandle, useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+;
 import { faTimesCircle, faArrowDownWideShort, faArrowUpWideShort } from "@fortawesome/free-solid-svg-icons";
 import getPriceWithMarkup from "../../utils/helpers/get.price.with.markup";
 import getFormattedVolume from "../../utils/helpers/get.formatted.volume";
+import ApplyFilter from "./ApplyFilterPlans";
 
 const FilterPlans = forwardRef(({ plans = [], pricePercentage = 0, onFilter, value }, ref) => {
   const [filterText, setFilterText] = useState("");
   const [selectedField, setSelectedField] = useState("all");
   const [sortOrder, setSortOrder] = useState("");
-  
+  const [showFilter, setShowFilter] = useState(false);
+ 
+  const handleOpenFilter = () => setShowFilter(true);
+  const handleCloseFilter = () => setShowFilter(false);
+
   const applyFilter = (query, field, algo) => {
     let filteredPlans = plans;
 
@@ -88,13 +94,7 @@ const FilterPlans = forwardRef(({ plans = [], pricePercentage = 0, onFilter, val
     applyFilter(filterText, field, sortOrder);
   };
 
-  const handleSortChange = (e) => {
-    const newSortOrder = e.target.value;
-    setSortOrder(newSortOrder);
-    setFilterText("");
-    setSelectedField("all");
-    applyFilter("", "all", newSortOrder);
-  };
+  
 
   return (
     <div className="flex gap-3 items-center mb-5">
@@ -130,30 +130,23 @@ const FilterPlans = forwardRef(({ plans = [], pricePercentage = 0, onFilter, val
         )}
       </div>
 
-      <div className="relative">
-        <select
-          onChange={handleSortChange}
-          value={sortOrder}
-          className="bg-white border px-3 py-2 rounded-md focus:ring-2 focus:ring-blue-500"
-        >
-          <option value="">Price</option>
-          <option value="asc">Low</option>
-          <option value="desc">High</option>
-        </select>
-        {sortOrder === "asc" && (
-          <FontAwesomeIcon
-            icon={faArrowDownWideShort}
-            className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-600"
-          />
-        )}
-        {sortOrder === "desc" && (
-          <FontAwesomeIcon
-            icon={faArrowUpWideShort}
-            className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-600"
-          />
-        )}
-      </div>
+     
+     
+      <button
+        onClick={handleOpenFilter}
+        className="bg-blue-600 text-white px-4 py-2 rounded"
+      >
+        Filter
+      </button>
+
+      <ApplyFilter
+        plans={plans}
+        show={showFilter}
+        onClose={handleCloseFilter}
+        onFilter={onFilter}
+      />
     </div>
+    
   );
 });
 

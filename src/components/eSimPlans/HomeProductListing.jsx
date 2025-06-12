@@ -21,6 +21,7 @@ export default function HomeProductListing() {
 
   return (
     <div className="mx-auto px-5 py-8 flex justify-center">
+    
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-1 px-8 ">
         {displayedProducts.map((product, index) => (
           <div key={product.id || index} className="flex justify-center">

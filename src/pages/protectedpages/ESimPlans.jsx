@@ -31,10 +31,9 @@ const ESimPlans = () => {
   const [filteredPlans, setFilteredPlans] = useState([]);
   const [filteredFavPlans, setFilteredFavPlans] = useState([]);
   const [showFavourites, setShowFavourites] = useState(false);
-  const [purchasePending, setPurchasePending] = useState(() => {
-    const planRaw = localStorage.getItem("purchasePending");
-    return planRaw ? JSON.parse(planRaw) : null;
-  });
+  const [purchasePending] = useState(() =>
+    JSON.parse(localStorage.getItem("purchasePending") || "null")
+  );
 
   useEffect(() => {
     dispatch(retrieveSettings());
@@ -51,9 +50,7 @@ const ESimPlans = () => {
     setFilteredFavPlans(favouritePlans);
   }, [favouritePlans]);
 
-  useEffect(() => {
-    if (showFavourites == true) setPurchasePending(null);
-  }, [showFavourites]);
+
 
   useEffect(() => {
     if (purchasePending) {
@@ -63,12 +60,22 @@ const ESimPlans = () => {
   }, []);
 
   const handleFilter = (filteredItems) => {
+    
     setFilteredPlans(filteredItems);
   };
 
+
   const handleFavFilter = (filteredFavItems) => {
+   
     setFilteredFavPlans(filteredFavItems);
   };
+
+  useEffect(() => {
+  if (!showFavourites) {
+    setFilteredPlans(items); 
+  }
+}, [showFavourites, items]);
+
 
   return (
     <DashboardLayout>
@@ -105,14 +112,15 @@ const ESimPlans = () => {
             plans={items}
             pricePercentage={pricePercentage}
             onFilter={handleFilter}
-            isFavPlansShown={showFavourites}
             value={purchasePending?.name ?? ""}
           />
         ) : (
           <FilterFavPlans
+        
             favouritePlans={favouritePlans}
             pricePercentage={pricePercentage}
             onFilter={handleFavFilter}
+          
           />
         )}
 
