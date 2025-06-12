@@ -35,6 +35,7 @@ import WalletCards from "./wallet/Walletcards";
 import FilterFavPlans from "./eSimPlans/Filterfavouriteplans";
 import BuyNowModal from "./eSimPlans/BuyNow";
 import FilterTranscation from "./wallet/FilterTranscation";
+import SortByDateTxn from "./wallet/FilterDateTranscation";
 export {
   Footer,
   LoginButtons,
@@ -72,6 +73,7 @@ export {
   WalletCards,
   FilterFavPlans,
   BuyNowModal,
-  FilterTranscation
+  FilterTranscation,
+  SortByDateTxn,
   
 };

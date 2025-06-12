@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import DashboardLayout from '../../layouts/DashboardLayout';
-import { Loader, WalletCards ,FilterTranscation} from '../../components';
+import { Loader, WalletCards ,FilterTranscation,SortByDateTxn} from '../../components';
 import { useDispatch, useSelector } from "react-redux";
 import { transactions as fetchTransactions } from '../../features';
 import getCurrencySymbol from '../../utils/helpers/getCurrencySymbol';
@@ -25,12 +25,19 @@ const Wallet = () => {
       <WalletCards />
 
       {loading && <Loader />}
+      <div className="flex justify-between items-center px-4 mb-4">
+  <FilterTranscation
+    transactions={transactions}
+    onFilter={setFilteredTxns}
+  />
+  <SortByDateTxn
+    transactions={filteredTxns}
+    onSort={setFilteredTxns}
+  />
+</div>
+
       <div className="table-container px-4">
-       
-         <FilterTranscation 
-        transactions={transactions}
-        onFilter={setFilteredTxns}
-        />
+      
         <table className="min-w-full bg-white table-auto max-w-full">
           <thead>
             <tr className="text-xs font-semibold tracking-wide text-left text-gray-500 uppercase border-b bg-gray-50">
@@ -38,7 +45,7 @@ const Wallet = () => {
               <th className="px-4 py-3">Amount</th>
               <th className="px-4 py-3">Type</th>
               <th className="px-4 py-3">Source</th>
-              <th className="px-4 py-3">Date</th>
+             <th className="px-4 py-3">Date</th>
             </tr>
           </thead>
           <tbody>
@@ -59,6 +66,8 @@ const Wallet = () => {
             )}
           </tbody>
         </table>
+    
+
       </div>
 
     </DashboardLayout>
