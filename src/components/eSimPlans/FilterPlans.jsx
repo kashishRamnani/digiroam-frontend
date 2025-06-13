@@ -6,12 +6,13 @@ import getPriceWithMarkup from "../../utils/helpers/get.price.with.markup";
 import getFormattedVolume from "../../utils/helpers/get.formatted.volume";
 import ApplyFilter from "./ApplyFilterPlans";
 
-const FilterPlans = forwardRef(({ plans = [], pricePercentage = 0, onFilter, value }, ref) => {
+const FilterPlans = forwardRef(({ plans = [], pricePercentage = 0, onFilter, value,setIsFiltered }, ref) => {
   const [filterText, setFilterText] = useState("");
   const [selectedField, setSelectedField] = useState("all");
   const [sortOrder, setSortOrder] = useState("");
   const [showFilter, setShowFilter] = useState(false);
- 
+
+
   const handleOpenFilter = () => setShowFilter(true);
   const handleCloseFilter = () => setShowFilter(false);
 
@@ -146,6 +147,7 @@ const FilterPlans = forwardRef(({ plans = [], pricePercentage = 0, onFilter, val
         show={showFilter}
         onClose={handleCloseFilter}
         onFilter={onFilter}
+        setIsFiltered={setIsFiltered}
       />
     </div>
     

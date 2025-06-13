@@ -11,7 +11,7 @@ const ApplyFilter = forwardRef(({ plans = [], show, onClose, onFilter }, ref) =>
     const [filter, setFilter] = useState({ duration: "" });
     const [sortOrder, setSortOrder] = useState("all");
     const [datafilter, setDataFilter] = useState("all");
-
+    const [isFiltered,setIsFiltered] = useState(false)
     useImperativeHandle(ref, () => ({
         applyInitialFilter: () => {
             onFilter(plans);
@@ -57,6 +57,14 @@ const ApplyFilter = forwardRef(({ plans = [], show, onClose, onFilter }, ref) =>
     const handlesort = (e) =>{
      setDataFilter(e.target.value)
     }
+
+    const handleReset = () =>{
+        setFilter({duration:""})
+        setSortOrder("all")
+        setDataFilter("all")
+        setIsFiltered(false);
+        onFilter(plans)
+    }
     const handleApply = () => {
         let filtered = [...plans];
 
@@ -83,6 +91,7 @@ const ApplyFilter = forwardRef(({ plans = [], show, onClose, onFilter }, ref) =>
 
     
         onFilter(filtered);
+        setIsFiltered(true);
         onClose();
     };
 
@@ -95,7 +104,7 @@ const ApplyFilter = forwardRef(({ plans = [], show, onClose, onFilter }, ref) =>
       aria-labelledby="applyfilters"
       aria-modal="true"
     >
-      <div className="bg-white rounded-lg max-w-md w-full p-8 relative overflow-hidden">
+      <div className="bg-white rounded-lg max-w-md w-full p-6 relative overflow-hidden">
         <button
           onClick={onClose}
           className="absolute top-4 right-4 text-gray-500 hover:text-gray-700 text-3xl font-bold"
@@ -112,7 +121,8 @@ const ApplyFilter = forwardRef(({ plans = [], show, onClose, onFilter }, ref) =>
                 <div className="grid grid-cols-1 md:grid-rows-2 gap-4">
                     {/* Duration Filter */}
                     <div>
-                        <label className="block mb-2 font-medium text-gray-700">Filter By Duration</label>
+                         
+                        <label className="text-sm font-medium text-gray-700">Filter By Duration</label>
                         <select
                             name="duration"
                             value={filter.duration}
@@ -130,7 +140,7 @@ const ApplyFilter = forwardRef(({ plans = [], show, onClose, onFilter }, ref) =>
 
                     {/* Sort by Price */}
                     <div className="relative">
-                        <label className="block mb-2 font-medium text-gray-700">Sort By Price</label>
+                        <label className="text-sm font-medium text-gray-700">Sort By Price</label>
                         <select
                             value={sortOrder}
                             onChange={handleSortChange}
@@ -144,7 +154,7 @@ const ApplyFilter = forwardRef(({ plans = [], show, onClose, onFilter }, ref) =>
                       
                     </div>
                     <div>
-                        <label className="block mb-2 font-medium text-gray-700">Sort By Data</label>
+                        <label className="text-sm font-medium text-gray-700">Sort By Data</label>
                         <select
                             value={datafilter}
                             onChange={handlesort}
@@ -161,19 +171,18 @@ const ApplyFilter = forwardRef(({ plans = [], show, onClose, onFilter }, ref) =>
                 {/* Action Buttons */}
                 <div className="flex justify-end mt-8 space-x-4">
                     <button
-                        onClick={onClose}
+                        onClick={handleReset}
                          
-                        className="mt-6 px-4 py-2 bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300 transition"
+                        className="mt-4 px-4 py-2 bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300 transition"
                     >
-                        Cancel
+                       Reset 
                     </button>
                     <button
                         onClick={handleApply}
-                        className=" mt-6 py-2 px-4 text-white rounded-md bg-primary hover:bg-primary-dark"
+                        className=" mt-4  py-2 px-4 text-white rounded-md bg-primary hover:bg-primary-dark transition"
                     >
-                        Apply Filter
-                    </button>
-                    
+                       {isFiltered ? "Applied Filter" : "Apply Filter"}
+                  </button>  
                 </div>
             </div>
         </div>
