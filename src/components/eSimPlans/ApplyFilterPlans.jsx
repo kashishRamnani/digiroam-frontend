@@ -12,6 +12,7 @@ const ApplyFilter = forwardRef(({ plans = [], show, onClose, onFilter }, ref) =>
     const [sortOrder, setSortOrder] = useState("all");
     const [datafilter, setDataFilter] = useState("all");
     const [isFiltered,setIsFiltered] = useState(false)
+    
     useImperativeHandle(ref, () => ({
         applyInitialFilter: () => {
             onFilter(plans);
