@@ -1,18 +1,17 @@
 import { forwardRef, useImperativeHandle, useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 ;
-import { faTimesCircle, faFilter } from "@fortawesome/free-solid-svg-icons";
+import { faTimesCircle, faFilter,faCheckCircle  } from "@fortawesome/free-solid-svg-icons";
 import getPriceWithMarkup from "../../utils/helpers/get.price.with.markup";
 import getFormattedVolume from "../../utils/helpers/get.formatted.volume";
 import ApplyFilter from "./ApplyFilterPlans";
 
-const FilterPlans = forwardRef(({ plans = [], pricePercentage = 0, onFilter, value,setIsFiltered }, ref) => {
+const FilterPlans = forwardRef(({ plans = [], pricePercentage = 0, onFilter, value }, ref) => {
   const [filterText, setFilterText] = useState("");
   const [selectedField, setSelectedField] = useState("all");
   const [sortOrder, setSortOrder] = useState("");
   const [showFilter, setShowFilter] = useState(false);
-
-
+ const [isFiltered, setIsFiltered] = useState(false);
   const handleOpenFilter = () => setShowFilter(true);
   const handleCloseFilter = () => setShowFilter(false);
 
@@ -133,21 +132,22 @@ const FilterPlans = forwardRef(({ plans = [], pricePercentage = 0, onFilter, val
 
      
      
-      <button
-        onClick={handleOpenFilter}
-         className="flex items-center space-x-2 text-white px-4 py-2 rounded-md"
-            style={{ backgroundColor: "var(--secondary-color)" }}
-      >
-        <FontAwesomeIcon icon={faFilter} className=" mr-2" />
-        Filter
-      </button>
+   <button
+  onClick={handleOpenFilter}
+  className="flex items-center space-x-1 text-white px-4 py-2 rounded-md text-sm"
+  style={{ backgroundColor: "var(--secondary-color)" }}
+>
+  <FontAwesomeIcon icon={isFiltered ? faCheckCircle : faFilter} className="mr-1" />
+  <span>{isFiltered ? "Filtered" : "Filter"}</span>
+</button>
+
 
       <ApplyFilter
         plans={plans}
         show={showFilter}
         onClose={handleCloseFilter}
         onFilter={onFilter}
-        setIsFiltered={setIsFiltered}
+        setIsFiltered={setIsFiltered} 
       />
     </div>
     

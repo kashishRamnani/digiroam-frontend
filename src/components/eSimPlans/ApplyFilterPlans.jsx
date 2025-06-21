@@ -7,11 +7,10 @@ import React, {
 
 import getPriceWithMarkup from "../../utils/helpers/get.price.with.markup";
 
-const ApplyFilter = forwardRef(({ plans = [], show, onClose, onFilter }, ref) => {
+const ApplyFilter = forwardRef(({ plans = [], show, onClose, onFilter,setIsFiltered }, ref) => {
     const [filter, setFilter] = useState({ duration: "" });
     const [sortOrder, setSortOrder] = useState("all");
     const [datafilter, setDataFilter] = useState("all");
-    const [isFiltered,setIsFiltered] = useState(false)
     
     useImperativeHandle(ref, () => ({
         applyInitialFilter: () => {
@@ -65,6 +64,7 @@ const ApplyFilter = forwardRef(({ plans = [], show, onClose, onFilter }, ref) =>
         setDataFilter("all")
         setIsFiltered(false);
         onFilter(plans)
+        onClose();
     }
     const handleApply = () => {
         let filtered = [...plans];
@@ -182,7 +182,7 @@ const ApplyFilter = forwardRef(({ plans = [], show, onClose, onFilter }, ref) =>
                         onClick={handleApply}
                         className=" mt-4  py-2 px-4 text-white rounded-md bg-primary hover:bg-primary-dark transition"
                     >
-                       {isFiltered ? "Applied Filter" : "Apply Filter"}
+                       Apply Filter
                   </button>  
                 </div>
             </div>
