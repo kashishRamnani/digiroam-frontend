@@ -1,6 +1,6 @@
 import React from "react";
 import DashboardLayout from "../../layouts/DashboardLayout";
-import { ContactList, MarkupPriceForm, ServiceLinks } from "../../components";
+import { ContactList, MarkupPriceForm, MinTopupRange, ServiceLinks } from "../../components";
 
 const Settings = () => {
   return (
@@ -13,7 +13,10 @@ const Settings = () => {
         <div className="grid lg:grid-cols-2">
         <ServiceLinks />
         <MarkupPriceForm />
+         <MinTopupRange/>
+
         </div>
+        
       </div>
      
     </DashboardLayout>

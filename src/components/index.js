@@ -36,6 +36,7 @@ import FilterFavPlans from "./eSimPlans/Filterfavouriteplans";
 import BuyNowModal from "./eSimPlans/BuyNow";
 import FilterTranscation from "./wallet/FilterTranscation";
 import SortByDateTxn from "./wallet/FilterDateTranscation";
+import MinTopupRange from "./settings/MinTopupRange";
 export {
   Footer,
   LoginButtons,
@@ -75,5 +76,6 @@ export {
   BuyNowModal,
   FilterTranscation,
   SortByDateTxn,
+  MinTopupRange
   
 };

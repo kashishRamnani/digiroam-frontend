@@ -24,7 +24,7 @@ import {
 import { showErrorToast, showSuccessToast } from "../../utils/toast";
 import calculateNetAmount from "../../utils/helpers/calculateNetAmount";
 import { faCcPaypal, faCcMastercard } from "@fortawesome/free-brands-svg-icons";
-
+import getTopupRange from "../../utils/helpers/get.topuprange";
 const stripePromise = loadStripe("pk_test_51PtX1yP5I2dh2w2olaE2SXdVYWT056atlVJ3jVZKliMu6GQUa17xzEQHTrELjjJRWal7JwTySuFZLdeNJ7SGwrX700LCXKN0LP");
 
 const WalletModel = ({ isVisible, onClose }) => {
@@ -35,7 +35,7 @@ const WalletModel = ({ isVisible, onClose }) => {
 
   const dispatch = useDispatch();
   const { stripeClientSecret, loading, error } = useSelector((state) => state.wallet);
-
+const { minTopupRange } = useSelector((state) => state.settings);
   useEffect(() => {
     return () => {
       dispatch(resetPaymentState());
@@ -97,8 +97,8 @@ const WalletModel = ({ isVisible, onClose }) => {
   if (!isVisible) return null;
 
   return (
-
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+    
+   <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
       <div className="bg-white rounded-lg items-center max-w-md w-full p-8 relative">
         <button
           onClick={onClose}
@@ -117,7 +117,9 @@ const WalletModel = ({ isVisible, onClose }) => {
             <div className="flex items-center gap-2 mb-4">
               <input
                 type="text"
-                placeholder="Enter Amount (min $5.00)"
+              placeholder={`Enter amount (min $${getTopupRange(minTopupRange)})`}
+
+
                 value={amount}
                 id="amount"
                 onChange={(e) => setAmount(e.target.value)}
@@ -125,7 +127,7 @@ const WalletModel = ({ isVisible, onClose }) => {
               />
               <button
                 onClick={() => {
-                  if (!amount || Number(amount) < 5) {
+                  if (!amount || Number(amount) < getTopupRange(minTopupRange)) {
                     return setAmountError("Amount must be at least $5");
                   } else if (Number(amount) >= 10001) {
                     return setAmountError("Amount must not exceed $10,000");
@@ -133,7 +135,7 @@ const WalletModel = ({ isVisible, onClose }) => {
                   setAmountError("");
                   setShowPaymentOptions(true);
                 }}
-                disabled={Number(amount) < 5}
+                disabled={Number(amount) < getTopupRange(minTopupRange)}
                 className="px-4 py-2 bg-primary text-white rounded-md hover:bg-[#ee643a] transition disabled:bg-[#ee643a8e] disabled:cursor-not-allowed"
               >
                 Proceed

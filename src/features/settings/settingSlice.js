@@ -6,6 +6,7 @@ const initialState = {
     pricePercentage: 0,
     serviceLinks: [],
     contactList: [],
+    minTopupRange :5,
     loading: false,
     error: null,
 };
@@ -58,6 +59,7 @@ const settingsSlice = createSlice({
                 state.pricePercentage = action.payload.pricePercentage;
                 state.serviceLinks = action.payload.serviceLinks;
                 state.contactList = action.payload.contactList;
+                state.minTopupRange = action.payload.minTopupRange ?? 5;
             })
             .addCase(retrieveSettings.rejected, (state, action) => {
                 state.loading = false;
@@ -72,6 +74,7 @@ const settingsSlice = createSlice({
                 state.pricePercentage = action.payload.pricePercentage;
                 state.serviceLinks = action.payload.serviceLinks;
                 state.contactList = action.payload.contactList;
+                state.minTopupRange = action.payload.minTopupRange ?? 5;
             })
             .addCase(updateSettings.rejected, (state, action) => {
                 state.loading = false;
