@@ -25,7 +25,8 @@ import { showErrorToast, showSuccessToast } from "../../utils/toast";
 import calculateNetAmount from "../../utils/helpers/calculateNetAmount";
 import { faCcPaypal, faCcMastercard } from "@fortawesome/free-brands-svg-icons";
 import getTopupRange from "../../utils/helpers/get.topuprange";
-const stripePromise = loadStripe("pk_test_51PtX1yP5I2dh2w2olaE2SXdVYWT056atlVJ3jVZKliMu6GQUa17xzEQHTrELjjJRWal7JwTySuFZLdeNJ7SGwrX700LCXKN0LP");
+// const stripePromise = loadStripe("pk_test_51PtX1yP5I2dh2w2olaE2SXdVYWT056atlVJ3jVZKliMu6GQUa17xzEQHTrELjjJRWal7JwTySuFZLdeNJ7SGwrX700LCXKN0LP");
+const stripePromise = loadStripe("pk_live_51RdnSxKHzu3znY3yPhZPiLg6Ly59sOOccilESSNNlumXvqQUOGtm7oio0Yns8v5Iye3hN61WpcBizP010quOWSuy00ZQhSUY3b");
 
 const WalletModel = ({ isVisible, onClose }) => {
   const [amount, setAmount] = useState("");
@@ -207,7 +208,7 @@ const { minTopupRange } = useSelector((state) => state.settings);
 
             {/* PayPal */}
             {paymentMethod === "paypal" && (
-              <PayPalScriptProvider options={{ "client-id": "ARQlumdLfObf_DPA-MuD7_hqMgREgD7YyTiUBEjKGrWbiW0ot9KpvRmlx8WrL9rmfGSi4-rLmsO8JOyW" }}>
+              <PayPalScriptProvider options={{ "client-id": "AdPEMI45IUSGOwz6oeByUS6ltDHzwPQ94NlYEChQoL4cha2bfyNqNAdmr87AMvgxwT68CgIbeD8RI6PM" }}>
                 <PayPalButtons
                   createOrder={generatePayPalOrderIdHandler}
                   onApprove={onApprovePayPalHandler}

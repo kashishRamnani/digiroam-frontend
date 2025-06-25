@@ -25,7 +25,8 @@ import { faArrowUp, faWallet } from "@fortawesome/free-solid-svg-icons";
 import { setLoading } from "../../features/wallet/walletSlice";
 import generaterandomTransactionId from "../../utils/helpers/generaterandomTransactionId";
 import { toggleModal } from "../../features";
-const stripePromise = loadStripe("pk_test_51PtX1yP5I2dh2w2olaE2SXdVYWT056atlVJ3jVZKliMu6GQUa17xzEQHTrELjjJRWal7JwTySuFZLdeNJ7SGwrX700LCXKN0LP");
+// const stripePromise = loadStripe("pk_test_51PtX1yP5I2dh2w2olaE2SXdVYWT056atlVJ3jVZKliMu6GQUa17xzEQHTrELjjJRWal7JwTySuFZLdeNJ7SGwrX700LCXKN0LP");
+const stripePromise = loadStripe("pk_live_51RdnSxKHzu3znY3yPhZPiLg6Ly59sOOccilESSNNlumXvqQUOGtm7oio0Yns8v5Iye3hN61WpcBizP010quOWSuy00ZQhSUY3b");
 
 const PaymentButtons = () => {
   const dispatch = useDispatch();
@@ -304,7 +305,7 @@ const PaymentButtons = () => {
             <PayPalScriptProvider
               options={{
                 "client-id":
-                  "ARQlumdLfObf_DPA-MuD7_hqMgREgD7YyTiUBEjKGrWbiW0ot9KpvRmlx8WrL9rmfGSi4-rLmsO8JOyW",
+                  "AdPEMI45IUSGOwz6oeByUS6ltDHzwPQ94NlYEChQoL4cha2bfyNqNAdmr87AMvgxwT68CgIbeD8RI6PM",
               }}
             >
               <PayPalButtons

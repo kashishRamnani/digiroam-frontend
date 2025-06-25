@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useDispatch, useSelector } from "react-redux";
-import { FaEdit } from "react-icons/fa";
+import { FaAdn, FaEdit } from "react-icons/fa";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus, faSave, faTimes } from "@fortawesome/free-solid-svg-icons";
 import { retrieveSettings, updateSettings } from "../../features";
@@ -119,10 +119,18 @@ const contactList = () => {
       <div className="flex space-x-4">
         <button
           type="submit"
-          className="flex-1 flex items-center justify-center py-2 px-4 bg-primary text-white rounded-md shadow-sm hover:bg-[#f67a55]/90 transition"
+          className="flex-1 flex items-center justify-center space-x-2 py-2 px-4 bg-primary text-white rounded-md shadow-sm hover:bg-[#f67a55]/90 transition"
         >
-          <FontAwesomeIcon icon={faSave} className="pe-2" />
-          <span>{isEditing ? "Save Changes" : "Create"}</span>
+          <FontAwesomeIcon icon={faSave} />
+          <span>
+            {isEditing
+              ? loading
+                ? "Updating..."
+                : "Save Changes"
+              : loading
+                ? "Creating..."
+                : "Create"}
+          </span>
         </button>
 
         <button
@@ -138,7 +146,7 @@ const contactList = () => {
   );
 
   return (
-    <div className="bg-white table-container  shadow-md rounded-lg p-8  mx-4 mt-10">
+    <div className="bg-white table-container shadow-md rounded-lg p-8 ">
       <div className="mb-6">
         {!addNew && !isEditing && (
           <button

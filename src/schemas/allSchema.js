@@ -42,16 +42,10 @@ export const emailTemplateSchema = z.object({
 
 export const settingsSchema = z.object({
   pricePercentage: z
-    .string().min(1).max(100).optional(),
-minTopupRange: z.preprocess(
-    (val) => {
-      const num = Number(val);
-      return isNaN(num) ? undefined : num;
-    },
-    z
-      .number({ required_error: "Minimum top-up range is required" })
-      .min(5, "Minimum top-up range must be at least 5")
-  ),
+    .string().min(1).optional(),
+
+  minTopupRange: z
+    .string().min(1).optional(),
 
   service: z
     .object({

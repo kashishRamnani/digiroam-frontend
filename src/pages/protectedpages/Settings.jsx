@@ -1,6 +1,11 @@
 import React from "react";
 import DashboardLayout from "../../layouts/DashboardLayout";
-import { ContactList, MarkupPriceForm, MinTopupRange, ServiceLinks } from "../../components";
+import {
+  ContactList,
+  MarkupPriceForm,
+  MinTopupRange,
+  ServiceLinks,
+} from "../../components";
 
 const Settings = () => {
   return (
@@ -8,17 +13,20 @@ const Settings = () => {
       title="App Settings"
       description="Manage various app settings controlled by the admin."
     >
-      <div className="grid lg:grid-cols-1 items-start">
-        <ContactList />
-        <div className="grid lg:grid-cols-2">
-        <ServiceLinks />
-        <MarkupPriceForm />
-         <MinTopupRange/>
-
+      <div className="p-4 space-y-6">
+        <div>
+          <ContactList />
         </div>
-        
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <ServiceLinks />
+
+          <div className="grid grid-cols-1 gap-3">
+            <MarkupPriceForm />
+            <MinTopupRange />
+          </div>
+        </div>
       </div>
-     
     </DashboardLayout>
   );
 };

@@ -65,6 +65,7 @@ const settingsSlice = createSlice({
                 state.loading = false;
                 state.error = action.payload?.message ?? "Failed to retrieve settings";
             })
+            
             .addCase(updateSettings.pending, (state) => {
                 state.loading = true;
                 state.error = null;

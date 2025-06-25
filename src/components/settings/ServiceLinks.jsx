@@ -95,10 +95,18 @@ const ServiceLinks = () => {
       <div className="flex space-x-4">
         <button
           type="submit"
-          className="flex-1 flex items-center justify-center py-2 px-4 bg-primary text-white rounded-md shadow-sm hover:bg-[#f67a55]/90 transition"
+          className="flex-1 flex items-center justify-center space-x-2 py-2 px-4 bg-primary text-white rounded-md shadow-sm hover:bg-[#f67a55]/90 transition"
         >
-          <FontAwesomeIcon icon={faSave} className="pe-2" />
-          <span>{isEditing ? "Save Changes" : "Create"}</span>
+          <FontAwesomeIcon icon={faSave} />
+          <span>
+            {isEditing
+              ? loading
+                ? "Updating..."
+                : "Save Changes"
+              : loading
+                ? "Creating..."
+                : "Create"}
+          </span>
         </button>
 
         <button
@@ -114,7 +122,7 @@ const ServiceLinks = () => {
   );
 
   return (
-    <div className="bg-white table-container  shadow-md rounded-lg p-6  mx-4 mt-10">
+    <div className="bg-white table-container  shadow-md rounded-lg p-6">
       <div className="mb-6">
         {!addNew && !isEditing && (
           <button
@@ -134,56 +142,56 @@ const ServiceLinks = () => {
       </div>
 
       <div className="table-container">
-      <table className="min-w-full bg-white table-auto max-w-full">
-        <thead className="bg-gray-50">
-          <tr className="text-xs font-semibold text-left text-gray-500 uppercase">
-            <th className="px-1 py-2">Label</th>
-            <th className="px-1 py-2" >Link</th>
-            <th className="px-1 py-2">Visibility</th>
-            <th className="px-1 py-2">Action</th>
-          </tr>
-        </thead>
-        <tbody>
-          {serviceLinks.length > 0 ? (
-            serviceLinks.map((service) => (
-              <tr key={service._id} className="border-t">
-                <td className="px-4 py-3 truncate">{service.label}</td>
-                <td className="px-4 py-3 truncate">
-                  <Link to={service.href} className="text-blue-500 underline">
-                    {service.href}
-                  </Link>
-                </td>
-                <td className="px-4 py-3">
-                  <label className="relative inline-flex items-center cursor-pointer">
-                    <input
-                      type="checkbox"
-                      checked={!service.isHidden}
-                      onChange={() => toggleVisibility(service._id)}
-                      className="sr-only peer"
-                    />
-                    <div className="w-11 h-6 bg-gray-300 rounded-full peer peer-checked:bg-[#FF7F5C] transition-all"></div>
-                    <div className="absolute left-1 top-1 bg-white w-4 h-4 rounded-full transition-transform peer-checked:translate-x-5"></div>
-                  </label>
-                </td>
-                <td className="px-4 py-3">
-                  <button
-                    onClick={() => handleEdit(service._id)}
-                    className="text-green-500 hover:text-green-700"
-                  >
-                    <FaEdit size={18} />
-                  </button>
+        <table className="min-w-full bg-white table-auto max-w-full">
+          <thead className="bg-gray-50">
+            <tr className="text-xs font-semibold text-left text-gray-500 uppercase">
+              <th className="px-1 py-2">Label</th>
+              <th className="px-1 py-2" >Link</th>
+              <th className="px-1 py-2">Visibility</th>
+              <th className="px-1 py-2">Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            {serviceLinks.length > 0 ? (
+              serviceLinks.map((service) => (
+                <tr key={service._id} className="border-t">
+                  <td className="px-4 py-3 truncate">{service.label}</td>
+                  <td className="px-4 py-3 truncate">
+                    <Link to={service.href} className="text-blue-500 underline">
+                      {service.href}
+                    </Link>
+                  </td>
+                  <td className="px-4 py-3">
+                    <label className="relative inline-flex items-center cursor-pointer">
+                      <input
+                        type="checkbox"
+                        checked={!service.isHidden}
+                        onChange={() => toggleVisibility(service._id)}
+                        className="sr-only peer"
+                      />
+                      <div className="w-11 h-6 bg-gray-300 rounded-full peer peer-checked:bg-[#FF7F5C] transition-all"></div>
+                      <div className="absolute left-1 top-1 bg-white w-4 h-4 rounded-full transition-transform peer-checked:translate-x-5"></div>
+                    </label>
+                  </td>
+                  <td className="px-4 py-3">
+                    <button
+                      onClick={() => handleEdit(service._id)}
+                      className="text-green-500 hover:text-green-700"
+                    >
+                      <FaEdit size={18} />
+                    </button>
+                  </td>
+                </tr>
+              ))
+            ) : (
+              <tr>
+                <td colSpan="4" className="text-center px-4 py-4 text-gray-500">
+                  No services available.
                 </td>
               </tr>
-            ))
-          ) : (
-            <tr>
-              <td colSpan="4" className="text-center px-4 py-4 text-gray-500">
-                No services available.
-              </td>
-            </tr>
-          )}
-        </tbody>
-      </table>
+            )}
+          </tbody>
+        </table>
       </div>
     </div >
   );

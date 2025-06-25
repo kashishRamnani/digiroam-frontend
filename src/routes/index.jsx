@@ -123,7 +123,7 @@ const Routes = () => {
           element: <RoleGuard userRole={2} />,
           children: [
             { path: "email-list", element: <EmailTemplateList /> },
-            { path: "app-cms", element: <Settings /> },
+            { path: "app-settings", element: <Settings /> },
           ],
         },
       ],

@@ -9,7 +9,7 @@ import { settingsSchema } from "../../schemas/allSchema";
 
 const MarkupPriceForm = () => {
     const dispatch = useDispatch();
-    const { pricePercentage } = useSelector((state) => state.settings);
+    const { pricePercentage, loading } = useSelector((state) => state.settings);
     const [isEditing, setIsEditing] = useState(false);
 
     const {
@@ -33,22 +33,23 @@ const MarkupPriceForm = () => {
     }, [pricePercentage, reset]);
 
     const onSubmit = (data) => {
+        console.log("data", data);
         dispatch(updateSettings(data));
         setIsEditing(false);
     };
 
     return (
-        <div className="bg-white table-container mb-8 shadow-md lg:h-[70%] rounded-lg p-6  mx-4 mt-10">
+        <div className="bg-white shadow-md rounded-lg p-6 w-full max-h-max">
             <h2 className="text-xl font-bold text-gray-800 mb-4">Markup Percentage (%)</h2>
 
             {!isEditing ? (
-                <div className="flex justify-between items-center">
-                    <p className="text-lg text-gray-700 mt-4">
-                        Current Markup <strong>{pricePercentage}%</strong>
+                <div className="flex justify-between items-center gap-4">
+                    <p className="text-lg text-gray-700">
+                        Currently: <strong>{pricePercentage}%</strong>
                     </p>
                     <button
                         onClick={() => setIsEditing(true)}
-                        className="flex-1 ml-4 mt-4 justify-center flex items-center py-2 px-2 border border-transparent rounded-md shadow-sm  font-medium text-white bg-primary hover:bg-[#f67a55]/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#FF7F5C] transition duration-150 ease-in-out"
+                        className="max-w-[40%] flex-1 justify-center flex items-center space-x-2 py-2 px-2 border border-transparent rounded-md shadow-sm font-medium text-white bg-primary hover:bg-[#f67a55]/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#FF7F5C] transition duration-150 ease-in-out"
                     >
                         <FontAwesomeIcon icon={faEdit} />
                         <span>Edit</span>
@@ -56,10 +57,10 @@ const MarkupPriceForm = () => {
                 </div>
             ) : (
                 <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col space-y-4">
-                    <label className="text-sm font-medium text-gray-700">Set Markup Percentage (%)</label>
+                    <label className="text-sm font-medium text-gray-700">Update Markup Percentage (%)</label>
                     <input
                         {...register("pricePercentage")}
-                        className={`pl-10 w-full rounded-md border bg-white py-2 text-sm outline-none focus:border-primary focus:ring-1 focus:ring-primary ${errors.name ? 'border-red-500' : 'border-gray-300'
+                        className={`pl-4 w-full rounded-md border bg-white py-2 text-sm outline-none focus:border-primary focus:ring-1 focus:ring-primary ${errors.name ? 'border-red-500' : 'border-gray-300'
                             }`}
                     />
                     {errors.pricePercentage && (
@@ -68,11 +69,12 @@ const MarkupPriceForm = () => {
 
                     <div className="flex space-x-4">
                         <button
+                        disabled={loading}
                             type="submit"
-                            className="flex-1 justify-center flex items-center py-2 px-4 border border-transparent rounded-md shadow-sm  font-medium text-white bg-primary hover:bg-[#f67a55]/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#FF7F5C] transition duration-150 ease-in-out"
+                            className="flex-1 justify-center flex items-center py-2 px-4 space-x-2 border border-transparent rounded-md shadow-sm  text-white bg-primary hover:bg-[#f67a55]/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#FF7F5C] transition duration-150 ease-in-out"
                         >
-                            <FontAwesomeIcon icon={faSave} className="me-3" />
-                            <span className="ms-3">Save</span>
+                            <FontAwesomeIcon icon={faSave}/>
+                            <span>{loading ? "Updating..." : 'Save Changes'}</span>
                         </button>
                         <button
                             type="button"
