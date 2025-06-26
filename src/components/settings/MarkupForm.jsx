@@ -32,10 +32,11 @@ const MarkupPriceForm = () => {
         }
     }, [pricePercentage, reset]);
 
-    const onSubmit = (data) => {
-        console.log("data", data);
-        dispatch(updateSettings(data));
-        setIsEditing(false);
+    const onSubmit = async (data) => {
+        const res = await dispatch(updateSettings(data))
+        if (updateSettings.fulfilled.match(res)) {
+            setIsEditing(false)
+        }
     };
 
     return (
@@ -69,11 +70,11 @@ const MarkupPriceForm = () => {
 
                     <div className="flex space-x-4">
                         <button
-                        disabled={loading}
+                            disabled={loading}
                             type="submit"
                             className="flex-1 justify-center flex items-center py-2 px-4 space-x-2 border border-transparent rounded-md shadow-sm  text-white bg-primary hover:bg-[#f67a55]/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#FF7F5C] transition duration-150 ease-in-out"
                         >
-                            <FontAwesomeIcon icon={faSave}/>
+                            <FontAwesomeIcon icon={faSave} />
                             <span>{loading ? "Updating..." : 'Save Changes'}</span>
                         </button>
                         <button

@@ -196,10 +196,20 @@ const authSlice = createSlice({
       state.otpRequired = false;
     },
     setUserAndToken: (state, action) => {
-      state.user = action.payload.user;
-      state.token = action.payload.token;
-    },
+      const { user, token } = action.payload;
 
+      state.user = user;
+      state.token = token;
+
+      if (!user || !token) {
+        localStorage.removeItem("user");
+        localStorage.removeItem("token");
+        return;
+      }
+
+      localStorage.setItem("user", JSON.stringify(user));
+      localStorage.setItem("token", token);
+    },
   },
   extraReducers: (builder) => {
     builder

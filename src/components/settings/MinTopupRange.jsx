@@ -31,9 +31,11 @@ const MinTopupRange = () => {
         reset({ minTopupRange })
     }, [minTopupRange, reset])
 
-    const onSubmit = (data) => {
-        dispatch(updateSettings(data));
-        setIsEditing(false);
+    const onSubmit = async (data) => {
+        const res = await dispatch(updateSettings(data))
+        if (updateSettings.fulfilled.match(res)) {
+            setIsEditing(false)
+        }
     };
 
     return (

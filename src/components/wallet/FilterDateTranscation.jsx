@@ -3,7 +3,9 @@ import { useEffect, useState } from "react";
 const SortByDateTxn = ({ transactions = [], onSort }) => {
   const [sortOrder, setSortOrder] = useState("desc");
 
-  const applySort = () => {
+  useEffect(() => {
+    if (!Array.isArray(transactions)) return;
+
     const sorted = [...transactions].sort((a, b) => {
       const dateA = new Date(a.madeAt);
       const dateB = new Date(b.madeAt);
@@ -11,11 +13,7 @@ const SortByDateTxn = ({ transactions = [], onSort }) => {
     });
 
     onSort(sorted);
-  };
-
-  useEffect(() => {
-    applySort();
-  }, [sortOrder, transactions]);
+  }, [sortOrder]);
 
   return (
     <div className="px-4 py-2">

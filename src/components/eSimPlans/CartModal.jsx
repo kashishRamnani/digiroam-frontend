@@ -13,7 +13,7 @@ import RemoveConfirmationModal from '../common/RemoveConfirmation';
 
 const CartModal = () => {
   const dispatch = useDispatch();
-  const { items, isCartOpen,loading:isLoading } = useSelector((state) => state.cart);
+  const { items, isCartOpen, loading: isLoading } = useSelector((state) => state.cart);
   const { pricePercentage } = useSelector((state) => state.settings);
   const [showConfirm, setShowConfirm] = useState(false);
   const [itemToRemove, setItemToRemove] = useState(null);
@@ -128,7 +128,11 @@ const CartModal = () => {
           onCancel={() => setShowConfirm(false)}
           onConfirm={confirmRemoveItem}
           isLoading={isLoading}
+          title="Remove eSim from Cart"
+          message="Are you sure you want to remove this eSim from your cart? This action cannot be undone."
+          confirmLabel="Yes, Remvove eSim"
         />
+
       </div>
     </div>
   );

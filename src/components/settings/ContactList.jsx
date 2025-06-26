@@ -40,7 +40,6 @@ const contactList = () => {
     }
     data.contact.isHidden = isEditing?.isHidden ?? false;
     const result = await dispatch(updateSettings(data));
-
     if (updateSettings.fulfilled.match(result)) {
       setIsEditing(null);
       setAddNew(false);

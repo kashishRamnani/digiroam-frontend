@@ -37,6 +37,9 @@ import BuyNowModal from "./eSimPlans/BuyNow";
 import FilterTranscation from "./wallet/FilterTranscation";
 import SortByDateTxn from "./wallet/FilterDateTranscation";
 import MinTopupRange from "./settings/MinTopupRange";
+import DeleteAccountSection from './users/DeleteAccountSection';
+import RemoveConfirmationModal from './common/RemoveConfirmation';
+
 export {
   Footer,
   LoginButtons,
@@ -76,6 +79,7 @@ export {
   BuyNowModal,
   FilterTranscation,
   SortByDateTxn,
-  MinTopupRange
-  
+  MinTopupRange,
+  DeleteAccountSection,
+  RemoveConfirmationModal
 };

@@ -1,4 +1,4 @@
-export { default as authSlice ,setPendingPackage} from "./auth/authSlice";
+export { default as authSlice, setPendingPackage } from "./auth/authSlice";
 export { default as preferencesSlice } from "./preferences/preferenceSlice";
 export { default as uiSlice } from "./ui/uiSlice";
 export { default as productSlice } from "./products/productSlice";
@@ -37,7 +37,7 @@ export {
   resetCart,
   setBuyNow
 } from "./carts/cartSlice";
-export { resetProfileState } from "./user/userSlice";
+export { resetProfileState, deleteMyAccount } from "./user/userSlice";
 export { resetPaymentState, setPaymentStatus } from "./payment/paymentSlice";
 
 export { default as settingsSlice, retrieveSettings, updateSettings } from "./settings/settingSlice"

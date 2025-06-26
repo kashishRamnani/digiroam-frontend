@@ -29,6 +29,21 @@ export const changeCurrentPassword = createAsyncThunk(
   }
 );
 
+export const deleteMyAccount = createAsyncThunk(
+  "user/deleteMyAccount",
+  async ({ password }, { rejectWithValue }) => {
+    try {
+      const data = await axiosInstance.post("/user/delete-account", { password });
+      showSuccessToast("Your account is scheduled for deletion");
+      return data;
+    } catch (error) {
+      const errorMessage = error.response?.data?.message || "Failed to delete your account";
+      showErrorToast(errorMessage);
+      return rejectWithValue(errorMessage);
+    }
+  }
+);
+
 export const getMyProfile = createAsyncThunk(
   "user/getMyProfile",
   async (_, { rejectWithValue }) => {
@@ -111,6 +126,17 @@ const userSlice = createSlice({
       .addCase(changeCurrentPassword.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
+      })
+
+      .addCase(deleteMyAccount.pending, (state) => {
+        state.loading = true;
+        
+      })
+      .addCase(deleteMyAccount.fulfilled, (state) => {
+        state.loading = false;
+      })
+      .addCase(deleteMyAccount.rejected, (state, action) => {
+        state.loading = false;
       });
   },
 });
